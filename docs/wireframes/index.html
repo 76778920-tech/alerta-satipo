@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Alerta Satipo · Wireframes del aplicativo móvil</title>
+  <link rel="stylesheet" href="wireframes.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="#">AS<span>ALERTA SATIPO<br><small>DISEÑO DE EXPERIENCIA / MÓVIL</small></span></a>
+    <div class="tools"><button id="mode">Probar navegación</button><button id="print">Imprimir / PDF</button></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">01 / WIREFRAMES · FIDELIDAD MEDIA</p><h1>Una comunidad informada.<br>Una respuesta a tiempo.</h1><p class="lede">Vigilancia de incendios forestales en Satipo. Estructura de pantallas y recorridos del poblador, basada en el aplicativo del proyecto.</p></div>
+      <aside><b>ALCANCE DEL ENTREGABLE</b><dl><dt>Usuario</dt><dd>Poblador de la comunidad</dd><dt>Pantallas</dt><dd>7 vistas + estados de interacción</dd><dt>Formato</dt><dd>Escala de grises · móvil</dd><dt>Versión</dt><dd>01 / septiembre 2026</dd></dl><p>Datos ilustrativos. La navegación de esta lámina es una simulación.</p></aside>
+    </section>
+    <section class="journey" aria-label="Flujo principal"><b>RECORRIDO PRINCIPAL</b><span>01 Acceder</span><i>→</i><span>02 Consultar riesgo</span><i>→</i><span>04 Reportar</span><i>→</i><span>07 Ver mis reportes</span></section>
+    <div class="demo-bar" hidden><label for="screen-picker">Pantalla del prototipo</label><select id="screen-picker"></select><span>Los botones dentro del teléfono son interactivos.</span></div>
+    <section class="board" id="board" aria-label="Wireframes de las pantallas"></section>
+    <section class="spec"><p class="eyebrow">02 / CRITERIOS DE INTERACCIÓN</p><h2>El diseño también contempla lo que ocurre después.</h2><div class="spec-grid"><article><b>01 · Datos incompletos</b><p>El reporte exige ubicación, observación, severidad y una descripción de al menos 20 caracteres. Se conserva lo escrito para corregirlo.</p></article><article><b>02 · Confirmación</b><p>Enviar un reporte muestra una confirmación y lleva a «Mis reportes». Escalar apoyo requiere marcar al menos dos condiciones.</p></article><article><b>03 · Sin resultados</b><p>Alertas y reportes tienen mensajes vacíos. La pérdida de enlace muestra el modo local; no equivale a una PWA que funcione sin internet.</p></article><article><b>04 · Lectura accesible</b><p>Estados expresados con texto, controles etiquetados y navegación persistente. El mapa es esquemático, como en el prototipo actual.</p></article></div></section>
+    <footer>ALERTA SATIPO / DOCUMENTACIÓN DE PRODUCTO <span>Base: mobile/index.html · mobile/js/app.js · shared/login.html</span></footer>
+  </main>
+  <div id="notice" role="status" aria-live="polite" hidden></div>
+  <script src="wireframes.js"></script>
+</body>
+</html>

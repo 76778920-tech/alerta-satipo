@@ -1,0 +1,6 @@
+/* Estilos específicos del panel web administrativo.
+   El design system base vive en /shared/css/styles.css */
+
+.admin-page .admin-main {
+  min-width: 0;
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arquitectura | Alerta Satipo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared/css/styles.css" />
+    <link rel="stylesheet" href="css/panel.css" />
+  </head>
+  <body class="login-page" style="background: linear-gradient(135deg, #f0f4ef 0%, #e8f1e6 100%);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 40px; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(17, 45, 31, 0.15);">
+      <header style="margin-bottom: 40px; text-align: center;">
+        <h1>Arquitectura de Alerta Satipo</h1>
+        <p style="color: #64736a; font-size: 1.1rem;">Documentación técnica - Proyecto 7 UNMSM 2026</p>
+      </header>
+
+      <nav style="margin-bottom: 30px; text-align: center;">
+        <a href="../index.html" class="ghost-button" style="display: inline-block; text-decoration: none; margin-right: 10px;">← Volver al inicio</a>
+        <a href="../shared/login.html" class="ghost-button" style="display: inline-block; text-decoration: none;">Ir a autenticación →</a>
+      </nav>
+
+      <div class="arch-content">
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px;">🎯 Problema</h2>
+        <p>Las comunidades nativas de Satipo enfrentan limitaciones críticas:</p>
+        <ul>
+          <li>Sin conectividad convencional (no hay WiFi ni 4G)</li>
+          <li>Energía limitada (sin línea eléctrica)</li>
+          <li>Geografía compleja (terreno accidentado)</li>
+          <li>Cambios climáticos que aumentan riesgo de incendios forestales</li>
+        </ul>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">💡 Solución</h2>
+        <p><strong>Alerta Satipo</strong> es un sistema de detección temprana de incendios que combina:</p>
+        <ul>
+          <li><strong>Edge AI:</strong> Procesamiento inteligente en el borde (sin depender de cloud)</li>
+          <li><strong>LoRaWAN:</strong> Comunicación de baja energía y largo alcance</li>
+          <li><strong>Energía solar:</strong> Autonomía 8-12 meses sin línea eléctrica</li>
+          <li><strong>Interfaces dual:</strong> App móvil + Dashboard web</li>
+        </ul>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">🏗️ Capas de la arquitectura</h2>
+
+        <div class="arch-layer" style="margin-bottom: 20px;">
+          <h3 style="color: #1f5b3d; margin-top: 0;">1. Capa de sensores (Edge - Hardware)</h3>
+          <ul>
+            <li><strong>ESP32:</strong> Microcontrolador principal con LoRaWAN integrado</li>
+            <li><strong>Sensores:</strong>
+              <ul>
+                <li>Temperatura (DS18B20)</li>
+                <li>Humo / Calor (MQ-2, MQ-7)</li>
+                <li>Humedad (DHT22)</li>
+                <li>Dirección y velocidad de viento</li>
+              </ul>
+            </li>
+            <li><strong>Energía:</strong> Panel solar + batería LiFePO4 + regulador MPPT (autonomía 8-12 meses)</li>
+          </ul>
+        </div>
+
+        <div class="arch-layer" style="margin-bottom: 20px;">
+          <h3 style="color: #1f5b3d; margin-top: 0;">2. Capa de procesamiento (Edge AI)</h3>
+          <ul>
+            <li><strong>Raspberry Pi 4:</strong> Gateway LoRaWAN + servidor local</li>
+            <li><strong>TinyML:</strong> Modelo de inferencia ligero (&lt;50MB) que detecta patrones anómalos</li>
+            <li><strong>Decisión inteligente:</strong> No es solo "humo = fuego", sino análisis multimodal:
+              <ul>
+                <li>Temperatura + humedad + velocidad de viento</li>
+                <li>Historial de patrones normales vs anómalos</li>
+                <li>Filtrado automático de falsos positivos</li>
+              </ul>
+            </li>
+            <li><strong>Latencia:</strong> Decisión en &lt;500ms sin depender de conexión remota</li>
+          </ul>
+        </div>
+
+        <div class="arch-layer" style="margin-bottom: 20px;">
+          <h3 style="color: #1f5b3d; margin-top: 0;">3. Capa de conectividad (LoRaWAN + Fallback)</h3>
+          <ul>
+            <li><strong>LoRaWAN:</strong> Comunica nodos ESP32 con gateway (10-15km de alcance)</li>
+            <li><strong>Ventajas:</strong>
+              <ul>
+                <li>Muy baja energía (batería dura 6-12 meses)</li>
+                <li>No requiere WiFi ni 4G</li>
+                <li>Costo operativo mínimo</li>
+              </ul>
+            </li>
+            <li><strong>Fallback satelital:</strong> Datos se guardan localmente y se sincronizan cuando hay conexión</li>
+          </ul>
+        </div>
+
+        <div class="arch-layer" style="margin-bottom: 20px;">
+          <h3 style="color: #1f5b3d; margin-top: 0;">4. Capa de aplicación (User Interface)</h3>
+          <ul>
+            <li><strong>App móvil:</strong> Para pobladores
+              <ul>
+                <li>Alertas en tiempo real</li>
+                <li>Reportes comunitarios</li>
+                <li>Mapa de sensores</li>
+                <li>Contacto con autoridades</li>
+              </ul>
+            </li>
+            <li><strong>Dashboard web:</strong> Para operadores/administradores
+              <ul>
+                <li>Estado de nodos en tiempo real</li>
+                <li>Monitoreo de batería y energía</li>
+                <li>Historial de alertas</li>
+                <li>Planificación de mantenimiento</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">🔄 Flujo de datos</h2>
+        <p style="font-family: 'Courier New', monospace; background: #f5f5f5; padding: 16px; border-radius: 8px; border-left: 4px solid #1f5b3d;">
+          ESP32 (Sensores) → LoRaWAN → Raspberry Pi (Edge AI) → Decisión local → App Móvil / Dashboard
+        </p>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">⚡ Ventajas del modelo</h2>
+        <ul>
+          <li><strong>Independencia energética:</strong> Solar + batería (funciona 24/7 sin línea eléctrica)</li>
+          <li><strong>Autonomía de conectividad:</strong> Detecta incendios incluso sin internet central</li>
+          <li><strong>Bajo costo:</strong> Hardware accesible, sin suscripciones cloud</li>
+          <li><strong>Latencia cero:</strong> Decisiones instantáneas en el borde</li>
+          <li><strong>Escalable:</strong> Agregar nodos es desplegar un ESP32</li>
+          <li><strong>Resiliencia:</strong> Funciona en degradación de conectividad</li>
+        </ul>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">📊 Modelo de detección (Edge AI)</h2>
+        <p>El algoritmo evalúa múltiples variables:</p>
+        <ul>
+          <li><strong>Temperatura:</strong> Incremento &gt;5°C en 5 minutos = alerta</li>
+          <li><strong>Humo:</strong> Concentración &gt;60 ppm = sospecha</li>
+          <li><strong>Correlación:</strong> Temp + Humo + Baja humedad + Viento = Riesgo Alto</li>
+          <li><strong>Contexto temporal:</strong> Patrones anormales se validan en 15 minutos</li>
+          <li><strong>Histórico:</strong> Se compara con baseline mensual de la zona</li>
+          <li><strong>Precisión esperada:</strong> &gt;94% en detección (falsos positivos &lt;6%)</li>
+        </ul>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">🛠️ Stack Técnico</h2>
+        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+          <thead style="background: linear-gradient(135deg, #1f5b3d 0%, #123d2b 100%); color: white;">
+            <tr>
+              <th style="padding: 12px; text-align: left;">Capa</th>
+              <th style="padding: 12px; text-align: left;">Tecnología</th>
+              <th style="padding: 12px; text-align: left;">Función</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #dce9df;">
+              <td style="padding: 12px;"><strong>Sensores</strong></td>
+              <td style="padding: 12px;">ESP32 + DHT22, MQ-2, DS18B20</td>
+              <td style="padding: 12px;">Captura de datos ambientales</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #dce9df;">
+              <td style="padding: 12px;"><strong>Comunicación</strong></td>
+              <td style="padding: 12px;">LoRaWAN (LORA32 SX1278)</td>
+              <td style="padding: 12px;">Transmisión baja energía, largo alcance</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #dce9df;">
+              <td style="padding: 12px;"><strong>Procesamiento</strong></td>
+              <td style="padding: 12px;">Raspberry Pi 4 + TensorFlow Lite</td>
+              <td style="padding: 12px;">Inferencia de Edge AI</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #dce9df;">
+              <td style="padding: 12px;"><strong>Backend</strong></td>
+              <td style="padding: 12px;">Node.js / Python</td>
+              <td style="padding: 12px;">API y almacenamiento local</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px;"><strong>Frontend</strong></td>
+              <td style="padding: 12px;">HTML5/CSS3/JavaScript (responsive)</td>
+              <td style="padding: 12px;">UI móvil (app) y web (dashboard)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">📈 Métricas de desempeño esperadas</h2>
+        <ul>
+          <li><strong>Precisión:</strong> &gt;94% en detección (falsos positivos &lt;6%)</li>
+          <li><strong>Latencia:</strong> &lt;2 segundos de sensor a alerta</li>
+          <li><strong>Disponibilidad:</strong> 99.2% (solo mantenimiento programado)</li>
+          <li><strong>Autonomía:</strong> 8-12 meses sin recarga solar (modo bajo consumo)</li>
+          <li><strong>Cobertura:</strong> 12-15 km de radio LoRaWAN desde gateway</li>
+          <li><strong>Escalabilidad:</strong> Hasta 100+ nodos por gateway</li>
+        </ul>
+
+        <h2 style="color: #1f5b3d; border-bottom: 3px solid #2ebd73; padding-bottom: 15px; margin-top: 30px;">🚀 Diferenciador del proyecto</h2>
+        <p style="font-size: 1.05rem; line-height: 1.6;">
+          <strong>Alerta Satipo</strong> no es un simple "app de alertas". Es una solución completa de <strong>Edge Computing + TinyML + LoRaWAN</strong> que empodera a comunidades remotas con tecnología de punta, sin dependencia de infraestructura costosa o conectividad centralizada. Es una demostración práctica de cómo la IA descentralizada puede salvar vidas en zonas sin acceso a tecnología convencional.
+        </p>
+      </div>
+
+      <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #dce9df; text-align: center; color: #64736a;">
+        <p>Proyecto 7 - Edge AI para detección temprana de incendios forestales en Satipo</p>
+        <p>UNMSM 2026 | Prototipo funcional con documentación técnica completa</p>
+      </footer>
+    </div>
+  </body>
+</html>

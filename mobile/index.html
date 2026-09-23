@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Alerta Satipo - App móvil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared/css/styles.css" />
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body class="mobile-page">
+    <div class="phone-shell mobile-shell">
+      <div class="net-banner" id="net-banner" role="status" aria-live="polite">
+        <span class="net-dot" id="net-dot"></span>
+        <span id="net-label">LoRa activo · sincronizando</span>
+        <span class="model-chip" id="model-chip" title="Modelo de riesgo">Modelo…</span>
+        <time id="live-clock">--:--</time>
+      </div>
+
+      <div class="screens-stack">
+        <section class="screen screen-home active" id="screen-home" aria-label="Inicio">
+          <header class="mobile-topbar">
+            <div>
+              <p class="eyebrow">Vigilancia comunitaria</p>
+              <h1>Alerta Satipo</h1>
+            </div>
+            <span class="status-pill" id="risk-status">--</span>
+          </header>
+
+          <main class="app-screen mobile-home">
+            <p id="data-mode" class="protocol-line"></p>
+            <section class="risk-hero" id="risk-hero" aria-live="polite">
+              <div class="risk-hero-copy">
+                <p class="risk-zone" id="risk-zone">--</p>
+                <h2 id="risk-title">Cargando riesgo...</h2>
+                <p class="risk-evidence" id="risk-evidence">Esperando telemetría local.</p>
+              </div>
+              <div class="risk-meter" id="risk-meter" aria-label="Nivel de riesgo">
+                <div class="risk-score" id="risk-score">--%</div>
+              </div>
+            </section>
+
+            <section class="metric-strip" aria-label="Lecturas clave">
+              <article>
+                <span>Temp</span>
+                <strong id="temp-main">--</strong>
+              </article>
+              <article>
+                <span>Humo</span>
+                <strong id="smoke-main">--</strong>
+              </article>
+              <article>
+                <span>Viento</span>
+                <strong id="wind-main">--</strong>
+              </article>
+            </section>
+
+            <section class="cta-stack">
+              <button type="button" class="primary-button full-width screen-link" data-screen="report">
+                Reportar evidencia
+              </button>
+              <button type="button" class="secondary-button full-width screen-link" data-screen="help">
+                Solicitar apoyo
+              </button>
+            </section>
+
+            <p class="protocol-line" id="safety-tip">
+              Mantente en zona segura y reporta referencias claras del humo o fuego.
+            </p>
+            <section id="dataset-explorer" class="dataset-panel" aria-label="Datos históricos del CSV"></section>
+          </main>
+        </section>
+
+        <section class="screen" id="screen-alerts" aria-label="Alertas" hidden>
+          <header class="mobile-topbar">
+            <button class="back-button" type="button" data-screen="home">Atrás</button>
+            <h1>Alertas</h1>
+            <span class="label" id="alert-count">0</span>
+          </header>
+
+          <main class="app-screen">
+            <div class="filter-row">
+              <label for="alert-filter">Filtrar</label>
+              <select id="alert-filter" aria-label="Filtrar alertas">
+                <option value="all">Todas</option>
+                <option value="critical">Críticas</option>
+                <option value="watch">Observación</option>
+                <option value="resolved">Cerradas</option>
+              </select>
+            </div>
+            <ul class="alerts-timeline rich-timeline" id="alerts-timeline"></ul>
+          </main>
+        </section>
+
+        <section class="screen" id="screen-report" aria-label="Reportar" hidden>
+          <header class="mobile-topbar">
+            <button class="back-button" type="button" data-screen="home">Atrás</button>
+            <h1>Reportar</h1>
+          </header>
+
+          <main class="app-screen">
+            <form class="report-form" id="report-form">
+              <div class="form-group">
+                <label for="report-location">Ubicación aproximada</label>
+                <input type="text" id="report-location" minlength="3" maxlength="250" placeholder="Ej: quebrada cerca de la escuela" required />
+              </div>
+
+              <div class="form-group">
+                <label for="report-type">Lo que observas</label>
+                <select id="report-type" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="smoke">Humo visible</option>
+                  <option value="flame">Fuego visible</option>
+                  <option value="heat">Calor anómalo</option>
+                  <option value="burning">Quema agrícola</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="report-severity">Severidad</label>
+                <select id="report-severity" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="low">Baja: humo lejano</option>
+                  <option value="medium">Media: fuego controlable</option>
+                  <option value="high">Alta: amenaza a viviendas o chacras</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="report-description">Descripción</label>
+                <textarea id="report-description" minlength="20" maxlength="2000" placeholder="Dirección del humo, tamaño aproximado y referencias del lugar." required></textarea>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="report-contact">Contacto</label>
+                  <input type="tel" id="report-contact" maxlength="40" placeholder="Opcional" />
+                </div>
+                <div class="form-group">
+                  <label for="report-distance">Distancia</label>
+                  <select id="report-distance">
+                    <option value="near">Menos de 1 km</option>
+                    <option value="medium">1 a 5 km</option>
+                    <option value="far">Más de 5 km</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="primary-button full-width">Enviar reporte</button>
+            </form>
+          </main>
+        </section>
+
+        <section class="screen" id="screen-map" aria-label="Mapa" hidden>
+          <header class="mobile-topbar">
+            <button class="back-button" type="button" data-screen="home">Atrás</button>
+            <h1>Mapa</h1>
+            <span class="label" id="map-summary">--</span>
+          </header>
+
+          <main class="app-screen">
+            <div class="mini-map-large terrain-map" id="satipo-map" aria-label="Mapa de nodos"></div>
+            <div class="map-legend">
+              <span><i class="legend-dot danger"></i>Crítico</span>
+              <span><i class="legend-dot warning"></i>Vigilancia</span>
+              <span><i class="legend-dot safe"></i>Normal</span>
+            </div>
+
+            <div class="panel-header tight">
+              <h3>Nodos cercanos</h3>
+              <span class="label" id="sensor-count">--</span>
+            </div>
+            <div class="sensor-list" id="map-sensor-list"></div>
+          </main>
+        </section>
+
+        <section class="screen" id="screen-help" aria-label="Apoyo" hidden>
+          <header class="mobile-topbar">
+            <button class="back-button" type="button" data-screen="home">Atrás</button>
+            <h1>Apoyo</h1>
+          </header>
+
+          <main class="app-screen">
+            <p class="help-lead">Los contactos telefónicos están pendientes de validación. Puedes registrar una solicitud para revisión del operador; no confirma el envío de una brigada.</p>
+
+            <div class="help-contacts">
+              <a class="contact-card contact-call" aria-disabled="true">
+                <span class="contact-icon">B</span>
+                <div>
+                  <strong>Bomberos Satipo</strong>
+                  <p>Contacto pendiente de validación</p>
+                </div>
+                <span class="call-chip">Pendiente</span>
+              </a>
+              <a class="contact-card contact-call" aria-disabled="true">
+                <span class="contact-icon">D</span>
+                <div>
+                  <strong>Defensa Civil</strong>
+                  <p>Contacto pendiente de validación</p>
+                </div>
+                <span class="call-chip">Pendiente</span>
+              </a>
+              <a class="contact-card contact-call" aria-disabled="true">
+                <span class="contact-icon">S</span>
+                <div>
+                  <strong>Serenazgo</strong>
+                  <p>Contacto pendiente de validación</p>
+                </div>
+                <span class="call-chip">Pendiente</span>
+              </a>
+            </div>
+
+            <div class="protocol-box">
+              <strong>Antes de escalar</strong>
+              <label><input type="checkbox" id="confirm-visible" /> Hay humo o fuego visible.</label>
+              <label><input type="checkbox" id="confirm-safe" /> Estoy en una zona segura.</label>
+              <label><input type="checkbox" id="confirm-location" /> Puedo indicar una referencia del lugar.</label>
+            </div>
+
+            <div class="form-group"><label for="help-location">Referencia del lugar</label><input id="help-location" maxlength="250" placeholder="Ej.: puente cerca de la escuela" /></div>
+            <button type="button" class="primary-button full-width" id="send-help-btn">Escalar al operador</button>
+          </main>
+        </section>
+
+        <section class="screen" id="screen-profile" aria-label="Perfil" hidden>
+          <header class="mobile-topbar">
+            <button class="back-button" type="button" data-screen="home">Atrás</button>
+            <h1>Perfil</h1>
+          </header>
+
+          <main class="app-screen">
+            <div class="profile-header">
+              <div class="profile-avatar" id="profile-avatar">U</div>
+              <div class="profile-info">
+                <strong id="profile-name">Usuario local</strong>
+                <p id="profile-role">Vigilancia comunitaria</p>
+              </div>
+            </div>
+
+            <div class="panel-header tight">
+              <h3>Mis reportes</h3>
+              <span class="label" id="report-count">0 enviados</span>
+            </div>
+            <ul class="activity-list" id="saved-reports"></ul>
+
+            <div class="panel-header tight">
+              <h3>Preferencias</h3>
+            </div>
+            <div class="settings-list">
+              <div class="setting-item">
+                <label for="notif-push">Preferencia de notificaciones (pendiente)</label>
+                <input type="checkbox" id="notif-push" checked />
+              </div>
+              <div class="setting-item">
+                <label for="notif-sound">Preferencia de sonido (pendiente)</label>
+                <input type="checkbox" id="notif-sound" checked />
+              </div>
+              <div class="setting-item">
+                <label for="share-location">Permitir ubicación (pendiente)</label>
+                <input type="checkbox" id="share-location" />
+              </div>
+            </div>
+
+            <button type="button" class="secondary-button full-width" id="logout-btn">Cerrar sesión</button>
+            <a class="ghost-button full-width" href="../shared/account.html">Cambiar contraseña</a>
+          </main>
+        </section>
+      </div>
+
+      <nav class="bottom-nav mobile-nav" id="bottom-nav" aria-label="Navegación principal">
+        <button class="nav-item active" type="button" data-screen="home">
+          <span class="nav-ico" aria-hidden="true">⌂</span>
+          <span>Inicio</span>
+        </button>
+        <button class="nav-item" type="button" data-screen="alerts">
+          <span class="nav-ico" aria-hidden="true">◎</span>
+          <span>Alertas</span>
+        </button>
+        <button class="nav-item nav-report" type="button" data-screen="report" aria-label="Reportar evidencia">
+          <span class="nav-report-fab">+</span>
+          <span>Reportar</span>
+        </button>
+        <button class="nav-item" type="button" data-screen="map">
+          <span class="nav-ico" aria-hidden="true">⌖</span>
+          <span>Mapa</span>
+        </button>
+        <button class="nav-item" type="button" data-screen="profile">
+          <span class="nav-ico" aria-hidden="true">☺</span>
+          <span>Perfil</span>
+        </button>
+      </nav>
+    </div>
+
+    <script src="../shared/vendor/supabase.js"></script>
+    <script src="../shared/js/backend.js"></script>
+    <script src="../shared/js/dataset.js"></script>
+    <script src="../shared/js/data.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

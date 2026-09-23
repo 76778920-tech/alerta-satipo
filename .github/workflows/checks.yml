@@ -1,0 +1,18 @@
+name: Validar aplicativo
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: Comprobar sintaxis JavaScript
+        run: find shared/js mobile/js web/js docs/wireframes -name '*.js' -print0 | xargs -0 -n1 node --check

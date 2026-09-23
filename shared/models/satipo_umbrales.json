@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "satipo-risk-v1",
+  "source": "google-colab",
+  "exportedAt": "2026-09-04T16:05:18Z",
+  "notes": "Calibrado en Colab con sample_sensors.csv (dataset sintético).",
+  "thresholds": {
+    "tempCritical": 34.4,
+    "smokeCritical": 48.6,
+    "humidityDry": 44.3,
+    "windRisk": 16.0
+  },
+  "weights": {
+    "temp": 30,
+    "smoke": 34,
+    "humidity": 18,
+    "wind": 14,
+    "recencyMax": 4,
+    "recencyMin": 1,
+    "recencyFreshMinutes": 5
+  },
+  "bands": {
+    "critical": 76,
+    "watch": 55
+  },
+  "datasetStats": {
+    "rows": 20,
+    "criticalRows": 6,
+    "normalRows": 8,
+    "watchRows": 6
+  }
+}

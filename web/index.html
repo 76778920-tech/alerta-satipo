@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administración | Alerta Satipo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared/css/styles.css" />
+    <link rel="stylesheet" href="css/panel.css" />
+  </head>
+  <body class="admin-page">
+    <aside class="admin-sidebar">
+      <h1>Alerta Satipo</h1>
+      <ul class="admin-nav">
+        <li><a href="#" class="nav-link active" data-view="dashboard">Dashboard</a></li>
+        <li><a href="#" class="nav-link" data-view="nodes">Nodos</a></li>
+        <li><a href="#" class="nav-link" data-view="incidents">Incidentes</a></li>
+        <li><a href="#" class="nav-link" data-view="maintenance">Mantenimiento</a></li>
+        <li><a href="#" class="nav-link" data-view="settings">Configuración</a></li>
+      </ul>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div>
+          <p class="eyebrow">Centro de monitoreo provincial</p>
+          <h1>Panel de Control</h1>
+        </div>
+        <div class="admin-header-actions">
+          <span class="admin-user">Admin - Satipo</span>
+          <a href="../shared/account.html" class="secondary-button">Mi cuenta</a>
+          <button type="button" id="refresh-ops-btn" class="secondary-button">Sincronizar</button>
+          <button type="button" id="export-admin-btn" class="secondary-button">Exportar datos</button>
+          <button type="button" id="logout-admin-btn" class="secondary-button">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <p id="data-mode" class="model-notes"></p>
+        <div class="view-section active" id="view-dashboard">
+          <section id="dataset-explorer" class="ops-panel dataset-panel" aria-label="Datos históricos del CSV"></section>
+          <section class="kpis-grid" id="kpis-grid"></section>
+
+          <section class="admin-grid">
+            <article class="ops-panel span-2">
+              <div class="panel-header">
+                <h3>Mapa de calor operativo</h3>
+                <span class="status-pill warning" id="ops-summary">Actualizando</span>
+              </div>
+              <div class="admin-map" id="admin-map"></div>
+            </article>
+
+            <article class="ops-panel">
+              <div class="panel-header">
+                <h3>Triaje</h3>
+                <span class="label">Ordenado por riesgo</span>
+              </div>
+              <ul class="triage-list" id="triage-list"></ul>
+            </article>
+          </section>
+
+          <section class="ops-panel">
+            <div class="panel-header">
+              <h3>Reportes desde mobile</h3>
+              <span class="label">Recientes · consulta de hasta 200 reportes</span>
+            </div>
+            <ul class="triage-list" id="community-reports"></ul>
+          </section>
+
+          <section class="ops-panel">
+            <div class="panel-header">
+              <h3>Telemetría crítica</h3>
+              <span id="telemetry-updated" class="label">--</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nodo</th>
+                    <th>Zona</th>
+                    <th>Humo</th>
+                    <th>Temp</th>
+                    <th>Humedad</th>
+                    <th>Viento</th>
+                    <th>Riesgo</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="sensor-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="view-section" id="view-nodes">
+          <section class="ops-panel">
+            <div class="panel-header admin-tools">
+              <h3>Inventario de nodos</h3>
+              <input type="search" id="node-search" placeholder="Buscar por zona, ID o tipo" aria-label="Buscar nodos" />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Ubicación</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Última comunicación</th>
+                    <th>Batería</th>
+                    <th>RSSI</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="nodes-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="view-section" id="view-incidents">
+          <section class="ops-panel">
+            <div class="panel-header admin-tools">
+              <h3>Incidentes</h3>
+              <select class="filter-select" id="incident-filter" aria-label="Filtrar incidentes">
+                <option value="Todos">Todos</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="En revisión">En revisión</option>
+                <option value="Validado">Validado</option>
+                <option value="Falso positivo">Falso positivo</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Zona</th>
+                    <th>Tipo</th>
+                    <th>Nodos</th>
+                    <th>Prioridad orientativa</th>
+                    <th>Estado</th>
+                    <th>Responsable</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="incidents-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="view-section" id="view-maintenance">
+          <section class="ops-panel">
+            <div class="panel-header admin-tools">
+              <h3>Mantenimiento</h3>
+              <button class="primary-button" type="button" id="plan-maintenance-btn">Planificar visita</button>
+            </div>
+            <div class="maintenance-board" id="maintenance-board"></div>
+          </section>
+        </div>
+
+        <div class="view-section" id="view-settings">
+          <section class="ops-panel settings-panel">
+            <div class="panel-header">
+              <h3>Configuración del modelo</h3>
+              <span class="label" id="model-status-label">Cargando modelo…</span>
+            </div>
+            <p class="model-notes" id="model-notes">Esperando satipo_umbrales.json de Colab.</p>
+            <form class="settings-form" id="settings-form">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="temp-threshold">Temperatura crítica (C)</label>
+                  <input type="number" id="temp-threshold" value="39" min="20" max="55" step="0.1" />
+                </div>
+                <div class="form-group">
+                  <label for="smoke-threshold">Humo crítico (%)</label>
+                  <input type="number" id="smoke-threshold" value="65" min="0.1" max="100" step="0.1" />
+                </div>
+                <div class="form-group">
+                  <label for="humidity-threshold">Humedad seca (%)</label>
+                  <input type="number" id="humidity-threshold" value="38" min="10" max="90" step="0.1" />
+                </div>
+                <div class="form-group">
+                  <label for="wind-threshold">Viento de propagación (km/h)</label>
+                  <input type="number" id="wind-threshold" value="18" min="1" max="80" step="0.1" />
+                </div>
+              </div>
+              <div class="setting-item">
+                <label for="auto-triage">Triaje automático</label>
+                <input type="checkbox" id="auto-triage" disabled title="Pendiente de implementar" />
+              </div>
+              <div class="admin-tools">
+                <button type="submit" class="primary-button">Guardar cambios</button>
+                <button type="button" class="secondary-button" id="reset-colab-model-btn">Restaurar modelo Colab</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script src="../shared/vendor/supabase.js"></script>
+    <script src="../shared/js/backend.js"></script>
+    <script src="../shared/js/dataset.js"></script>
+    <script src="../shared/js/data.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

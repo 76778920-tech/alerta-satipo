@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+config/*.local.*
+config/public.json
+supabase/.temp/
+supabase/.branches/
+__pycache__/
+test-results/
+*.log
+.DS_Store

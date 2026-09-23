@@ -1,0 +1,13 @@
+{
+  "source_url": "https://raw.githubusercontent.com/HamzaMa96/Smoke-Detection-IOT/main/smoke_detection_iot.csv",
+  "source_sha256": "7bbf5deaab4c94746b344cee7bfec493f69b7d624ea63f35fabcd3c4a4e6eb7d",
+  "source_rows": 62630,
+  "sample_rows": 300,
+  "seed": 20260923,
+  "method": "Muestreo aleatorio estratificado proporcional por Fire Alarm, ordenado por indice original",
+  "labels": {
+    "0": 86,
+    "1": 214
+  },
+  "notice": "Datos historicos externos. Fire Alarm es etiqueta del dataset, no probabilidad ni prediccion del aplicativo. Sin ubicacion, viento, bateria o porcentaje de humo."
+}
