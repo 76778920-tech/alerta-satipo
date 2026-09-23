@@ -89,9 +89,11 @@ values ('UUID_DE_AUTH_USERS', 'Nombre del operador');
 
 La provisión inicial automatizada existe en `scripts/bootstrap-admin.mjs`. Requiere `ADMIN_EMAIL` y clave administrativa; no sobrescribe una cuenta existente. Genera una contraseña aleatoria local.
 
-## Publicación posterior
+## Publicación en Firebase Hosting
 
-GitHub almacena el código; no implica que el sitio esté alojado. Para alojarlo, publica únicamente frontend, datos de muestra y `config/public.json`. Nunca subas `.env`, `config/*.local.*`, SQL privado futuro ni credenciales administrativas. Configura un dominio HTTPS y agrégalo a Site URL / Redirect URLs en Supabase Auth. Hoy los enlaces autorizados son locales en el puerto 8000.
+El sitio ya está publicado en https://alerta-satipo-76778920.web.app/. Consulta [FIREBASE_HOSTING.md](FIREBASE_HOSTING.md). Las redirecciones de Auth incluyen ambos dominios de Firebase y las rutas locales.
+
+GitHub almacena el código y Firebase sirve la carpeta pública `dist/`. Nunca publiques `.env`, `config/*.local.*`, SQL privado futuro ni credenciales administrativas. Si agregas otro dominio, configúralo también en Site URL / Redirect URLs de Supabase Auth.
 
 Antes de registros masivos, configura SMTP propio y prueba entrega y recuperación: el correo predeterminado de Supabase tiene límites. La interfaz incluye registro, recuperación y cambio de contraseña; esta entrega no verificó la recepción de correos en un buzón externo.
 

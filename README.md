@@ -2,6 +2,8 @@
 
 Aplicación web con interfaz móvil para vigilancia comunitaria y panel administrativo. Integra **Supabase Auth + PostgreSQL con RLS** y una muestra histórica de **300 registros** de Smoke Detection IoT.
 
+**Sitio publicado:** https://alerta-satipo-76778920.web.app/ · [Guía de Firebase Hosting](docs/FIREBASE_HOSTING.md).
+
 **Estado:** prototipo funcional conectado a Supabase. Aún no hay sensores de campo, conexión LoRa, notificaciones push ni funcionamiento PWA sin internet.
 
 ## Ejecutar

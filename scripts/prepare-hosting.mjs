@@ -1,0 +1,29 @@
+import { readFile, mkdir, readdir, copyFile, rm } from 'node:fs/promises';
+import path from 'node:path';
+const root = process.cwd();
+const out = path.resolve(root, 'dist');
+if (out !== path.join(root, 'dist')) throw new Error('Destino de publicación inválido');
+const config = JSON.parse(await readFile('config/public.json', 'utf8'));
+let role;
+try { role = JSON.parse(Buffer.from(config.supabasePublishableKey.split('.')[1], 'base64url').toString()).role; } catch {}
+if (config.mode !== 'supabase' || (!config.supabasePublishableKey?.startsWith('sb_publishable_') && role !== 'anon')) throw new Error('Hosting requiere Supabase y una clave pública válida.');
+await rm(out, { recursive: true, force: true });
+const allowed = new Set(['.html','.css','.js','.json']);
+let count = 0;
+async function copy(file) {
+  const target = path.join(out,file);
+  await mkdir(path.dirname(target), {recursive:true});
+  await copyFile(path.join(root,file),target);count++;
+}
+async function walk(dir) {
+  for (const entry of await readdir(dir,{withFileTypes:true})) {
+    if(entry.name.startsWith('.') || entry.name.includes('.local.')) continue;
+    const file=path.join(dir,entry.name);
+    if(entry.isDirectory()) await walk(file);
+    else if(entry.isFile() && allowed.has(path.extname(file))) await copy(file);
+  }
+}
+for (const dir of ['mobile','web','shared']) await walk(dir);
+for (const file of ['index.html','wireframes.css','wireframes.js','vista-general.png','Alerta-Satipo-Wireframes.pdf']) await copy(path.join('docs','wireframes',file));
+for (const file of ['index.html','login.html','admin.html','admin-panel.html','app-mobile.html','architecture.html','config/public.json']) await copy(file);
+console.log(`Hosting preparado: ${count} archivos públicos en dist/.`);

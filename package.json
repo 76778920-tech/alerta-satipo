@@ -5,6 +5,7 @@
   "description": "Vigilancia comunitaria con Supabase Auth y PostgreSQL",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:hosting": "npm run build && npm run configure && node scripts/prepare-hosting.mjs",
     "configure": "node --env-file-if-exists=.env scripts/configure.mjs",
     "dataset": "python scripts/prepare_dataset.py",
     "import:dataset": "node --env-file-if-exists=.env scripts/import-dataset.mjs",

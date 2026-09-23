@@ -37,7 +37,7 @@ Estas pruebas no equivalen a una auditoría de seguridad completa, pruebas de ca
 
 ### 1. Antes de pruebas con pobladores
 
-- Alojar la web bajo HTTPS; configurar dominio y redirecciones de Auth.
+- Completado posteriormente: web publicada por HTTPS en Firebase Hosting y dominio configurado en Supabase Auth. Ver [publicación](FIREBASE_HOSTING.md).
 - SMTP y entrega real de confirmación/recuperación; protección contra abuso de registro.
 - Revisar privacidad, retención y eliminación de reportes/contactos; acordar quién puede ser administrador.
 - Validar directorio telefónico y protocolo de respuesta. Registrar un incidente no confirma despacho de ayuda.
