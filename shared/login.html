@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123d32">
-  <meta name="description" content="Accede a Alerta Satipo para registrar reportes y participar en la vigilancia de tu comunidad.">
+  <meta name="description" content="Acceso exclusivo para administradores autorizados de Alerta Satipo.">
   <title>Iniciar sesión · Alerta Satipo</title>
   <link rel="stylesheet" href="css/login.css">
 </head>
@@ -19,35 +19,27 @@
         <p class="eyebrow"><span></span> SATIPO, JUNÍN · PERÚ</p>
         <h1>Cuidar nuestro <br>entorno empieza <br>con <em>estar conectados.</em></h1>
         <p class="intro">Un espacio para informar lo que ocurre en tu comunidad y facilitar la revisión de reportes sobre posibles incendios.</p>
-        <div class="feature"><span class="feature-icon" aria-hidden="true">↗</span><div><h2>Tu reporte cuenta</h2><p>Comparte referencias claras desde un lugar seguro.</p></div></div>
-        <div class="feature"><span class="feature-icon" aria-hidden="true">≡</span><div><h2>Seguimiento en un solo lugar</h2><p>Consulta tus registros y su revisión por el equipo.</p></div></div>
+        <div class="feature"><span class="feature-icon" aria-hidden="true">↗</span><div><h2>Revisión de reportes</h2><p>Consulta los reportes recibidos de la comunidad.</p></div></div>
+        <div class="feature"><span class="feature-icon" aria-hidden="true">≡</span><div><h2>Seguimiento en un solo lugar</h2><p>Gestiona los incidentes y registra su seguimiento.</p></div></div>
       </div>
       <svg class="landscape" viewBox="0 0 800 260" fill="none" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path d="M0 142 106 62 212 149 338 18 522 167 671 64 800 128V260H0Z" fill="#215044"/><path d="m0 213 142-79 118 57 127-79 167 88 128-46 118 35v71H0Z" fill="#2d6250"/><path d="m0 235 179-28 153 28 190-46 278 46v25H0Z" fill="#42745b"/><path d="m402 164-8 96m19-68-22 20m-4-12 18 24" stroke="#9ab29d" stroke-width="2" opacity=".45"/><circle cx="666" cy="42" r="26" fill="#c1ce9f" opacity=".4"/></svg>
       <div class="identity-footer"><span>Una comunidad más informada.</span><span>Alerta Satipo / 2026</span></div>
     </section>
     <section class="access-panel" aria-label="Acceso a tu cuenta">
-      <div class="top-note"><span class="lock" aria-hidden="true">◇</span> ACCESO PERSONAL</div>
+      <div class="top-note"><span class="lock" aria-hidden="true">◇</span> ACCESO RESTRINGIDO</div>
       <div class="form-wrap">
-        <p class="section-label">BIENVENIDO A ALERTA SATIPO</p>
-        <h2 id="form-title">Tu comunidad,<br>más cerca.</h2>
-        <p class="form-description" id="form-description">Ingresa a tu cuenta para continuar.</p>
-        <div class="access-tabs" id="access-tabs" role="group" aria-label="Tipo de acceso" hidden>
-          <button type="button" class="selected" id="login-tab" aria-pressed="true">Iniciar sesión</button>
-          <button type="button" id="signup-tab" aria-pressed="false">Crear cuenta</button>
-        </div>
+        <p class="section-label">PANEL DE ADMINISTRACIÓN</p>
+        <h2 id="form-title">Acceso administrativo.</h2>
+        <p class="form-description" id="form-description">Ingresa con las credenciales que te fueron asignadas.</p>
         <form id="login-form" aria-labelledby="form-title">
-          <div class="field" id="registration-fields" hidden><label for="full-name">Nombre completo</label><input id="full-name" name="name" autocomplete="name" maxlength="120" placeholder="¿Cómo te llamas?"></div>
           <div class="field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="username" required maxlength="254"></div>
-          <div class="field" id="password-field"><div class="label-row"><label for="password">Contraseña</label><button type="button" class="text-button" id="recover-btn" hidden>¿La olvidaste?</button></div><div class="password-control"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required><button type="button" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button></div><small id="password-hint" hidden>Usa al menos 8 caracteres.</small></div>
-          <fieldset class="role-selector" hidden><legend>Perfil de demostración</legend><label><input type="radio" name="role" value="user" checked> Poblador</label><label><input type="radio" name="role" value="admin"> Administrador</label></fieldset>
+          <div class="field" id="password-field"><div class="label-row"><label for="password">Contraseña</label><button type="button" class="text-button" id="recover-btn" hidden>¿La olvidaste?</button></div><div class="password-control"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required><button type="button" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button></div></div>
           <output id="auth-status" aria-live="polite" hidden></output>
           <button type="submit" class="submit-button" id="submit-btn" disabled><span id="submit-label">Iniciar sesión</span><span aria-hidden="true">→</span></button>
           <button type="button" class="back-link" id="back-login" hidden>← Volver a iniciar sesión</button>
         </form>
-        <p class="account-note" id="account-note">Pobladores y administradores ingresan con su propia cuenta. Te dirigiremos al espacio que te corresponde.</p>
-        <div class="demo-actions" hidden><button type="button" data-demo-role="user">Probar como poblador</button><button type="button" data-demo-role="admin">Probar como administrador</button></div>
-        <div class="login-footer" hidden>Solo demostración: usuario@satipo.pe / demo123 · admin@satipo.pe / admin123</div>
-        <div class="privacy-note"><svg viewBox="0 0 20 22" width="17" height="19" fill="none" aria-hidden="true"><rect x="3" y="9" width="14" height="11" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 9V6a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.5"/></svg><span>Tus reportes son visibles para ti<br>y para el equipo administrador.</span></div>
+        <p class="account-note" id="account-note">Solo administradores con acceso previamente autorizado. No se permite crear cuentas desde esta página.</p>
+        <div class="privacy-note"><svg viewBox="0 0 20 22" width="17" height="19" fill="none" aria-hidden="true"><rect x="3" y="9" width="14" height="11" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 9V6a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.5"/></svg><span>Acceso limitado al equipo autorizado.<br>Los cambios de estado quedan registrados.</span></div>
       </div>
       <footer class="access-footer"><span>Conectando a nuestra comunidad.</span><output id="auth-mode" aria-live="polite">Conectando…</output></footer>
     </section>

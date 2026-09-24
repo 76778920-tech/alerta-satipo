@@ -1,5 +1,7 @@
 # Alerta Satipo
 
+> **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
+
 Aplicación web con interfaz móvil para vigilancia comunitaria y panel administrativo. Integra **Supabase Auth + PostgreSQL con RLS** y una muestra histórica de **300 registros** de Smoke Detection IoT.
 
 **Sitio publicado:** https://alerta-satipo-76778920.web.app/ · [Guía de Firebase Hosting](docs/FIREBASE_HOSTING.md).
@@ -39,7 +41,7 @@ Estos accesos no son cuentas del proyecto Supabase. Un fallo de Supabase no acti
 
 ## Funciones conectadas
 
-- Acceso y registro de pobladores, recuperación y cambio de contraseña con Supabase Auth.
+- Acceso exclusivo de administradores existentes, recuperación y cambio de contraseña con Supabase Auth. Sin registro público.
 - Perfil individual; tablas `clientes` y `administradores`, sin crear una tabla por persona.
 - Reportes privados por usuario; creación transaccional del incidente correspondiente.
 - Revisión administrativa, historial de cambios y persistencia de preferencias y umbrales.

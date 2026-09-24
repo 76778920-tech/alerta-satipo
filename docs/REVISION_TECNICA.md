@@ -1,5 +1,7 @@
 # Revisión técnica — 23 de septiembre de 2026
 
+> **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
+
 ## Resultado
 
 El proyecto pasó de un prototipo con datos locales a una aplicación web con interfaz móvil, Supabase Auth, persistencia PostgreSQL y separación por usuario. **Sigue siendo un prototipo funcional; no es todavía un sistema operativo de detección de incendios ni una aplicación Android/iOS instalada.**

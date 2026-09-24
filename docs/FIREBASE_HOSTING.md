@@ -1,5 +1,7 @@
 # Publicación en Firebase Hosting
 
+> **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
+
 - Proyecto nuevo: `alerta-satipo-76778920`.
 - Cuenta propietaria utilizada: `76778920@continental.edu.pe`.
 - Aplicativo: https://alerta-satipo-76778920.web.app/

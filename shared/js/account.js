@@ -3,7 +3,8 @@
   await B.ready;
   const status=document.querySelector('#account-status');
   const form=document.querySelector('#password-form');
-  if(!B.cloud || !await B.identify()) {form.hidden=true;status.textContent='Abre el enlace de recuperación recibido por correo o inicia sesión primero.';return;}
+  const profile = B.cloud ? await B.identify() : null;
+  if(!profile || profile.role !== 'admin') {form.hidden=true;status.textContent='Esta página requiere una cuenta administrativa autorizada.';return;}
   form.addEventListener('submit',async event=>{
     event.preventDefault();
     const password=document.querySelector('#new-password').value;

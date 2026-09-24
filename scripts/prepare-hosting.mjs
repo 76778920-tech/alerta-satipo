@@ -23,7 +23,7 @@ async function walk(dir) {
     else if(entry.isFile() && allowed.has(path.extname(file))) await copy(file);
   }
 }
-for (const dir of ['mobile','web','shared']) await walk(dir);
+for (const dir of ['web','shared']) await walk(dir);
 for (const file of ['index.html','wireframes.css','wireframes.js','vista-general.png','Alerta-Satipo-Wireframes.pdf']) await copy(path.join('docs','wireframes',file));
-for (const file of ['index.html','login.html','admin.html','admin-panel.html','app-mobile.html','architecture.html','config/public.json']) await copy(file);
+for (const file of ['index.html','login.html','admin.html','admin-panel.html','architecture.html','config/public.json']) await copy(file);
 console.log(`Hosting preparado: ${count} archivos públicos en dist/.`);

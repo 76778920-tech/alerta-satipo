@@ -1,5 +1,7 @@
 # Supabase — instalación y operación
 
+> **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
+
 ## Proyecto creado
 
 - Nombre: `alerta-satipo`.
@@ -79,7 +81,7 @@ Verifica 300 registros y evita duplicados por `(dataset_id, source_row)`. Otra o
 
 ## Cuentas nuevas
 
-- **Pobladores:** «Crear cuenta de poblador» en el acceso; Supabase envía la confirmación según su configuración. El trigger crea `clientes` automáticamente y no confía en roles enviados en metadata.
+- **Registro público:** desactivado. La web no ofrece creación de cuentas ni acceso de pobladores.
 - **Administradores adicionales:** primero crea/confirma la cuenta en Auth. Luego, desde SQL Editor con autorización administrativa:
 
 ```sql

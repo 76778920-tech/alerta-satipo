@@ -41,7 +41,12 @@ window.SatipoBackend = (() => {
     if (client) {
       const user = await identify();
       if (!user) { location.replace(new URL('shared/login.html', base)); return false; }
-      if (role === 'admin' && user.role !== 'admin') { location.replace(new URL('mobile/index.html', base)); return false; }
+      if (role === 'admin' && user.role !== 'admin') {
+        await client.auth.signOut({scope:'local'});
+        sessionStorage.clear();
+        location.replace(new URL('shared/login.html?access=denied', base));
+        return false;
+      }
     } else if (!sessionStorage.getItem('userRole') || (role === 'admin' && sessionStorage.getItem('userRole') !== 'admin')) {
       location.replace(new URL('shared/login.html', base)); return false;
     }

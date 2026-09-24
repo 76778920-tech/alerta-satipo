@@ -40,7 +40,7 @@ try:
             assert status == 201
         status, session = api('/auth/v1/token?grant_type=password', {'email': email, 'password': password}, 'POST')
         assert status == 200
-        users.append({'email': email, 'password': password, 'id': user['id'], 'token': session['access_token']})
+        users.append({'email': email, 'password': password, 'id': user['id'], 'token': session['access_token'], 'refresh': session['refresh_token']})
     alice, bob, admin = users
     status, rows = api('/rest/v1/smoke_readings?select=source_row', token=alice['token'])
     assert status == 200 and len(rows) == 300
@@ -57,9 +57,14 @@ try:
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.goto('http://127.0.0.1:8000/shared/login.html')
             page.wait_for_function("!document.querySelector('#submit-btn').disabled")
-            page.fill('#email',user['email']);page.fill('#password',user['password'])
-            page.locator('#login-form button[type=submit]').first.click()
-            page.wait_for_url('**/web/index.html' if user is admin else '**/mobile/index.html')
+            if mobile:
+                # Solo para probar el código móvil local: no existe login público de pobladores.
+                page.evaluate('(tokens)=>window.SatipoBackend.client.auth.setSession(tokens)', {'access_token':user['token'],'refresh_token':user['refresh']})
+                page.goto('http://127.0.0.1:8000/mobile/index.html')
+            else:
+                page.fill('#email',user['email']);page.fill('#password',user['password'])
+                page.locator('#login-form button[type=submit]').first.click()
+                page.wait_for_url('**/web/index.html')
             page.wait_for_selector('#dataset-summary')
             return page
         a=login(alice,True)
@@ -84,7 +89,7 @@ try:
         b=login(bob,True)
         assert api('/rest/v1/reportes?select=id', token=bob['token'])[1] == []
         assert api('/rest/v1/incidentes?select=id', token=bob['token'])[1] == []
-        b.goto('http://127.0.0.1:8000/web/index.html');b.wait_for_url('**/mobile/index.html')
+        b.goto('http://127.0.0.1:8000/web/index.html');b.wait_for_url('**/shared/login.html*')
         status, reports=api('/rest/v1/reportes?select=id,user_id',token=alice['token'])
         assert len(reports)==1
         status, _=api('/rest/v1/reportes',{'user_id':bob['id'],'location':'Escuela','observation':'smoke','severity':'low','description':'Intento de escribir para otro poblador.'},'POST',token=alice['token'])
