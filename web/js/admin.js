@@ -47,7 +47,11 @@ const AdminModule = (() => {
     const avgBattery = Math.round(items.reduce((sum, sensor) => sum + sensor.battery, 0) / (items.length || 1));
     const communityReports = Data.readReports().length;
 
-    const kpis = [
+    const kpis = B.cloud ? [
+      {label:'Reportes consultados',value:communityReports,detail:'Hasta 200 registros recientes'},
+      {label:'Incidentes abiertos',value:incidents.filter(r=>!['Validado','Falso positivo'].includes(r.state)).length,detail:'Dentro de los incidentes consultados'},
+      {label:'Sensores de campo',value:'Sin conexión',detail:'No se recibe telemetría en vivo'}
+    ] : [
       { label: "Riesgo promedio", value: items.length ? `${avgRisk}%` : "Sin datos", detail: !items.length ? "Sin sensores conectados" : critical ? `${critical} nodo crítico` : "Sin nodos críticos" },
       { label: "Nodos activos", value: `${active}/${items.length}`, detail: "Última lectura menor a 10 min" },
       { label: "Batería media", value: items.length ? `${avgBattery}%` : "Sin datos", detail: "Solar LiFePO4" },
@@ -82,6 +86,7 @@ const AdminModule = (() => {
   const renderTriage = () => {
     const list = $("#triage-list");
     if (!list) return;
+    if(!enrichedSensors().length){list.innerHTML='<li class="empty-state">No hay lecturas de campo para priorizar.</li>';return;}
 
     list.innerHTML = enrichedSensors()
       .sort((a, b) => b.risk - a.risk)
@@ -118,6 +123,7 @@ const AdminModule = (() => {
   const renderSensorTable = () => {
     const table = $("#sensor-table");
     if (!table) return;
+    if(!enrichedSensors().length){table.innerHTML='<tr><td colspan="8" class="empty-state">No hay telemetría de campo disponible.</td></tr>';setText('#telemetry-updated','Sin lecturas de campo');return;}
 
     table.innerHTML = enrichedSensors()
       .sort((a, b) => b.risk - a.risk)
@@ -149,6 +155,7 @@ const AdminModule = (() => {
       return haystack.includes(normalizedQuery);
     });
 
+    if(!rows.length){table.innerHTML='<tr><td colspan="8" class="empty-state">No hay nodos disponibles. La muestra histórica no incluye dispositivos georreferenciados.</td></tr>';return;}
     table.innerHTML = rows.map((sensor) => {
       const risk = Data.classifyRisk(sensor.risk);
       return `
@@ -170,6 +177,7 @@ const AdminModule = (() => {
     if (!table) return;
 
     const rows = filter === "Todos" ? incidents : incidents.filter((item) => item.state === filter);
+    if(!rows.length){table.innerHTML='<tr><td colspan="8" class="empty-state">No hay incidentes para este filtro.</td></tr>';return;}
     table.innerHTML = rows.map((incident) => {
       const risk = Data.classifyRisk(incident.risk);
       const stateClass = incident.state === "Validado" ? "good" : incident.state === "Falso positivo" ? "good" : incident.state === "En revisión" ? "warn" : "alert";
@@ -230,6 +238,10 @@ const AdminModule = (() => {
         document.querySelectorAll(".nav-link").forEach((item) => item.classList.remove("active"));
         document.getElementById(`view-${viewName}`)?.classList.add("active");
         link.classList.add("active");
+        document.querySelectorAll('.nav-link').forEach(item=>item.removeAttribute('aria-current'));
+        link.setAttribute('aria-current','page');
+        setText('#view-title',link.textContent.trim());
+        document.querySelector('.admin-content').scrollTop=0;
       });
     });
   };
@@ -268,7 +280,7 @@ const AdminModule = (() => {
 
     $("#refresh-ops-btn")?.addEventListener("click", async () => {
       $('#refresh-ops-btn').disabled=true;
-      try {await Data.refresh();thresholds=Data.loadThresholds();renderAll();showToast('Datos sincronizados.','info');}
+      try {await Data.refresh();thresholds=Data.loadThresholds();renderAll();const ok=await window.SatipoDataset.refresh();showToast(ok?'Reportes y lecturas actualizados.':'Reportes actualizados; no se pudieron actualizar las lecturas.',ok?'info':'warning');}
       catch {showToast('No se pudo sincronizar. Se conserva la última vista.','error');}
       finally {$('#refresh-ops-btn').disabled=false;}
     });
@@ -331,6 +343,7 @@ const AdminModule = (() => {
         sensors: enrichedSensors(),
         incidents,
         communityReports: Data.readReports()
+        ,historicalReadings: window.SatipoDataset.getSnapshot()
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
       const link = document.createElement("a");
@@ -374,6 +387,7 @@ const AdminModule = (() => {
     setupSettingsForm();
     setupExport();
     setupLogoutAdmin();
+    if(B.cloud){document.querySelector('.admin-grid').hidden=true;document.querySelector('#sensor-table').closest('.ops-panel').hidden=true;$('#plan-maintenance-btn').disabled=true;}
     setText('#data-mode',B.cloud?'Supabase conectado · reportes e incidentes persistentes · sin sensores de campo conectados':'DEMO: sensores, incidentes y enlace simulados en este navegador.');
     await window.SatipoDataset.init($('#dataset-explorer'));
   };
