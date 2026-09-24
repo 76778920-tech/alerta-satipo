@@ -14,6 +14,7 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
   await db.exec(await readFile('supabase/migrations/202609230002_private_admin_helper.sql','utf8'));
   const seed=await readFile('supabase/seed.sql','utf8');
   await db.exec(seed);await db.exec(seed);
+  await db.exec(await readFile('supabase/migrations/202609230003_demo_operations.sql','utf8'));
   assert.equal((await db.query('select count(*)::int as n from smoke_readings')).rows[0].n,300);
   assert.equal((await db.query('select count(*)::int as n from smoke_readings where fire_alarm')).rows[0].n,214);
   const a='11111111-1111-4111-8111-111111111111',b='22222222-2222-4222-8222-222222222222',admin='33333333-3333-4333-8333-333333333333';
@@ -34,6 +35,16 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
     await assert.rejects(as('anon',null,`select * from ${table}`));
     await assert.rejects(as('anon',null,`delete from ${table}`));
   }
+  for(const table of ['demo_nodes','demo_node_readings','demo_cases','demo_maintenance']) {
+    await assert.rejects(as('anon',null,`select * from ${table}`));
+    assert.equal((await as('authenticated',a,`select * from ${table}`)).rows.length,0);
+    assert.ok((await as('authenticated',admin,`select * from ${table}`)).rows.length>0);
+  }
+  assert.equal((await as('authenticated',admin,'select * from demo_node_readings')).rows.length,300);
+  assert.equal((await as('authenticated',a,"update demo_maintenance set state='Completada' returning node_id")).rows.length,0);
+  await assert.rejects(as('authenticated',admin,"update demo_maintenance set task='Cambiar fuente'"));
+  await as('authenticated',admin,"update demo_maintenance set state='En progreso' where node_id='V-01'");
+  await assert.rejects(as('authenticated',admin,"update demo_cases set state='Incendio confirmado'"));
   const params=['Escuela de San Francisco','smoke','high','Humo visible detrás de la escuela, lejos de las viviendas.'];
   const report=(await as('authenticated',a,'insert into reportes(location,observation,severity,description) values($1,$2,$3,$4) returning id',params)).rows[0];
   assert.equal((await as('authenticated',a,'select * from reportes')).rows.length,1);

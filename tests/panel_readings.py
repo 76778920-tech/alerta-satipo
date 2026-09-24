@@ -72,7 +72,8 @@ with sync_playwright() as p:
     page.locator('[data-view=incidents]').click()
     assert page.locator('#incidents-table').inner_text().strip()
     page.locator('[data-view=nodes]').click()
-    assert page.locator('#nodes-table').inner_text().strip()
+    page.wait_for_selector('#demo-nodes .operation-card')
+    assert page.locator('#demo-nodes .operation-card').count()==6
     assert not errors,errors
     browser.close()
 print('PASS: 300 registros comparados con la fuente; paginación completa, filtros, scroll en 4 tamaños, fallos/reintento, campos inválidos y vistas vacías. Sin escrituras ni cuentas nuevas.')

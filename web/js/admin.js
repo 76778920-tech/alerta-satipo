@@ -280,7 +280,7 @@ const AdminModule = (() => {
 
     $("#refresh-ops-btn")?.addEventListener("click", async () => {
       $('#refresh-ops-btn').disabled=true;
-      try {await Data.refresh();thresholds=Data.loadThresholds();renderAll();const ok=await window.SatipoDataset.refresh();showToast(ok?'Reportes y lecturas actualizados.':'Reportes actualizados; no se pudieron actualizar las lecturas.',ok?'info':'warning');}
+      try {await Data.refresh();thresholds=Data.loadThresholds();renderAll();const ok=await window.SatipoDataset.refresh();if(B.cloud)await window.SatipoOperations.refresh();showToast(ok?'Reportes y lecturas actualizados.':'Reportes actualizados; no se pudieron actualizar las lecturas.',ok?'info':'warning');}
       catch {showToast('No se pudo sincronizar. Se conserva la última vista.','error');}
       finally {$('#refresh-ops-btn').disabled=false;}
     });
@@ -343,7 +343,8 @@ const AdminModule = (() => {
         sensors: enrichedSensors(),
         incidents,
         communityReports: Data.readReports()
-        ,historicalReadings: window.SatipoDataset.getSnapshot()
+        ,historicalReadings: window.SatipoDataset.getSnapshot(),
+        demonstration: window.SatipoOperations.getSnapshot()
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
       const link = document.createElement("a");
@@ -387,9 +388,10 @@ const AdminModule = (() => {
     setupSettingsForm();
     setupExport();
     setupLogoutAdmin();
-    if(B.cloud){document.querySelector('.admin-grid').hidden=true;document.querySelector('#sensor-table').closest('.ops-panel').hidden=true;$('#plan-maintenance-btn').disabled=true;}
+    if(B.cloud){document.querySelector('.admin-grid').hidden=true;document.querySelector('#sensor-table').closest('.ops-panel').hidden=true;if($('#plan-maintenance-btn'))$('#plan-maintenance-btn').disabled=true;}
     setText('#data-mode',B.cloud?'Supabase conectado · reportes e incidentes persistentes · sin sensores de campo conectados':'DEMO: sensores, incidentes y enlace simulados en este navegador.');
     await window.SatipoDataset.init($('#dataset-explorer'));
+    if(B.cloud) await window.SatipoOperations.setup();
   };
 
   return { init };
