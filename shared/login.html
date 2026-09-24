@@ -1,96 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Autenticación | Alerta Satipo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body class="login-page">
-    <div class="login-container">
-      <div class="login-card">
-        <div class="login-brand">
-          <div class="brand-icon">AS</div>
-          <h1>Alerta Satipo</h1>
-          <p>Sistema de vigilancia comunitaria y respuesta temprana.</p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123d32">
+  <meta name="description" content="Accede a Alerta Satipo para registrar reportes y participar en la vigilancia de tu comunidad.">
+  <title>Iniciar sesión · Alerta Satipo</title>
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <main class="access-layout">
+    <section class="identity" aria-label="Alerta Satipo, vigilancia comunitaria">
+      <a class="brand" href="login.html" aria-label="Alerta Satipo, inicio">
+        <svg class="brand-mark" viewBox="0 0 44 44" fill="none" aria-hidden="true"><path d="M22 5 38 12v12c0 8-9 13-16 16C15 37 6 32 6 24V12L22 5Z" stroke="currentColor" stroke-width="2"/><path d="m13 26 9-14 9 14H13Z" stroke="currentColor" stroke-width="2"/><path d="M22 26v6" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Alerta Satipo<small>VIGILANCIA COMUNITARIA</small></span>
+      </a>
+      <div class="identity-copy">
+        <p class="eyebrow"><span></span> SATIPO, JUNÍN · PERÚ</p>
+        <h1>Cuidar nuestro <br>entorno empieza <br>con <em>estar conectados.</em></h1>
+        <p class="intro">Un espacio para informar lo que ocurre en tu comunidad y facilitar la revisión de reportes sobre posibles incendios.</p>
+        <div class="feature"><span class="feature-icon" aria-hidden="true">↗</span><div><h2>Tu reporte cuenta</h2><p>Comparte referencias claras desde un lugar seguro.</p></div></div>
+        <div class="feature"><span class="feature-icon" aria-hidden="true">≡</span><div><h2>Seguimiento en un solo lugar</h2><p>Consulta tus registros y su revisión por el equipo.</p></div></div>
+      </div>
+      <svg class="landscape" viewBox="0 0 800 260" fill="none" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path d="M0 142 106 62 212 149 338 18 522 167 671 64 800 128V260H0Z" fill="#215044"/><path d="m0 213 142-79 118 57 127-79 167 88 128-46 118 35v71H0Z" fill="#2d6250"/><path d="m0 235 179-28 153 28 190-46 278 46v25H0Z" fill="#42745b"/><path d="m402 164-8 96m19-68-22 20m-4-12 18 24" stroke="#9ab29d" stroke-width="2" opacity=".45"/><circle cx="666" cy="42" r="26" fill="#c1ce9f" opacity=".4"/></svg>
+      <div class="identity-footer"><span>Una comunidad más informada.</span><span>Alerta Satipo / 2026</span></div>
+    </section>
+    <section class="access-panel" aria-label="Acceso a tu cuenta">
+      <div class="top-note"><span class="lock" aria-hidden="true">◇</span> ACCESO PERSONAL</div>
+      <div class="form-wrap">
+        <p class="section-label">BIENVENIDO A ALERTA SATIPO</p>
+        <h2 id="form-title">Tu comunidad,<br>más cerca.</h2>
+        <p class="form-description" id="form-description">Ingresa a tu cuenta para continuar.</p>
+        <div class="access-tabs" id="access-tabs" role="group" aria-label="Tipo de acceso" hidden>
+          <button type="button" class="selected" id="login-tab" aria-pressed="true">Iniciar sesión</button>
+          <button type="button" id="signup-tab" aria-pressed="false">Crear cuenta</button>
         </div>
-
-        <p id="auth-mode" role="status">Conectando…</p>
-        <p id="auth-status" role="status" aria-live="polite"></p>
-        <form class="login-form" id="login-form">
-          <div class="form-group" id="registration-fields" hidden>
-            <label for="full-name">Nombre (para crear una cuenta)</label>
-            <input id="full-name" autocomplete="name" maxlength="120" placeholder="Tu nombre" />
-          </div>
-          <div class="form-group">
-            <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" placeholder="usuario@satipo.pe" autocomplete="username" required />
-            <div class="form-error"></div>
-          </div>
-
-          <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" autocomplete="current-password" required />
-            <div class="form-error"></div>
-          </div>
-
-          <div class="role-selector">
-            <fieldset>
-              <legend>Perfil de acceso</legend>
-              <div class="role-options">
-                <div class="role-option">
-                  <input type="radio" id="role-user" name="role" value="user" checked />
-                  <label for="role-user">
-                    <span class="role-icon">U</span>
-                    <span class="role-text">Poblador (mobile)</span>
-                  </label>
-                </div>
-
-                <div class="role-option">
-                  <input type="radio" id="role-admin" name="role" value="admin" />
-                  <label for="role-admin">
-                    <span class="role-icon">A</span>
-                    <span class="role-text">Administrador (web)</span>
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <button type="submit" class="primary-button full-width">Iniciar sesión</button>
-          <button type="submit" class="secondary-button full-width" id="register-btn" hidden>Crear cuenta de poblador</button>
-          <button type="button" class="ghost-button full-width" id="recover-btn" hidden>Recuperar contraseña</button>
+        <form id="login-form" aria-labelledby="form-title">
+          <div class="field" id="registration-fields" hidden><label for="full-name">Nombre completo</label><input id="full-name" name="name" autocomplete="name" maxlength="120" placeholder="¿Cómo te llamas?"></div>
+          <div class="field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="username" required maxlength="254"></div>
+          <div class="field" id="password-field"><div class="label-row"><label for="password">Contraseña</label><button type="button" class="text-button" id="recover-btn" hidden>¿La olvidaste?</button></div><div class="password-control"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required><button type="button" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button></div><small id="password-hint" hidden>Usa al menos 8 caracteres.</small></div>
+          <fieldset class="role-selector" hidden><legend>Perfil de demostración</legend><label><input type="radio" name="role" value="user" checked> Poblador</label><label><input type="radio" name="role" value="admin"> Administrador</label></fieldset>
+          <output id="auth-status" aria-live="polite" hidden></output>
+          <button type="submit" class="submit-button" id="submit-btn" disabled><span id="submit-label">Iniciar sesión</span><span aria-hidden="true">→</span></button>
+          <button type="button" class="back-link" id="back-login" hidden>← Volver a iniciar sesión</button>
         </form>
-
-        <div class="demo-actions">
-          <button type="button" class="ghost-button" data-demo-role="user">Entrar a mobile</button>
-          <button type="button" class="ghost-button" data-demo-role="admin">Entrar a web</button>
-        </div>
-
-        <div class="login-footer">
-          <p>Credenciales de demo</p>
-          <small>usuario@satipo.pe / demo123 → /mobile</small>
-          <small>admin@satipo.pe / admin123 → /web</small>
-        </div>
+        <p class="account-note" id="account-note">Pobladores y administradores ingresan con su propia cuenta. Te dirigiremos al espacio que te corresponde.</p>
+        <div class="demo-actions" hidden><button type="button" data-demo-role="user">Probar como poblador</button><button type="button" data-demo-role="admin">Probar como administrador</button></div>
+        <div class="login-footer" hidden>Solo demostración: usuario@satipo.pe / demo123 · admin@satipo.pe / admin123</div>
+        <div class="privacy-note"><svg viewBox="0 0 20 22" width="17" height="19" fill="none" aria-hidden="true"><rect x="3" y="9" width="14" height="11" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 9V6a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.5"/></svg><span>Tus reportes son visibles para ti<br>y para el equipo administrador.</span></div>
       </div>
-
-      <div class="login-info">
-        <h2>Dos experiencias, una operación</h2>
-        <ul class="tech-list">
-          <li><strong>mobile/:</strong> app comunitaria para riesgo, mapa y reportes.</li>
-          <li><strong>web/:</strong> consola operativa para triaje, nodos e incidentes.</li>
-          <li><strong>shared/:</strong> estilos, autenticación y datos comunes.</li>
-          <li><strong>Datos históricos:</strong> 300 registros de Smoke Detection IoT para pruebas.</li>
-          <li><strong>Supabase:</strong> cuentas individuales, reportes privados y revisión administrativa.</li>
-        </ul>
-      </div>
-    </div>
-
-    <script src="vendor/supabase.js"></script>
-    <script src="js/backend.js"></script>
-    <script src="js/auth.js"></script>
-  </body>
+      <footer class="access-footer"><span>Conectando a nuestra comunidad.</span><output id="auth-mode" aria-live="polite">Conectando…</output></footer>
+    </section>
+  </main>
+  <script src="vendor/supabase.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/auth.js"></script>
+</body>
 </html>

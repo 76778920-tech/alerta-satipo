@@ -56,7 +56,7 @@ try:
             page=context.new_page()
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.goto('http://127.0.0.1:8000/shared/login.html')
-            page.wait_for_function("document.querySelector('#auth-mode').textContent.includes('Supabase')")
+            page.wait_for_function("!document.querySelector('#submit-btn').disabled")
             page.fill('#email',user['email']);page.fill('#password',user['password'])
             page.locator('#login-form button[type=submit]').first.click()
             page.wait_for_url('**/web/index.html' if user is admin else '**/mobile/index.html')
