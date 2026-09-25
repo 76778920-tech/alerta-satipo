@@ -1,5 +1,8 @@
 # Guía de Desarrollo - Alerta Satipo
 
+Instalación vigente: [Guía de instalación y configuración](GUIA_INSTALACION.md). El sitio publicado es exclusivo para administradores; los apartados móviles de este documento corresponden al componente local.
+
+
 ## Wireframes del aplicativo móvil
 
 La [lámina de wireframes](wireframes/index.html) incluye las siete pantallas del poblador, navegación de demostración y exportación mediante imprimir / guardar como PDF. Puede abrirse directamente en el navegador o en `/docs/wireframes/` con el servidor local.
