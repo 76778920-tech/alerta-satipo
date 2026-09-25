@@ -8,14 +8,17 @@ const {data,error}=await db.auth.signInWithPassword(credentials);
 assert.ok(!error,'Login falló');
 const token=data.session.access_token;
 try {
-  for(const base of ['http://127.0.0.1:8787/api',`${process.env.SUPABASE_URL}/functions/v1/admin-api`]) {
+  for(const base of [process.env.LOCAL_API_URL || 'http://127.0.0.1:8787/api',`${process.env.SUPABASE_URL}/functions/v1/admin-api`]) {
     const headers={authorization:`Bearer ${token}`,apikey:process.env.SUPABASE_PUBLISHABLE_KEY,'content-type':'application/json'};
     const get=async path=>{const response=await fetch(base+path,{headers});assert.equal(response.status,200,`${path}: ${response.status}`);return response.json();};
     const readings=await get('/readings');assert.equal(readings.length,300);assert.equal(readings.filter(r=>r.fire_alarm).length,214);
     const ops=await get('/operations');assert.equal(ops.nodes.length,6);assert.equal(ops.links.length,300);
     assert.ok((await get('/activity')).settings);
     assert.equal((await fetch(base+'/readings',{headers:{apikey:process.env.SUPABASE_PUBLISHABLE_KEY}})).status,401);
+    assert.equal((await fetch(base+'/readings',{headers:{...headers,authorization:'Bearer invalid-token'}})).status,401);
+    assert.equal((await fetch(base+'/readings',{headers:{...headers,origin:'https://untrusted.example'}})).status,403);
+    assert.equal((await fetch(base+'/maintenance/V-01',{method:'PATCH',headers,body:JSON.stringify({extra:'á'.repeat(2100)})})).status,413);
     assert.equal((await fetch(base+'/maintenance/V-01',{method:'PATCH',headers,body:JSON.stringify({expectedState:'Pendiente',state:'INVALID'})})).status,422);
-    console.log(`PASS ${base.includes('127.0.0.1')?'Node local':'Supabase Edge'}: 300 lecturas, 6 nodos, actividad, 401 y 422; sin escrituras.`);
+    console.log(`PASS ${base.includes('127.0.0.1')?'Node local':'Supabase Edge'}: 300 lecturas, 6 nodos, actividad, token falso, origen ajeno y respuestas 401/403/413/422; sin escrituras.`);
   }
 } finally { await db.auth.signOut({scope:'local'}); }

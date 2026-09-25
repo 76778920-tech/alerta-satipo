@@ -95,3 +95,7 @@ python tests/panel_operations.py
 npm test incluye pruebas de dominio, casos de uso con memoria, concurrencia, autorización, adaptación HTTP, mapeo Supabase y prohibición de dependencias externas en el núcleo, además de las pruebas SQL previas. api_live requiere la API Node activa y config/admin.local.json: consulta Node y Edge con una cuenta existente sin escribir datos. Las pruebas de navegador necesitan el servidor frontend y Microsoft Edge; operaciones modifica temporalmente estados y los restaura.
 
 La verificación de importaciones es un control estático básico para los módulos actuales, no un analizador exhaustivo de JavaScript. Las pruebas del adaptador usan respuestas controladas y se complementan con integración real; no se afirma cobertura total ni ausencia absoluta de errores.
+
+## Auditoría posterior
+
+La revisión detallada y los cuatro hallazgos corregidos están documentados en [REVISION_HEXAGONAL.md](REVISION_HEXAGONAL.md). La suite actual contiene 16 pruebas e incluye análisis transitivo de dependencias del núcleo.

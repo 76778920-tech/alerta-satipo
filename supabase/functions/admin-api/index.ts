@@ -35,6 +35,7 @@ function changeCommand(kind, id, expectedState, nextState) {
   return Object.freeze({ kind, id, expectedState: current.state, nextState: next.state });
 }
 function validateThresholds(value) {
+  requireObject(value);
   const bounds = { temp_critical: [20, 55], smoke_critical: [Number.MIN_VALUE, 100], humidity_dry: [10, 90], wind_risk: [1, 80] };
   const result = {};
   for (const [key, [min, max]] of Object.entries(bounds)) {
@@ -42,6 +43,9 @@ function validateThresholds(value) {
     result[key] = value[key];
   }
   return Object.freeze(result);
+}
+function requireObject(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new ApplicationError("VALIDATION", "Se requiere un objeto de datos.");
 }
 
 // backend/application/ports.mjs
@@ -101,7 +105,7 @@ var AdminService = class extends AdminUseCases {
   async authorize(token) {
     const actor = await this.identity.authenticate(token);
     if (!actor) throw new ApplicationError("UNAUTHENTICATED", "Inicia sesi\xF3n nuevamente.");
-    if (!actor.isAdmin) throw new ApplicationError("FORBIDDEN", "Se requiere autorizaci\xF3n administrativa.");
+    if (actor.isAdmin !== true) throw new ApplicationError("FORBIDDEN", "Se requiere autorizaci\xF3n administrativa.");
     return actor;
   }
   async listReadings(token) {
@@ -118,6 +122,7 @@ var AdminService = class extends AdminUseCases {
   }
   async updateState(token, kind, id, input) {
     await this.authorize(token);
+    requireObject(input);
     const command = changeCommand(kind, id, input.expectedState, input.state);
     const updated = await this.repository.compareAndSet(command);
     if (updated) return updated;
@@ -199,6 +204,33 @@ var SupabaseRepository = class extends RepositoryPort {
 
 // backend/infrastructure/http.mjs
 var status = { UNAUTHENTICATED: 401, FORBIDDEN: 403, NOT_FOUND: 404, CONFLICT: 409, VALIDATION: 422, UNAVAILABLE: 503 };
+async function boundedBody(request) {
+  if (!request.body) return "";
+  const reader = request.body.getReader();
+  const chunks = [];
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > 4096) {
+        await reader.cancel();
+        return null;
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(bytes);
+}
 function createHandler({ serviceFactory, allowedOrigins }) {
   return async (request) => {
     const origin = request.headers.get("origin");
@@ -209,7 +241,10 @@ function createHandler({ serviceFactory, allowedOrigins }) {
     headers["Access-Control-Allow-Methods"] = "GET, PATCH, OPTIONS";
     const respond = (value, code = 200) => new Response(JSON.stringify(value), { status: code, headers });
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers });
-    const path = new URL(request.url).pathname.replace(/^\/functions\/v1\/admin-api|^\/admin-api|^\/api/, "");
+    const pathname = new URL(request.url).pathname;
+    const prefix = /^(?:\/functions\/v1\/admin-api|\/admin-api|\/api)(?=\/|$)/.exec(pathname);
+    if (!prefix) return respond({ error: "Ruta no disponible." }, 404);
+    const path = pathname.slice(prefix[0].length);
     if (path === "/health" && request.method === "GET") return respond({ status: "ok", architecture: "ports-and-adapters" });
     const token = /^Bearer (\S+)$/i.exec(request.headers.get("authorization") || "")?.[1];
     if (!token) return respond({ error: "Inicia sesi\xF3n nuevamente.", code: "UNAUTHENTICATED" }, 401);
@@ -221,9 +256,9 @@ function createHandler({ serviceFactory, allowedOrigins }) {
         if (path === "/activity") return respond(await service.getActivity(token));
       }
       if (request.method === "PATCH") {
-        if (!request.headers.get("content-type")?.startsWith("application/json")) return respond({ error: "Se requiere JSON." }, 415);
-        const raw = await request.text();
-        if (raw.length > 4096) return respond({ error: "Solicitud demasiado grande." }, 413);
+        if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") return respond({ error: "Se requiere JSON." }, 415);
+        const raw = await boundedBody(request);
+        if (raw === null) return respond({ error: "Solicitud demasiado grande." }, 413);
         let input;
         try {
           input = JSON.parse(raw);
@@ -246,6 +281,13 @@ function createHandler({ serviceFactory, allowedOrigins }) {
 // backend/bootstrap.mjs
 function compose({ url, publicKey, allowedOrigins }) {
   if (!url || !publicKey) throw new Error("Falta configuraci\xF3n p\xFAblica de Supabase.");
+  let role;
+  try {
+    const payload = publicKey.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    role = JSON.parse(atob(payload)).role;
+  } catch {
+  }
+  if (!publicKey.startsWith("sb_publishable_") && role !== "anon") throw new Error("La API requiere una clave p\xFAblica publishable o anon, nunca una clave administrativa.");
   return createHandler({ allowedOrigins, serviceFactory: (token) => {
     const client = createClient(url, publicKey, { global: { headers: { Authorization: `Bearer ${token}` } }, auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
     return new AdminService({ identity: new SupabaseIdentity(client), repository: new SupabaseRepository(client) });

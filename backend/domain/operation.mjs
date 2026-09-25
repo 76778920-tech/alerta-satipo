@@ -22,6 +22,7 @@ export function changeCommand(kind, id, expectedState, nextState) {
   return Object.freeze({ kind, id, expectedState:current.state, nextState:next.state });
 }
 export function validateThresholds(value) {
+  requireObject(value);
   const bounds = { temp_critical:[20,55], smoke_critical:[Number.MIN_VALUE,100], humidity_dry:[10,90], wind_risk:[1,80] };
   const result = {};
   for (const [key,[min,max]] of Object.entries(bounds)) {
@@ -29,4 +30,7 @@ export function validateThresholds(value) {
     result[key] = value[key];
   }
   return Object.freeze(result);
+}
+export function requireObject(value) {
+  if(!value || typeof value !== 'object' || Array.isArray(value)) throw new ApplicationError('VALIDATION','Se requiere un objeto de datos.');
 }

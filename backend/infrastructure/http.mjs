@@ -1,5 +1,20 @@
 import { ApplicationError } from '../domain/errors.mjs';
 const status={UNAUTHENTICATED:401,FORBIDDEN:403,NOT_FOUND:404,CONFLICT:409,VALIDATION:422,UNAVAILABLE:503};
+async function boundedBody(request) {
+  if(!request.body)return '';
+  const reader=request.body.getReader();const chunks=[];let size=0;
+  try {
+    while(true) {
+      const {done,value}=await reader.read();if(done)break;
+      size+=value.byteLength;
+      if(size>4096){await reader.cancel();return null;}
+      chunks.push(value);
+    }
+  } finally {reader.releaseLock();}
+  const bytes=new Uint8Array(size);let offset=0;
+  for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.byteLength;}
+  return new TextDecoder().decode(bytes);
+}
 export function createHandler({ serviceFactory, allowedOrigins }) {
   return async request => {
     const origin=request.headers.get('origin');
@@ -10,7 +25,10 @@ export function createHandler({ serviceFactory, allowedOrigins }) {
     headers['Access-Control-Allow-Methods']='GET, PATCH, OPTIONS';
     const respond=(value,code=200)=>new Response(JSON.stringify(value),{status:code,headers});
     if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
-    const path=new URL(request.url).pathname.replace(/^\/functions\/v1\/admin-api|^\/admin-api|^\/api/,'');
+    const pathname=new URL(request.url).pathname;
+    const prefix=/^(?:\/functions\/v1\/admin-api|\/admin-api|\/api)(?=\/|$)/.exec(pathname);
+    if(!prefix)return respond({error:'Ruta no disponible.'},404);
+    const path=pathname.slice(prefix[0].length);
     if(path==='/health' && request.method==='GET')return respond({status:'ok',architecture:'ports-and-adapters'});
     const token=/^Bearer (\S+)$/i.exec(request.headers.get('authorization')||'')?.[1];
     if(!token)return respond({error:'Inicia sesión nuevamente.',code:'UNAUTHENTICATED'},401);
@@ -22,9 +40,9 @@ export function createHandler({ serviceFactory, allowedOrigins }) {
         if(path==='/activity')return respond(await service.getActivity(token));
       }
       if(request.method==='PATCH') {
-        if(!request.headers.get('content-type')?.startsWith('application/json'))return respond({error:'Se requiere JSON.'},415);
-        const raw=await request.text();
-        if(raw.length>4096)return respond({error:'Solicitud demasiado grande.'},413);
+        if(request.headers.get('content-type')?.split(';')[0].trim().toLowerCase()!=='application/json')return respond({error:'Se requiere JSON.'},415);
+        const raw=await boundedBody(request);
+        if(raw===null)return respond({error:'Solicitud demasiado grande.'},413);
         let input;try{input=JSON.parse(raw);}catch{return respond({error:'JSON inválido.'},400);}
         if(!input || Array.isArray(input) || typeof input!=='object')return respond({error:'Objeto JSON requerido.'},400);
         if(path==='/settings')return respond(await service.updateSettings(token,input));

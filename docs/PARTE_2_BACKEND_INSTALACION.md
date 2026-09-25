@@ -117,7 +117,7 @@ Ejecutar las pruebas locales:
 ```powershell
 npm test
 ```
-Resultado esperado: once pruebas aprobadas. Incluyen dominio, casos de uso en memoria, concurrencia, adaptadores HTTP/Supabase y restricciones de importación, además de PostgreSQL embebido mediante PGlite. No modifican Supabase remoto ni prueban por sí solas la instalación completa en un equipo nuevo.
+Resultado esperado: dieciséis pruebas aprobadas. Incluyen dominio, casos de uso en memoria, concurrencia, adaptadores HTTP/Supabase y restricciones de importación, además de PostgreSQL embebido mediante PGlite. No modifican Supabase remoto ni prueban por sí solas la instalación completa en un equipo nuevo.
 Para verificar la API con Postman, crear variables locales base_url, publishable_key, admin_email, admin_password y access_token. base_url debe ser la URL del proyecto Supabase configurado.
 Solicitud de autenticación: POST {{base_url}}/auth/v1/token?grant_type=password. Cabeceras: apikey: {{publishable_key}} y Content-Type: application/json. Cuerpo:
 ```json
