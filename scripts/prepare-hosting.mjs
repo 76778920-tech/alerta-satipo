@@ -4,6 +4,7 @@ const root = process.cwd();
 const out = path.resolve(root, 'dist');
 if (out !== path.join(root, 'dist')) throw new Error('Destino de publicación inválido');
 const config = JSON.parse(await readFile('config/public.json', 'utf8'));
+if (!config.apiUrl?.startsWith('https://') || /localhost|127\.0\.0\.1/.test(config.apiUrl)) throw new Error('Hosting requiere una API HTTPS desplegada; no publiques la URL local.');
 let role;
 try { role = JSON.parse(Buffer.from(config.supabasePublishableKey.split('.')[1], 'base64url').toString()).role; } catch {}
 if (config.mode !== 'supabase' || (!config.supabasePublishableKey?.startsWith('sb_publishable_') && role !== 'anon')) throw new Error('Hosting requiere Supabase y una clave pública válida.');

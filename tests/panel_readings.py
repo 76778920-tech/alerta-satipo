@@ -42,28 +42,28 @@ with sync_playwright() as p:
     assert page.locator('#dataset-next').is_disabled()
     page.fill('#dataset-search','')
     # Pérdida de conexión: se retiene la última lectura y se avisa.
-    page.route('**/rest/v1/smoke_readings*',lambda route:route.abort())
+    page.route('**/functions/v1/admin-api/readings*',lambda route:route.abort())
     page.locator('#dataset-retry').click()
     page.wait_for_function("document.querySelector('#dataset-connection').textContent.includes('No se pudo actualizar')")
     assert len(page.evaluate('window.SatipoDataset.getSnapshot()'))==300
-    page.unroute('**/rest/v1/smoke_readings*')
+    page.unroute('**/functions/v1/admin-api/readings*')
     # Campos ausentes no se convierten en cero, porcentajes ni fechas inválidas.
     malformed=[dict(source[0],temperature_c=None,recorded_at='invalid',fire_alarm=None)]
-    page.route('**/rest/v1/smoke_readings*',lambda route:route.fulfill(status=200,json=malformed))
+    page.route('**/functions/v1/admin-api/readings*',lambda route:route.fulfill(status=200,json=malformed))
     page.locator('#dataset-retry').click()
     page.wait_for_function("window.SatipoDataset.getSnapshot().length===1")
     assert 'No disponible' in page.locator('#dataset-rows').inner_text()
     assert 'Fecha no disponible' in page.locator('#dataset-rows').inner_text()
     assert 'Etiqueta no disponible' in page.locator('#dataset-rows').inner_text()
     assert 'inválidos' in page.locator('#dataset-quality').inner_text()
-    page.unroute('**/rest/v1/smoke_readings*')
+    page.unroute('**/functions/v1/admin-api/readings*')
     page.locator('#dataset-retry').click()
     page.wait_for_function('window.SatipoDataset.getSnapshot().length===300')
     # Fallo inicial: el resto del panel permanece accesible y el botón permite recuperarse.
-    page.route('**/rest/v1/smoke_readings*',lambda route:route.abort())
+    page.route('**/functions/v1/admin-api/readings*',lambda route:route.abort())
     page.reload();page.wait_for_function("document.querySelector('#dataset-connection')?.textContent.includes('No se pudieron cargar')")
     assert page.locator('[data-view=incidents]').is_visible()
-    page.unroute('**/rest/v1/smoke_readings*')
+    page.unroute('**/functions/v1/admin-api/readings*')
     page.locator('#dataset-retry').click();page.wait_for_function('window.SatipoDataset.getSnapshot().length===300')
     for width,height in [(1440,900),(1024,768),(390,844),(320,700)]:
         page.set_viewport_size({'width':width,'height':height})

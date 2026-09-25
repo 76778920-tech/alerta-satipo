@@ -10,7 +10,9 @@
     "dataset": "python scripts/prepare_dataset.py",
     "import:dataset": "node --env-file-if-exists=.env scripts/import-dataset.mjs",
     "test": "node --test tests/*.test.mjs",
-    "start": "python scripts/serve.py"
+    "start": "python scripts/serve.py",
+    "start:api": "node --env-file-if-exists=.env backend/server.mjs",
+    "build:api": "node scripts/build-api.mjs"
   },
   "engines": {
     "node": ">=22"

@@ -44,11 +44,11 @@ with sync_playwright() as p:
             page.evaluate("async ([t,n,s])=>{const r=await SatipoBackend.client.from(t).update({state:s}).eq('node_id',n);if(r.error)throw r.error}",[table,node,previous])
     page.click('[data-view="nodes"]')
     assert page.locator('#demo-nodes .operation-card').count()==6
-    page.route('**/rest/v1/demo_nodes*',lambda route:route.abort())
+    page.route('**/functions/v1/admin-api/operations*',lambda route:route.abort())
     page.locator('#demo-nodes .operations-retry').click()
     page.wait_for_function("document.querySelector('#demo-nodes .operations-status').textContent.includes('No se pudieron')")
     assert page.locator('#demo-nodes .operation-card').count()==6
-    page.unroute('**/rest/v1/demo_nodes*')
+    page.unroute('**/functions/v1/admin-api/operations*')
     page.locator('#demo-nodes .operations-retry').click()
     page.wait_for_function("document.querySelector('#demo-nodes .operations-status').textContent.includes('Datos y estados')")
     for width in [1440,390,320]:

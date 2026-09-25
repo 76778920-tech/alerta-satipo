@@ -10,5 +10,5 @@ if (mode === 'supabase') {
   if (!key.startsWith('sb_publishable_') && legacyRole !== 'anon') throw new Error('Usa exclusivamente una clave publica publishable o anon.');
 }
 await mkdir('config', { recursive: true });
-await writeFile('config/public.json', JSON.stringify({ mode, supabaseUrl: url, supabasePublishableKey: key }, null, 2) + '\n');
+await writeFile('config/public.json', JSON.stringify({ mode, supabaseUrl: url, supabasePublishableKey: key, apiUrl: process.env.SATIPO_API_URL || (url ? url + '/functions/v1/admin-api' : '') }, null, 2) + '\n');
 console.log(`Configuracion publica generada: modo ${mode}. No contiene la clave administrativa.`);

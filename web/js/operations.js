@@ -15,8 +15,8 @@ window.SatipoOperations = (() => {
       const input=e.target.closest('[data-operation]');if(!input)return;
       const previous=input.dataset.previous;input.disabled=true;
       try{
-        const rows=B.check(await B.client.from(input.dataset.operation).update({state:input.value}).eq('node_id',input.dataset.node).eq('state',previous).select('node_id'));
-        if(rows.length!==1)throw Error('El estado cambió. Actualiza antes de volver a intentarlo.');
+        const kind=input.dataset.operation==='demo_cases'?'cases':'maintenance';
+        await B.api(`/${kind}/${encodeURIComponent(input.dataset.node)}`,{method:'PATCH',body:{state:input.value,expectedState:previous}});
         await refresh();
       }catch(error){input.value=previous;status(error.message||'No se pudo guardar. Reintenta.',true);}
       finally{input.disabled=false;}
@@ -42,13 +42,7 @@ window.SatipoOperations = (() => {
   async function refresh(){
     document.querySelectorAll('.operations-retry').forEach(b=>b.disabled=true);
     try{
-      const results=await Promise.all([
-        B.client.from('demo_nodes').select('*').order('id'),
-        B.client.from('demo_node_readings').select('node_id,source_row,smoke_readings(*)').order('source_row').limit(300),
-        B.client.from('demo_cases').select('*').order('node_id'),
-        B.client.from('demo_maintenance').select('*').order('node_id')
-      ]);
-      const [nodes,links,cases,maintenance]=results.map(B.check);
+      const {nodes,links,cases,maintenance}=await B.api('/operations');
       if(nodes.length!==6||links.length!==300||new Set(links.map(r=>r.source_row)).size!==300||links.some(r=>!r.smoke_readings)||nodes.some(n=>links.filter(l=>l.node_id===n.id).length!==50))throw Error('La relación de nodos y lecturas está incompleta.');
       snapshot={nodes,links,cases,maintenance};render();status('Datos y estados consultados en Supabase. Cambiar un estado lo guarda para todos los administradores.');
     }catch(error){status(`No se pudieron actualizar estas secciones. ${snapshot?'Se conserva la última consulta. ':''}Pulsa Actualizar para reintentar.`,true);}

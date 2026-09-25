@@ -1,5 +1,7 @@
 # Alerta Satipo
 
+**Backend hexagonal implementado:** [estructura, instalación, endpoints y pruebas](docs/ARQUITECTURA_IMPLEMENTADA.md). El panel consulta la API administrativa; su núcleo comparte ejecución en Node.js local y Supabase Edge.
+
 > **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
 
 Aplicación web con interfaz móvil para vigilancia comunitaria y panel administrativo. Integra **Supabase Auth + PostgreSQL con RLS** y una muestra histórica de **300 registros** de Smoke Detection IoT.

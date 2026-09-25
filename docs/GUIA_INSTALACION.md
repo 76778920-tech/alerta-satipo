@@ -1,3 +1,7 @@
+# Actualización de arquitectura
+
+Desde el 25/09/2026 el panel utiliza la API hexagonal. Para instalarla y configurar SATIPO_API_URL, seguir primero [ARQUITECTURA_IMPLEMENTADA.md](ARQUITECTURA_IMPLEMENTADA.md). Las instrucciones siguientes sobre esquema y datos siguen aplicando; las menciones a arquitectura pendiente describen la versión anterior.
+
 # Guía de instalación y configuración — Alerta Satipo
 Versión 1.0 · 25 de septiembre de 2026 · Windows y PowerShell
 

@@ -57,6 +57,20 @@ window.SatipoBackend = (() => {
     sessionStorage.clear();
     location.href = new URL('shared/login.html', base);
   }
+  async function api(path, options = {}) {
+    await ready;
+    if(!client || !config.apiUrl) throw new Error('API administrativa no configurada.');
+    const session=check(await client.auth.getSession()).session;
+    if(!session) throw new Error('Inicia sesión nuevamente.');
+    const response=await fetch(config.apiUrl.replace(/\/$/,'')+path,{
+      method:options.method || 'GET',
+      headers:{'Authorization':`Bearer ${session.access_token}`,'apikey':config.supabasePublishableKey,'Content-Type':'application/json'},
+      ...(options.body ? {body:JSON.stringify(options.body)} : {})
+    });
+    let payload;try{payload=await response.json();}catch{throw new Error('Respuesta inválida de la API.');}
+    if(!response.ok)throw new Error(payload.error || 'No se pudo consultar la API administrativa.');
+    return payload;
+  }
   function fatal(error) {
     console.error('No se pudo iniciar el aplicativo:', error?.message);
     const box = document.createElement('main');
@@ -67,5 +81,5 @@ window.SatipoBackend = (() => {
     const login = document.createElement('a');login.href = new URL('shared/login.html',base);login.textContent = ' Volver al acceso';
     box.append(title,message,retry,login);document.body.replaceChildren(box);
   }
-  return { ready, check, identify, guard, logout, fatal, escapeHTML, get client(){return client;}, get cloud(){return config?.mode==='supabase';}, get profile(){return profile;} };
+  return { ready, check, api, identify, guard, logout, fatal, escapeHTML, get client(){return client;}, get cloud(){return config?.mode==='supabase';}, get profile(){return profile;} };
 })();

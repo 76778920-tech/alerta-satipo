@@ -187,7 +187,7 @@ window.SatipoData = (() => {
 
   const saveThresholds = async (thresholds) => {
     if (Backend.cloud) {
-      Backend.check(await Backend.client.from('app_settings').update({temp_critical:thresholds.tempCritical,smoke_critical:thresholds.smokeCritical,humidity_dry:thresholds.humidityDry,wind_risk:thresholds.windRisk}).eq('id',true).select().single());
+      await Backend.api('/settings',{method:'PATCH',body:{temp_critical:thresholds.tempCritical,smoke_critical:thresholds.smokeCritical,humidity_dry:thresholds.humidityDry,wind_risk:thresholds.windRisk}});
       remoteThresholds = {...thresholds};
       return;
     }
@@ -331,12 +331,7 @@ window.SatipoData = (() => {
 
   const refresh = async () => {
     if (!Backend.cloud) return;
-    const results = await Promise.all([
-      Backend.client.from('reportes').select('*').order('created_at',{ascending:false}).limit(200),
-      Backend.client.from('incidentes').select('*').order('created_at',{ascending:false}).limit(200),
-      Backend.client.from('app_settings').select('*').eq('id',true).single()
-    ]);
-    const [reports,incidents,settings] = results.map(Backend.check);
+    const {reports,incidents,settings} = await Backend.api('/activity');
     remoteReports = reports.map(r=>({...r,type:r.observation,createdAt:r.created_at,severityLabel:severityLabels[r.severity]}));
     remoteIncidents = incidents.map(r=>({...r,date:new Date(r.created_at).toLocaleString('es-PE'),zone:r.location,type:r.kind,nodes:[]}));
     remoteThresholds = {tempCritical:Number(settings.temp_critical),smokeCritical:Number(settings.smoke_critical),humidityDry:Number(settings.humidity_dry),windRisk:Number(settings.wind_risk)};
@@ -348,8 +343,7 @@ window.SatipoData = (() => {
   };
   const updateIncident = async (id,state,previousState) => {
     if (!Backend.cloud) {saveIncidents(readIncidents().map(r=>r.id===id?{...r,state}:r));return;}
-    const result = Backend.check(await Backend.client.from('incidentes').update({state}).eq('id',id).eq('state',previousState).select('id'));
-    if (!result.length) throw new Error('El incidente cambió o no tienes permisos. Sincroniza e intenta otra vez.');
+    await Backend.api(`/incidents/${encodeURIComponent(id)}`,{method:'PATCH',body:{state,expectedState:previousState}});
   };
   const requestHelp = async ({location,visible,safe,reference}) => {
     Backend.check(await Backend.client.rpc('request_help',{location_text:location,visible,safe,reference_known:reference}));

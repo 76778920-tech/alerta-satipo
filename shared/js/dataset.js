@@ -53,7 +53,7 @@ window.SatipoDataset = (() => {
     q('#dataset-connection').textContent='Consultando lecturas…';
     try {
       const B=window.SatipoBackend;let rows;
-      if(B.cloud) rows=B.check(await B.client.from('smoke_readings').select('*').eq('dataset_id','smoke-detection-iot-300-v1').order('source_row').limit(300));
+      if(B.cloud) rows=await B.api('/readings');
       else {const response=await fetch('../data/smoke_detection_300.json');if(!response.ok)throw new Error('Lecturas no disponibles');rows=await response.json();}
       if(!Array.isArray(rows)||rows.some(r=>!r||typeof r!=='object')||new Set(rows.map(r=>r.source_row)).size!==rows.length)throw new Error('Formato de lecturas inválido');
       readings=rows;loaded=true;render();
