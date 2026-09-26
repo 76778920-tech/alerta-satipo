@@ -1,3 +1,5 @@
+> **Notebook vigente de entrenamiento y predicciones:** [colab/README.md](../colab/README.md). Incluye las 300 lecturas y evaluación separada.
+
 > **Documento histórico anterior a la integración con Supabase (23/09/2026).** Las afirmaciones de «producción lista», rutas antiguas y pruebas anteriores no describen la versión actual. Consulta [la revisión vigente](REVISION_TECNICA.md) y [la guía de Supabase](SUPABASE.md).
 
 # Conexión Google Colab → Alerta Satipo

@@ -1,0 +1,47 @@
+{
+  "dataset_sha256": "c3d4216487bd938eda7ca27602f15fc65ec7b395f2203b5cd719d20a43615a78",
+  "train_rows": 240,
+  "test_rows": 60,
+  "split": "chronological_80_20",
+  "features": [
+    "temperature_c",
+    "humidity_pct",
+    "tvoc_ppb",
+    "eco2_ppm",
+    "raw_h2",
+    "raw_ethanol",
+    "pressure_hpa",
+    "pm1_0",
+    "pm2_5",
+    "nc0_5",
+    "nc1_0",
+    "nc2_5"
+  ],
+  "random_forest": {
+    "accuracy": 0.9,
+    "balanced_accuracy": 0.9057239057239057,
+    "precision_alarm": 0.9655172413793104,
+    "recall_alarm": 0.8484848484848485,
+    "f1_alarm": 0.9032258064516129
+  },
+  "baseline": {
+    "accuracy": 0.55,
+    "balanced_accuracy": 0.5,
+    "precision_alarm": 0.55,
+    "recall_alarm": 1.0,
+    "f1_alarm": 0.7096774193548387
+  },
+  "roc_auc": 0.8754208754208753,
+  "confusion_matrix": [
+    [
+      26,
+      1
+    ],
+    [
+      5,
+      28
+    ]
+  ],
+  "sklearn_version": "1.5.2",
+  "notice": "Experimental historical classification; not calibrated wildfire probability."
+}
