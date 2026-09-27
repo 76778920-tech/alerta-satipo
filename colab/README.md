@@ -48,3 +48,7 @@ El ZIP exporta únicamente los seis archivos previstos; no incorpora archivos aj
 Prueba de integración: `python tests/colab_live.py`. Requiere las dependencias del notebook, `config/public.json` y las credenciales locales existentes en `config/admin.local.json` (archivo privado, nunca versionarlo). Ejecuta todas las celdas, comprueba 300 lecturas y 60 filas de prueba, entradas inválidas, contenido del ZIP y una consulta fallida después del entrenamiento. Escribe resultados locales en `test-results/colab-audit`; no modifica las tablas remotas. El inicio de sesión sí crea una sesión de Auth.
 
 Resultado de la revisión: nueve pruebas unitarias y la integración completa contra Supabase aprobadas. Esta verificación se realizó localmente; el acceso a Secretos y la ejecución dentro de la cuenta Google Colab deben verificarse allí. La inferencia continua sigue pendiente; la consulta de los 60 resultados publicados ya está disponible en el panel.
+
+## Comparación temporal de modelos (v2)
+
+Nuevo notebook: [Alerta_Satipo_validacion_v2.ipynb](Alerta_Satipo_validacion_v2.ipynb). Compara tres familias y tres umbrales solo sobre desarrollo, y evalúa el candidato en las 60 filas previamente utilizadas como prueba. El candidato empeoró (61.67 % frente a 90 %), por lo que no reemplaza la versión publicada. Ver [protocolo, resultados y datos pendientes para distritos](../docs/MEJORA_MODELO.md). No se ha demostrado aún una mejora predictiva.

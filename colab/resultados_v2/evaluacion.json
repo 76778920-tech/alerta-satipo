@@ -1,0 +1,279 @@
+{
+  "python_version": "3.12.10",
+  "sklearn_version": "1.5.2",
+  "version": "temporal-selection-v2",
+  "selected": {
+    "name": "extra_trees",
+    "threshold": 0.3,
+    "accuracy": 0.975,
+    "recall_alarm": 0.9867549668874173,
+    "precision_alarm": 0.9867549668874173,
+    "false_negatives": 2,
+    "false_positives": 2,
+    "cost": 6,
+    "confusion_matrix": [
+      [
+        7,
+        2
+      ],
+      [
+        2,
+        149
+      ]
+    ]
+  },
+  "validation": {
+    "folds": [
+      [
+        0,
+        75,
+        80,
+        120
+      ],
+      [
+        0,
+        115,
+        120,
+        160
+      ],
+      [
+        0,
+        155,
+        160,
+        200
+      ],
+      [
+        0,
+        195,
+        200,
+        240
+      ]
+    ],
+    "gap_rows": 5,
+    "validation_rows": 160,
+    "validation_alarm_rows": 151,
+    "validation_no_alarm_rows": 9,
+    "candidates": [
+      {
+        "name": "random_forest",
+        "threshold": 0.3,
+        "accuracy": 0.775,
+        "recall_alarm": 0.7814569536423841,
+        "precision_alarm": 0.9752066115702479,
+        "false_negatives": 33,
+        "false_positives": 3,
+        "cost": 69,
+        "confusion_matrix": [
+          [
+            6,
+            3
+          ],
+          [
+            33,
+            118
+          ]
+        ]
+      },
+      {
+        "name": "random_forest",
+        "threshold": 0.5,
+        "accuracy": 0.74375,
+        "recall_alarm": 0.7284768211920529,
+        "precision_alarm": 1.0,
+        "false_negatives": 41,
+        "false_positives": 0,
+        "cost": 82,
+        "confusion_matrix": [
+          [
+            9,
+            0
+          ],
+          [
+            41,
+            110
+          ]
+        ]
+      },
+      {
+        "name": "random_forest",
+        "threshold": 0.7,
+        "accuracy": 0.36875,
+        "recall_alarm": 0.33112582781456956,
+        "precision_alarm": 1.0,
+        "false_negatives": 101,
+        "false_positives": 0,
+        "cost": 202,
+        "confusion_matrix": [
+          [
+            9,
+            0
+          ],
+          [
+            101,
+            50
+          ]
+        ]
+      },
+      {
+        "name": "extra_trees",
+        "threshold": 0.3,
+        "accuracy": 0.975,
+        "recall_alarm": 0.9867549668874173,
+        "precision_alarm": 0.9867549668874173,
+        "false_negatives": 2,
+        "false_positives": 2,
+        "cost": 6,
+        "confusion_matrix": [
+          [
+            7,
+            2
+          ],
+          [
+            2,
+            149
+          ]
+        ]
+      },
+      {
+        "name": "extra_trees",
+        "threshold": 0.5,
+        "accuracy": 0.75,
+        "recall_alarm": 0.7350993377483444,
+        "precision_alarm": 1.0,
+        "false_negatives": 40,
+        "false_positives": 0,
+        "cost": 80,
+        "confusion_matrix": [
+          [
+            9,
+            0
+          ],
+          [
+            40,
+            111
+          ]
+        ]
+      },
+      {
+        "name": "extra_trees",
+        "threshold": 0.7,
+        "accuracy": 0.49375,
+        "recall_alarm": 0.46357615894039733,
+        "precision_alarm": 1.0,
+        "false_negatives": 81,
+        "false_positives": 0,
+        "cost": 162,
+        "confusion_matrix": [
+          [
+            9,
+            0
+          ],
+          [
+            81,
+            70
+          ]
+        ]
+      },
+      {
+        "name": "logistic",
+        "threshold": 0.3,
+        "accuracy": 0.6375,
+        "recall_alarm": 0.6357615894039735,
+        "precision_alarm": 0.9696969696969697,
+        "false_negatives": 55,
+        "false_positives": 3,
+        "cost": 113,
+        "confusion_matrix": [
+          [
+            6,
+            3
+          ],
+          [
+            55,
+            96
+          ]
+        ]
+      },
+      {
+        "name": "logistic",
+        "threshold": 0.5,
+        "accuracy": 0.60625,
+        "recall_alarm": 0.5960264900662252,
+        "precision_alarm": 0.9782608695652174,
+        "false_negatives": 61,
+        "false_positives": 2,
+        "cost": 124,
+        "confusion_matrix": [
+          [
+            7,
+            2
+          ],
+          [
+            61,
+            90
+          ]
+        ]
+      },
+      {
+        "name": "logistic",
+        "threshold": 0.7,
+        "accuracy": 0.46875,
+        "recall_alarm": 0.44370860927152317,
+        "precision_alarm": 0.9852941176470589,
+        "false_negatives": 84,
+        "false_positives": 1,
+        "cost": 169,
+        "confusion_matrix": [
+          [
+            8,
+            1
+          ],
+          [
+            84,
+            67
+          ]
+        ]
+      }
+    ],
+    "criterion": "minimize 2*FN+FP; exploratory engineering weight, not a validated operational cost"
+  },
+  "published_baseline_regression": {
+    "accuracy": 0.9,
+    "recall_alarm": 0.8484848484848485,
+    "precision_alarm": 0.9655172413793104,
+    "false_negatives": 5,
+    "false_positives": 1,
+    "cost": 11,
+    "confusion_matrix": [
+      [
+        26,
+        1
+      ],
+      [
+        5,
+        28
+      ]
+    ]
+  },
+  "candidate_regression": {
+    "accuracy": 0.6166666666666667,
+    "recall_alarm": 0.8484848484848485,
+    "precision_alarm": 0.6086956521739131,
+    "false_negatives": 5,
+    "false_positives": 18,
+    "cost": 28,
+    "confusion_matrix": [
+      [
+        9,
+        18
+      ],
+      [
+        5,
+        28
+      ]
+    ]
+  },
+  "promotion": "NOT_APPROVED_REQUIRES_NEW_INDEPENDENT_DATA",
+  "limitation": "The 60 rows were previously inspected. Regression results are not an independent generalization estimate. No district or future-fire prediction.",
+  "dataset_sha256": "034f9ef9d796828d6ebcfe4f61ab882a285fdaf925c7883c565d733c2ab0b41f"
+}
