@@ -54,3 +54,7 @@ Fuentes verificadas como posibles insumos, todavía no descargadas ni integradas
 También faltan límites distritales oficiales con UBIGEO y un registro de eventos verificados. Se debe evaluar por temporadas posteriores y distritos, informar precisión, sensibilidad, falsas alarmas, calibración y cobertura, y realizar una fase prospectiva antes de alertas operativas. No hay fecha responsable para prometer el pronóstico sin auditar estos insumos.
 
 Referencia metodológica: [scikit-learn: prevención de fuga de datos](https://github.com/scikit-learn/scikit-learn/blob/main/doc/common_pitfalls.rst).
+
+## Avance territorial
+
+Ya se descargaron límites del MINAM y 3.285 registros meteorológicos distrito-día de Open-Meteo para 2025. Ver [datos, reproducibilidad y bloqueos pendientes](DATOS_TERRITORIALES.md). El historial de incendios verificados sigue pendiente; no existe aún un modelo territorial entrenado.

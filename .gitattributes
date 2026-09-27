@@ -11,3 +11,4 @@
 *.pdf binary
 *.md whitespace=-blank-at-eol
 shared/vendor/*.js -whitespace
+data/territorial/** -text

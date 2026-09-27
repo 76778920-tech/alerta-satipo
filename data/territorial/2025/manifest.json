@@ -1,0 +1,188 @@
+{
+  "start": "2025-01-01",
+  "end": "2025-12-31",
+  "districts": [
+    {
+      "ubigeo": "120601",
+      "district": "SATIPO",
+      "sample_latitude": -11.154121229349318,
+      "sample_longitude": -74.52259819503766,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.154121229349318,
+        "longitude": -74.52259819503766,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120602",
+      "district": "COVIRIALI",
+      "sample_latitude": -11.319208541659595,
+      "sample_longitude": -74.65927559556968,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.319208541659595,
+        "longitude": -74.65927559556968,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120603",
+      "district": "LLAYLLA",
+      "sample_latitude": -11.477791978704243,
+      "sample_longitude": -74.66344099095889,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.477791978704243,
+        "longitude": -74.66344099095889,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120604",
+      "district": "MAZAMARI",
+      "sample_latitude": -11.376464844333919,
+      "sample_longitude": -74.28881296355193,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.376464844333919,
+        "longitude": -74.28881296355193,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120605",
+      "district": "PAMPA HERMOSA",
+      "sample_latitude": -11.433443292054159,
+      "sample_longitude": -74.83449500962496,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.433443292054159,
+        "longitude": -74.83449500962496,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120606",
+      "district": "PANGOA",
+      "sample_latitude": -11.766740917105126,
+      "sample_longitude": -74.31047032746415,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.766740917105126,
+        "longitude": -74.31047032746415,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120607",
+      "district": "RIO NEGRO",
+      "sample_latitude": -11.103849979041023,
+      "sample_longitude": -74.72347089362705,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.103849979041023,
+        "longitude": -74.72347089362705,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120608",
+      "district": "RIO TAMBO",
+      "sample_latitude": -11.560131291086506,
+      "sample_longitude": -73.78430446301091,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -11.560131291086506,
+        "longitude": -73.78430446301091,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    },
+    {
+      "ubigeo": "120609",
+      "district": "VIZCATAN DEL ENE",
+      "sample_latitude": -12.198107229776713,
+      "sample_longitude": -74.17685902614028,
+      "sampling": "one interior point; not a district-wide average",
+      "weather_request": {
+        "latitude": -12.198107229776713,
+        "longitude": -74.17685902614028,
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "daily": "temperature_2m_max,relative_humidity_2m_mean,precipitation_sum,wind_speed_10m_max",
+        "timezone": "America/Lima",
+        "models": "era5",
+        "wind_speed_unit": "kmh"
+      }
+    }
+  ],
+  "rows": 3285,
+  "sources": [
+    "https://geoservidorperu.minam.gob.pe/arcgis/rest/services/CS/MapServicesUbigeo/MapServer/0/query",
+    "https://archive-api.open-meteo.com/v1/archive"
+  ],
+  "retrieved_at": "2026-09-27T03:24:10.926873+00:00",
+  "sha256": {
+    "120601_weather.json": "d9cd90560393b3173a579949ef1df5dfc245487442dcb02e6ff798b673e2fca7",
+    "120602_weather.json": "f8e315c482c7796ab19a49ccd9f80f0632af86d0f78e96fab249c138fd1a866b",
+    "120603_weather.json": "b7be0ae6079b798cdee71291f6d4dfac509182d7280cc395f5809a3ff03a2648",
+    "120604_weather.json": "1d8d6623c603211cb324116c3c9bff0d4ced293e5b764f549faa3fa7dcba0f83",
+    "120605_weather.json": "88fd7dc25375ea2aaf18e029aa1b73215d5802ba09c5e4b8102297fc3b0c717a",
+    "120606_weather.json": "c11bada71b8cce78420416d2d6ea1347158ad2bb8fbb7a287ac37ec87800f098",
+    "120607_weather.json": "1b4b0e96b52d77d630b17660e904ba5862d1938ff823299dcab4c8cd5e933a9c",
+    "120608_weather.json": "4c723c1e55122287a9232194e6bee6808643b145882f99f8c36fd6b0dd42379e",
+    "120609_weather.json": "dca1a970da8d28b6501b0bf704d311a6b924ceced28bc10598bf8bd860d19c5c",
+    "districts.geojson": "23523f7c8186fb02312e9d45b0ce18523a4e78255916958f2fcc7af98e985d8b",
+    "district_day_research.csv": "99e069bebabb7b6bccab7b68d33aac8b33393b4b5e7b0afa059ba2f0c16d3a51"
+  },
+  "firms_diagnostics": null,
+  "firms_input_sha256": null,
+  "blockers": [
+    "No verified event labels or negative observation coverage",
+    "Reanalysis availability is retrospective",
+    "Vegetation and district-wide weather coverage not integrated",
+    "No independent prospective validation"
+  ],
+  "training_allowed": false,
+  "state": "research_data_ready_not_trainable"
+}
