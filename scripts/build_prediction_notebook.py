@@ -1,18 +1,21 @@
-"""Notebook autónomo: incluye la muestra versionada, nunca credenciales."""
+"""Notebook conectado: consulta Supabase sin incluir datos ni credenciales."""
 from pathlib import Path
 import json
 import hashlib
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"colab"))
+from supabase_dataset import canonical_payload
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'colab';OUT.mkdir(exist_ok=True)
 rows=json.loads((ROOT/'data/smoke_detection_300.json').read_text(encoding='utf-8'))
-payload=json.dumps(rows,ensure_ascii=False,separators=(',',':'))
+payload=canonical_payload(rows)
 digest=hashlib.sha256(payload.encode()).hexdigest()
 cells=[]
 def md(s):cells.append({'cell_type':'markdown','metadata':{},'source':s.splitlines(True)})
 def code(s):cells.append({'cell_type':'code','metadata':{},'execution_count':None,'outputs':[],'source':s.splitlines(True)})
 md('''# Alerta Satipo — modelo experimental con 300 lecturas
-Ejecuta **Entorno de ejecución → Ejecutar todas**. CPU es suficiente. Los mismos 300 registros del repositorio están incluidos: no necesitas conectar Supabase ni proporcionar claves.
+Ejecuta **Entorno de ejecución → Ejecutar todas**. CPU es suficiente. Los 300 registros se consultan directamente en Supabase. Antes de ejecutar, configura los cuatro secretos indicados abajo. No se incluye una copia de respaldo ni se reemplazan datos si falla la conexión.
 
 Objetivo: clasificar `fire_alarm` a partir de mediciones contemporáneas. **No es pronóstico de un incendio futuro ni un sistema validado de alertas.** Los datos son históricos externos, no mediciones de campo en Satipo.
 
@@ -37,8 +40,42 @@ except ImportError:
 OUT = Path('salida_satipo'); OUT.mkdir(exist_ok=True)
 print('Python:', platform.python_version(), '| scikit-learn:', sklearn.__version__)
 ''')
-md('## 1. Cargar y verificar exactamente las 300 filas\nEsta es una copia de la muestra, no una sincronización en vivo con Supabase. Se comprueba el hash, los identificadores y la distribución de etiquetas.')
-code(f"payload = {payload!r}\nassert hashlib.sha256(payload.encode()).hexdigest() == '{digest}'\ndf = pd.DataFrame(json.loads(payload))\nassert len(df) == 300 and not df.duplicated(['dataset_id','source_row']).any()\nassert df['fire_alarm'].value_counts().to_dict() == {{True:214,False:86}}\ndf.to_csv(OUT/'lecturas_300.csv', index=False)\nprint('300 lecturas verificadas: 214 con alarma y 86 sin alarma.')\ndisplay(df.head())\n")
+md("""## 1. Conectar Supabase y verificar las 300 filas
+En el panel **Secretos** de Colab (icono de llave), agrega y habilita acceso para este notebook:
+- `SUPABASE_URL`: URL HTTPS de tu proyecto, sin barra final.
+- `SUPABASE_PUBLISHABLE_KEY`: clave pública publishable o anon, nunca secret/service_role.
+- `SATIPO_EMAIL`: correo de una cuenta existente del aplicativo.
+- `SATIPO_PASSWORD`: contraseña de esa cuenta; no es la contraseña de PostgreSQL.
+
+La consulta utiliza autenticación de usuario y RLS. No crea cuentas ni escribe lecturas. Los secretos no se imprimen ni se exportan. En ejecución local se leen las mismas variables de entorno.
+Se comprueban total remoto, 300 IDs únicos, esquema, fechas, etiquetas y hash normalizado de contenido. Si los datos cambiaron, se detiene el entrenamiento para revisar la nueva versión; no actualizar el hash a ciegas.
+""")
+code((ROOT/'colab/supabase_dataset.py').read_text(encoding='utf-8'))
+code("""def read_secret(name):
+    try:
+        from google.colab import userdata
+    except ImportError:
+        import os
+        value = os.environ.get(name)
+    else:
+        try:
+            value = userdata.get(name)
+        except Exception:
+            raise RuntimeError('Configura el secreto ' + name + ' y autoriza su acceso al notebook.') from None
+    if not value:
+        raise RuntimeError('Falta el secreto ' + name)
+    return value
+""" + f"""
+rows, payload = load_supabase_dataset(
+    read_secret('SUPABASE_URL'), read_secret('SUPABASE_PUBLISHABLE_KEY'),
+    read_secret('SATIPO_EMAIL'), read_secret('SATIPO_PASSWORD'),
+    expected_sha256='{digest}')
+df = pd.DataFrame(rows)
+df.to_csv(OUT/'lecturas_300.csv', index=False)
+print('Supabase: 300 lecturas verificadas; 214 con alarma y 86 sin alarma.')
+print('Hash de la instantánea:', hashlib.sha256(payload.encode()).hexdigest())
+display(df.head())
+""")
 md('''## 2. Variables y separación temporal
 Se excluyen la etiqueta, el identificador de origen, el contador CNT, el tiempo y el identificador del conjunto de datos. No deben usarse como pistas artificiales de la clase.
 Las 12 características conservan las unidades de la fuente. No se inventan porcentajes de humo ni equivalencias con sensores MQ-2. No existe separación física por nodos: los seis nodos del panel son agrupaciones virtuales.
@@ -156,4 +193,4 @@ La separación temporal reduce la mezcla de pasado y futuro, pero no elimina tod
 notebook={'nbformat':4,'nbformat_minor':5,'metadata':{'colab':{'name':'Alerta_Satipo_300_predicciones.ipynb'},'kernelspec':{'name':'python3','display_name':'Python 3'},'language_info':{'name':'python'}},'cells':cells}
 for i,c in enumerate(cells):c['id']=f'satipo-{i:02d}'
 (OUT/'Alerta_Satipo_300_predicciones.ipynb').write_text(json.dumps(notebook,ensure_ascii=False,indent=1),encoding='utf-8')
-print('Notebook generado con exactamente 300 registros y hash',digest)
+print('Notebook conectado generado. Hash esperado:',digest)
