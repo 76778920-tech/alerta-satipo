@@ -1,0 +1,473 @@
+{
+  "version": "rf-20260926-eval-v1",
+  "dataset_id": "smoke-detection-iot-300-v1",
+  "evaluation": {
+    "dataset_sha256": "805fc268e338964e489b2e76f39206c4a7b90140d2e9838faafd27c513168a23",
+    "train_rows": 240,
+    "test_rows": 60,
+    "split": "chronological_80_20",
+    "features": [
+      "temperature_c",
+      "humidity_pct",
+      "tvoc_ppb",
+      "eco2_ppm",
+      "raw_h2",
+      "raw_ethanol",
+      "pressure_hpa",
+      "pm1_0",
+      "pm2_5",
+      "nc0_5",
+      "nc1_0",
+      "nc2_5"
+    ],
+    "random_forest": {
+      "accuracy": 0.9,
+      "balanced_accuracy": 0.9057239057239057,
+      "precision_alarm": 0.9655172413793104,
+      "recall_alarm": 0.8484848484848485,
+      "f1_alarm": 0.9032258064516129
+    },
+    "baseline": {
+      "accuracy": 0.55,
+      "balanced_accuracy": 0.5,
+      "precision_alarm": 0.55,
+      "recall_alarm": 1.0,
+      "f1_alarm": 0.7096774193548387
+    },
+    "roc_auc": 0.8754208754208753,
+    "confusion_matrix": [
+      [
+        26,
+        1
+      ],
+      [
+        5,
+        28
+      ]
+    ],
+    "sklearn_version": "1.5.2",
+    "notice": "Experimental historical classification; not calibrated wildfire probability."
+  },
+  "rows": [
+    {
+      "source_row": 43422,
+      "recorded_at": "2022-06-09T13:02:51+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9812062384952048
+    },
+    {
+      "source_row": 43460,
+      "recorded_at": "2022-06-09T13:03:29+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 1.0
+    },
+    {
+      "source_row": 43496,
+      "recorded_at": "2022-06-09T13:04:05+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9707134335450868
+    },
+    {
+      "source_row": 44621,
+      "recorded_at": "2022-06-09T13:22:50+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9840724301024892
+    },
+    {
+      "source_row": 44643,
+      "recorded_at": "2022-06-09T13:23:12+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.95291108274321
+    },
+    {
+      "source_row": 44657,
+      "recorded_at": "2022-06-09T13:23:26+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9872666100274802
+    },
+    {
+      "source_row": 45174,
+      "recorded_at": "2022-06-09T13:32:03+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.8657885997385036
+    },
+    {
+      "source_row": 45220,
+      "recorded_at": "2022-06-09T13:32:49+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.987244617961904
+    },
+    {
+      "source_row": 45260,
+      "recorded_at": "2022-06-09T13:33:29+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9940405598383305
+    },
+    {
+      "source_row": 45731,
+      "recorded_at": "2022-06-09T13:41:20+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9921349405425492
+    },
+    {
+      "source_row": 45824,
+      "recorded_at": "2022-06-09T13:42:53+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9631093269249467
+    },
+    {
+      "source_row": 45858,
+      "recorded_at": "2022-06-09T13:43:27+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9968678688334248
+    },
+    {
+      "source_row": 46318,
+      "recorded_at": "2022-06-09T13:51:07+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9804148821947704
+    },
+    {
+      "source_row": 46658,
+      "recorded_at": "2022-06-09T13:56:47+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9748280782565732
+    },
+    {
+      "source_row": 46681,
+      "recorded_at": "2022-06-09T13:57:10+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9587039303301053
+    },
+    {
+      "source_row": 46836,
+      "recorded_at": "2022-06-09T13:59:45+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9776658122795417
+    },
+    {
+      "source_row": 47053,
+      "recorded_at": "2022-06-09T14:03:22+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9911968742665545
+    },
+    {
+      "source_row": 47924,
+      "recorded_at": "2022-06-09T14:17:53+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9795581938024676
+    },
+    {
+      "source_row": 48015,
+      "recorded_at": "2022-06-09T14:19:24+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9938911473784149
+    },
+    {
+      "source_row": 48038,
+      "recorded_at": "2022-06-09T14:19:47+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9813717818363473
+    },
+    {
+      "source_row": 48084,
+      "recorded_at": "2022-06-09T14:20:33+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9955764360190108
+    },
+    {
+      "source_row": 48271,
+      "recorded_at": "2022-06-09T14:23:40+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9838244670141414
+    },
+    {
+      "source_row": 48574,
+      "recorded_at": "2022-06-09T14:28:43+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9938911473784149
+    },
+    {
+      "source_row": 48611,
+      "recorded_at": "2022-06-09T14:29:20+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9896209482293143
+    },
+    {
+      "source_row": 49022,
+      "recorded_at": "2022-06-09T14:36:11+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.961790452592575
+    },
+    {
+      "source_row": 49265,
+      "recorded_at": "2022-06-09T14:40:14+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9729478502513519
+    },
+    {
+      "source_row": 49385,
+      "recorded_at": "2022-06-09T14:42:14+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9571533193488068
+    },
+    {
+      "source_row": 49633,
+      "recorded_at": "2022-06-09T14:46:22+00:00",
+      "actual": true,
+      "predicted": true,
+      "score": 0.9954682738758827
+    },
+    {
+      "source_row": 50414,
+      "recorded_at": "2022-06-10T23:23:51+00:00",
+      "actual": true,
+      "predicted": false,
+      "score": 0.2560169630556559
+    },
+    {
+      "source_row": 50420,
+      "recorded_at": "2022-06-10T23:23:57+00:00",
+      "actual": true,
+      "predicted": false,
+      "score": 0.2560169630556559
+    },
+    {
+      "source_row": 50750,
+      "recorded_at": "2022-06-10T23:29:27+00:00",
+      "actual": true,
+      "predicted": false,
+      "score": 0.02103587976325579
+    },
+    {
+      "source_row": 51080,
+      "recorded_at": "2022-06-10T23:34:57+00:00",
+      "actual": true,
+      "predicted": false,
+      "score": 0.036012211365626316
+    },
+    {
+      "source_row": 51135,
+      "recorded_at": "2022-06-10T23:35:52+00:00",
+      "actual": true,
+      "predicted": false,
+      "score": 0.016970562654996413
+    },
+    {
+      "source_row": 57318,
+      "recorded_at": "2022-06-13T12:52:20+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.11653170675995468
+    },
+    {
+      "source_row": 58013,
+      "recorded_at": "2022-06-13T13:03:55+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.2568063992759007
+    },
+    {
+      "source_row": 58048,
+      "recorded_at": "2022-06-13T13:04:30+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.3441057841825618
+    },
+    {
+      "source_row": 58260,
+      "recorded_at": "2022-06-13T13:08:02+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.2479727318305627
+    },
+    {
+      "source_row": 58420,
+      "recorded_at": "2022-06-13T13:10:42+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.32196990251590357
+    },
+    {
+      "source_row": 58563,
+      "recorded_at": "2022-06-13T13:13:05+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.25553230730881993
+    },
+    {
+      "source_row": 58650,
+      "recorded_at": "2022-06-13T13:14:32+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.2652478225836364
+    },
+    {
+      "source_row": 58882,
+      "recorded_at": "2022-06-13T13:18:24+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.35633043900510813
+    },
+    {
+      "source_row": 59162,
+      "recorded_at": "2022-06-13T13:23:04+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.26025640208900425
+    },
+    {
+      "source_row": 59435,
+      "recorded_at": "2022-06-13T13:27:37+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.17943396836435158
+    },
+    {
+      "source_row": 59517,
+      "recorded_at": "2022-06-13T13:28:59+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.23668453704176712
+    },
+    {
+      "source_row": 59930,
+      "recorded_at": "2022-06-13T13:35:52+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.20147814275228143
+    },
+    {
+      "source_row": 59937,
+      "recorded_at": "2022-06-13T13:35:59+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.17698759730223437
+    },
+    {
+      "source_row": 60261,
+      "recorded_at": "2022-06-13T13:41:23+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.4344520735711266
+    },
+    {
+      "source_row": 60652,
+      "recorded_at": "2022-06-13T13:47:54+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.21260730771678002
+    },
+    {
+      "source_row": 60931,
+      "recorded_at": "2022-06-13T13:52:33+00:00",
+      "actual": false,
+      "predicted": true,
+      "score": 0.510556580484293
+    },
+    {
+      "source_row": 61394,
+      "recorded_at": "2022-06-13T14:00:16+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.24340421770202905
+    },
+    {
+      "source_row": 61397,
+      "recorded_at": "2022-06-13T14:00:19+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.24966020019466637
+    },
+    {
+      "source_row": 61487,
+      "recorded_at": "2022-06-13T14:01:49+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.24398207722803078
+    },
+    {
+      "source_row": 61658,
+      "recorded_at": "2022-06-13T14:04:40+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.12879314384072915
+    },
+    {
+      "source_row": 61721,
+      "recorded_at": "2022-06-13T14:05:43+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.37326754776413656
+    },
+    {
+      "source_row": 61748,
+      "recorded_at": "2022-06-13T14:06:10+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.32162605199184974
+    },
+    {
+      "source_row": 61755,
+      "recorded_at": "2022-06-13T14:06:17+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.32162605199184974
+    },
+    {
+      "source_row": 61935,
+      "recorded_at": "2022-06-13T14:09:17+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.32162605199184974
+    },
+    {
+      "source_row": 62133,
+      "recorded_at": "2022-06-13T14:12:35+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.32162605199184974
+    },
+    {
+      "source_row": 62263,
+      "recorded_at": "2022-06-13T14:14:45+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.4009477343020645
+    },
+    {
+      "source_row": 62500,
+      "recorded_at": "2022-06-13T14:18:42+00:00",
+      "actual": false,
+      "predicted": false,
+      "score": 0.41088944262567273
+    }
+  ]
+}

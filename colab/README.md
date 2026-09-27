@@ -29,7 +29,7 @@ Se conserva una instantánea CSV para reproducibilidad dentro de salida_satipo y
 
 Protocolo fijo: 240 filas cronológicamente anteriores para entrenamiento y 60 posteriores para prueba; se excluyen IDs, contador, tiempo y etiqueta de las 12 características. Validación local conectada a Supabase: Python 3.12.10 y scikit-learn 1.5.2, 54/60 aciertos, 5 falsos negativos y 1 falso positivo. Los resultados locales están en resultados_locales; no se presentan como ejecución en Colab.
 
-El modelo clasifica Fire Alarm histórico; no pronostica incendios futuros en Satipo. Su score no está calibrado. No escribe predicciones en Supabase ni las integra al panel: eso requiere un servicio de inferencia y su adaptador. No reemplaza el JSON histórico de umbrales.
+El modelo clasifica Fire Alarm histórico; no pronostica incendios futuros en Satipo. Su score no está calibrado. No escribe predicciones en Supabase. Los 60 resultados de esta evaluación están publicados en la sección Predicciones del panel mediante una API administrativa; la inferencia de nuevas lecturas requiere un servicio adicional. Ver [Predicciones web](../docs/PREDICCIONES_WEB.md). No reemplaza el JSON histórico de umbrales.
 
 ## Archivos y pruebas
 
@@ -47,4 +47,4 @@ El ZIP exporta únicamente los seis archivos previstos; no incorpora archivos aj
 
 Prueba de integración: `python tests/colab_live.py`. Requiere las dependencias del notebook, `config/public.json` y las credenciales locales existentes en `config/admin.local.json` (archivo privado, nunca versionarlo). Ejecuta todas las celdas, comprueba 300 lecturas y 60 filas de prueba, entradas inválidas, contenido del ZIP y una consulta fallida después del entrenamiento. Escribe resultados locales en `test-results/colab-audit`; no modifica las tablas remotas. El inicio de sesión sí crea una sesión de Auth.
 
-Resultado de la revisión: nueve pruebas unitarias y la integración completa contra Supabase aprobadas. Esta verificación se realizó localmente; el acceso a Secretos y la ejecución dentro de la cuenta Google Colab deben verificarse allí. La integración de inferencia en el panel sigue pendiente.
+Resultado de la revisión: nueve pruebas unitarias y la integración completa contra Supabase aprobadas. Esta verificación se realizó localmente; el acceso a Secretos y la ejecución dentro de la cuenta Google Colab deben verificarse allí. La inferencia continua sigue pendiente; la consulta de los 60 resultados publicados ya está disponible en el panel.

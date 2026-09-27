@@ -3,7 +3,12 @@ import { changeCommand, validateThresholds, requireObject } from '../domain/oper
 import { AdminUseCases } from './ports.mjs';
 /** Puerto de entrada: API de aplicación consumida por HTTP y pruebas. */
 export class AdminService extends AdminUseCases {
-  constructor({ identity, repository }) { super(); this.identity=identity; this.repository=repository; }
+  constructor({ identity, repository, predictions }) { super(); this.identity=identity; this.repository=repository; this.predictions=predictions; }
+  async listPredictions(token) {
+    await this.authorize(token);
+    if (!this.predictions) throw new ApplicationError("UNAVAILABLE", "Resultados no disponibles.");
+    return this.predictions.results();
+  }
   async authorize(token) {
     const actor=await this.identity.authenticate(token);
     if (!actor) throw new ApplicationError('UNAUTHENTICATED','Inicia sesión nuevamente.');

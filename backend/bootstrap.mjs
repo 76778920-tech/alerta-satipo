@@ -1,3 +1,4 @@
+import { PublishedPredictionResults } from './infrastructure/predictions.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { AdminService } from './application/admin-service.mjs';
 import { SupabaseIdentity, SupabaseRepository } from './infrastructure/supabase.mjs';
@@ -10,6 +11,6 @@ export function compose({url,publicKey,allowedOrigins}) {
   return createHandler({allowedOrigins, serviceFactory:token=>{
     // Cliente aislado por solicitud. JWT de usuario: nunca service_role.
     const client=createClient(url,publicKey,{global:{headers:{Authorization:`Bearer ${token}`}},auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
-    return new AdminService({identity:new SupabaseIdentity(client),repository:new SupabaseRepository(client)});
+    return new AdminService({identity:new SupabaseIdentity(client),repository:new SupabaseRepository(client),predictions:new PublishedPredictionResults()});
   }});
 }

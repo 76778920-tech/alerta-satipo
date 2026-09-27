@@ -35,6 +35,7 @@ export function createHandler({ serviceFactory, allowedOrigins }) {
     try {
       const service=serviceFactory(token);
       if(request.method==='GET') {
+        if(path==='/predictions')return respond(await service.listPredictions(token));
         if(path==='/readings')return respond(await service.listReadings(token));
         if(path==='/operations')return respond(await service.listOperations(token));
         if(path==='/activity')return respond(await service.getActivity(token));

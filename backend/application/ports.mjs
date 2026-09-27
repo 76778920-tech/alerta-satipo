@@ -1,5 +1,6 @@
 /** Puertos propiedad del núcleo. No exponen objetos del SDK, HTTP ni SQL. */
 export class AdminUseCases {
+  async listPredictions(token) { throw new Error("AdminUseCases.listPredictions"); }
   async listReadings(token) { throw new Error('AdminUseCases.listReadings'); }
   async listOperations(token) { throw new Error('AdminUseCases.listOperations'); }
   async getActivity(token) { throw new Error('AdminUseCases.getActivity'); }
@@ -19,4 +20,8 @@ export class RepositoryPort {
   async compareAndSet(command) { throw new Error('RepositoryPort.compareAndSet'); }
   async exists(kind, id) { throw new Error('RepositoryPort.exists'); }
   async saveSettings(settings) { throw new Error('RepositoryPort.saveSettings'); }
+}
+
+export class PredictionResultsPort {
+  async results() { throw new Error("PredictionResultsPort.results"); }
 }
