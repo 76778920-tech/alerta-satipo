@@ -66,6 +66,10 @@ code("""def read_secret(name):
         raise RuntimeError('Falta el secreto ' + name)
     return value
 """ + f"""
+# Invalida resultados anteriores antes de una nueva consulta, incluso si esta falla.
+for previous_name in ('rows','payload','df','X','y','X_train','X_test','y_train','y_test',
+                      'model','baseline','pred','score','report','predictions','artifact','predecir_medicion'):
+    globals().pop(previous_name, None)
 rows, payload = load_supabase_dataset(
     read_secret('SUPABASE_URL'), read_secret('SUPABASE_PUBLISHABLE_KEY'),
     read_secret('SATIPO_EMAIL'), read_secret('SATIPO_PASSWORD'),
@@ -145,6 +149,9 @@ La función exige los mismos 12 campos y valores numéricos finitos. Los valores
 El ejemplo siguiente usa una fila de prueba ya evaluada: es una demostración de inferencia, no una observación nueva ni una validación adicional. Sustituye `nueva_medicion` por mediciones compatibles para un ensayo propio.
 ''')
 code('''def predecir_medicion(medicion):
+    if not isinstance(medicion,dict): raise ValueError('La medición debe ser un diccionario')
+    if any(isinstance(value,(bool,np.bool_)) for value in medicion.values()):
+        raise ValueError('No se admiten booleanos como mediciones')
     missing = set(FEATURES) - set(medicion)
     if missing: raise ValueError('Faltan campos: ' + ', '.join(sorted(missing)))
     values = pd.DataFrame([{key:medicion[key] for key in FEATURES}]).apply(pd.to_numeric,errors='raise')
@@ -174,7 +181,9 @@ joblib.dump(artifact,OUT/'modelo_fire_alarm_experimental.joblib')
     'Ver evaluacion.json y versiones antes de reproducir.\\n',encoding='utf-8')
 archive = Path('alerta_satipo_modelo_experimental.zip')
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
-    for file in OUT.iterdir(): z.write(file,arcname=file.name)
+    for filename in ('lecturas_300.csv','matriz_confusion.png','predicciones_prueba_60.csv',
+                     'evaluacion.json','modelo_fire_alarm_experimental.joblib','README.txt'):
+        z.write(OUT/filename,arcname=filename)
 print('Exportado:',archive.resolve())
 try:
     from google.colab import files

@@ -29,7 +29,10 @@ def canonical_payload(rows):
             item[key]=float(value)
         if row['source_row']<0 or row['source_row']!=int(row['source_row']):
             raise ValueError('Identificador de origen inválido.')
-        stamp=datetime.fromisoformat(row['recorded_at'].replace('Z','+00:00'))
+        try:
+            stamp=datetime.fromisoformat(row['recorded_at'].replace('Z','+00:00'))
+        except (AttributeError,TypeError,ValueError):
+            raise ValueError('Fecha de lectura inválida.') from None
         if stamp.tzinfo is None or stamp.timestamp()!=row['utc_seconds']:
             raise ValueError('Fecha inconsistente con UTC.')
         item.update(dataset_id=DATASET,recorded_at=stamp.astimezone(timezone.utc).isoformat(),fire_alarm=row['fire_alarm'])
@@ -40,10 +43,14 @@ def canonical_payload(rows):
         raise ValueError('La distribución no coincide con las 214 etiquetas positivas esperadas.')
     return json.dumps(sorted(result,key=lambda r:r['source_row']),sort_keys=True,separators=(',',':'),ensure_ascii=False)
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise RuntimeError('Redirección rechazada; verifica la URL original de Supabase.')
+
 def _request(url, headers, body=None):
     request=urllib.request.Request(url,headers=headers,data=None if body is None else json.dumps(body).encode(),method='GET' if body is None else 'POST')
     try:
-        with urllib.request.urlopen(request,timeout=40) as response:
+        with urllib.request.build_opener(_NoRedirect()).open(request,timeout=40) as response:
             raw=response.read(2_000_001)
             if len(raw)>2_000_000:raise ValueError('Respuesta demasiado grande.')
             return json.loads(raw),response.headers.get('Content-Range','')
@@ -55,8 +62,13 @@ def _request(url, headers, body=None):
         raise RuntimeError(message) from None
     except (urllib.error.URLError,TimeoutError):
         raise RuntimeError('No se pudo conectar con Supabase. Revisa conexión y disponibilidad.') from None
+    except (json.JSONDecodeError,UnicodeDecodeError):
+        raise RuntimeError('Supabase no devolvió JSON válido. No se utilizaron datos alternativos.') from None
 
 def load_supabase_dataset(url, public_key, email, password, expected_sha256):
+    if any(not isinstance(value,str) or not value.strip() for value in (url,public_key,email,password)):
+        raise ValueError('Los cuatro secretos deben contener texto no vacío.')
+    url=url.strip().rstrip('/');public_key=public_key.strip();email=email.strip()
     if not re.fullmatch(r'https://[a-z0-9-]+\.supabase\.co',url):
         raise ValueError('Usa la URL HTTPS del proyecto Supabase, sin rutas ni barra final.')
     role=None
@@ -68,7 +80,7 @@ def load_supabase_dataset(url, public_key, email, password, expected_sha256):
         raise ValueError('Solo se admite clave pública publishable o anon; nunca service_role o secret.')
     if not email or not password:raise ValueError('Faltan credenciales de una cuenta existente.')
     session,_=_request(url+'/auth/v1/token?grant_type=password',{'apikey':public_key,'Content-Type':'application/json'}, {'email':email,'password':password})
-    token=session.get('access_token')
+    token=session.get('access_token') if isinstance(session,dict) else None
     if not isinstance(token,str) or not token:raise RuntimeError('No se obtuvo una sesión válida.')
     rows,content_range=_request(url+'/rest/v1/smoke_readings?select=*&dataset_id=eq.'+DATASET+'&order=source_row.asc&limit=301',
         {'apikey':public_key,'Authorization':'Bearer '+token,'Prefer':'count=exact','Accept':'application/json'})

@@ -35,6 +35,16 @@ El modelo clasifica Fire Alarm histórico; no pronostica incendios futuros en Sa
 
 - supabase_dataset.py: consulta, autenticación y validación. Su código se incorpora al notebook para que no dependa de descargar archivos auxiliares privados.
 - scripts/build_prediction_notebook.py: regenera el notebook y hash esperado desde la muestra versionada.
-- python tests/colab_dataset_test.py: cinco pruebas de formato equivalente, datos inválidos, claves privadas, cambios de contenido y operaciones permitidas.
+- python tests/colab_dataset_test.py: nueve pruebas que cubren formato equivalente, datos inválidos, claves privadas, cambios de contenido, operaciones permitidas, configuración, respuestas inesperadas y redirecciones HTTP.
 
 Ejecución local: las mismas cuatro variables se leen del entorno. No se imprimen ni se exportan credenciales. El conjunto consultado en Supabase está sujeto a las políticas RLS actuales. La cuenta usada conserva sus propios permisos; este notebook no crea un rol nuevo de base de datos.
+
+### Revisión del 26 de septiembre de 2026
+
+Se corrigieron respuestas de autenticación inesperadas, fechas inválidas y respuestas que no contienen JSON para generar errores comprensibles. Se bloquean redirecciones HTTP para evitar enviar credenciales a otra dirección. Al repetir la consulta se eliminan los datos y el modelo anteriores de la memoria antes de descargar; si falla, el entrenamiento se detiene. La inferencia rechaza entradas que no sean un diccionario y valores booleanos como mediciones.
+
+El ZIP exporta únicamente los seis archivos previstos; no incorpora archivos ajenos de la carpeta. Los archivos exportados en ejecuciones anteriores no se borran automáticamente: siguen siendo resultados de aquella ejecución.
+
+Prueba de integración: `python tests/colab_live.py`. Requiere las dependencias del notebook, `config/public.json` y las credenciales locales existentes en `config/admin.local.json` (archivo privado, nunca versionarlo). Ejecuta todas las celdas, comprueba 300 lecturas y 60 filas de prueba, entradas inválidas, contenido del ZIP y una consulta fallida después del entrenamiento. Escribe resultados locales en `test-results/colab-audit`; no modifica las tablas remotas. El inicio de sesión sí crea una sesión de Auth.
+
+Resultado de la revisión: nueve pruebas unitarias y la integración completa contra Supabase aprobadas. Esta verificación se realizó localmente; el acceso a Secretos y la ejecución dentro de la cuenta Google Colab deben verificarse allí. La integración de inferencia en el panel sigue pendiente.
