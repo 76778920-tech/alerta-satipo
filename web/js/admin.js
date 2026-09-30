@@ -390,6 +390,7 @@ const AdminModule = (() => {
     setupLogoutAdmin();
     if(B.cloud){document.querySelector('.admin-grid').hidden=true;document.querySelector('#sensor-table').closest('.ops-panel').hidden=true;if($('#plan-maintenance-btn'))$('#plan-maintenance-btn').disabled=true;}
     setText('#data-mode',B.cloud?'Supabase conectado · reportes e incidentes persistentes · sin sensores de campo conectados':'DEMO: sensores, incidentes y enlace simulados en este navegador.');
+    window.SatipoDistrictDemo.init($('#district-demo'));
     window.SatipoPredictions.init($('#prediction-explorer'));
     await window.SatipoDataset.init($('#dataset-explorer'));
     if(B.cloud) await window.SatipoOperations.setup();
