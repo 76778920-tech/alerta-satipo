@@ -30,7 +30,7 @@ with sync_playwright() as p:
     page.wait_for_function("!document.querySelector('#submit-btn').disabled")
     page.fill('#email',credentials['email']);page.fill('#password',credentials['password'])
     page.locator('#submit-btn').click();page.wait_for_url('**/web/index.html')
-    page.wait_for_selector('#dataset-summary')
+    page.wait_for_function("document.querySelector('#dataset-summary')?.textContent.includes('300 registros')")
     assert '300 registros' in page.locator('#dataset-summary').inner_text()
     browser.close()
 print('PASS: sin registro, sin rutas móviles, registro Supabase desactivado, rechazo de no-admin y acceso real de administrador. No se crearon cuentas.')

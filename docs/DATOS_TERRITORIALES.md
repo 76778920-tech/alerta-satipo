@@ -62,3 +62,25 @@ No se ejecuta entrenamiento con etiquetas vacías. `training_allowed` permanece 
 ## Evidencia de verificación
 
 Se ejecutó la descarga real completa y seis pruebas: cobertura/ausencia de etiquetas inventadas, ventanas temporales, rechazo de datos incompletos o unidades incorrectas, duplicación y asignación FIRMS, exigencia de evidencia y correspondencia de hashes. Las seis aprobaron.
+
+## Flujo de entrenamiento experimental preparado
+
+`territorial/training.py` permite revisar la preparación del dataset y, cuando existan etiquetas verificadas, ejecutar un experimento temporal. Diagnóstico actual:
+
+```powershell
+python territorial/training.py --dataset data/territorial/2025/district_day_research.csv
+```
+
+Las 3.285 filas actuales carecen de etiquetas; el diagnóstico bloquea el entrenamiento. Con el archivo etiquetado mediante `labels.py`:
+
+```powershell
+python territorial/training.py --dataset data/territorial/2025/dataset-etiquetado.csv --train-experiment
+```
+
+Se requieren al menos 30 fechas y cinco ejemplos por clase en cada partición como mínimos técnicos exploratorios, no como garantía estadística. El corte es global por fecha (80/20) para todos los distritos; excluye horizontes de entrenamiento que alcancen la prueba. Se omiten filas sin etiqueta o ventana meteorológica completa. No se usa UBIGEO como predictor ni se mezclan filas de la misma fecha entre entrenamiento y prueba.
+
+El modelo de configuración fija se compara con una referencia de frecuencia previa y reporta matriz de confusión, precisión, sensibilidad, exactitud balanceada, Brier score y resultados por distrito. El puntaje no se declara calibrado. No se seleccionan hiperparámetros con la prueba. Las métricas por distrito con una sola clase no bastan para evaluar ambas clases.
+
+La salida se guarda en `test-results/territorial-training/`, marcada EXPERIMENT_ONLY_NOT_OPERATIONAL. No exporta ni despliega automáticamente un modelo, no escribe Supabase y nunca concede aprobación operativa. Cinco pruebas validan el flujo; el ensayo sintético solo comprueba software, no rendimiento territorial real.
+
+El usuario confirmó que aún no tiene acceso ni archivo de NASA FIRMS. Sigue siendo necesario obtener el CSV histórico y contrastarlo con eventos y cobertura verificables. La descarga requiere una sesión del titular o acceso público válido; no se crearon cuentas en su nombre.

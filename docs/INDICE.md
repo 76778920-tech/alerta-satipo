@@ -1,3 +1,13 @@
+# Documentación vigente
+
+- [Guía de uso del panel](GUIA_USO_ACTUAL.md)
+- [Pruebas de aceptación y pendientes](ACEPTACION_ACTUAL.md)
+- [Datos y entrenamiento territorial experimental](DATOS_TERRITORIALES.md)
+- [Predicciones históricas publicadas](PREDICCIONES_WEB.md)
+- [Simulación distrital](SIMULACION_DISTRITAL.md)
+
+El índice siguiente se conserva como referencia histórica y puede contener rutas o funciones anteriores.
+
 > **Documento histórico anterior a la integración con Supabase (23/09/2026).** Las afirmaciones de «producción lista», rutas antiguas y pruebas anteriores no describen la versión actual. Consulta [la revisión vigente](REVISION_TECNICA.md) y [la guía de Supabase](SUPABASE.md).
 
 # 📚 Índice de Documentación - Alerta Satipo
