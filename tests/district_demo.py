@@ -27,6 +27,20 @@ with sync_playwright() as p:
     assert len({r['ubigeo'] for r in data['districts']})==9
     assert all(0<=r['score']<=100 for r in data['districts'])
     assert download.suggested_filename.startswith('SIMULACION-')
+    for row in data['districts']:
+        expected=round(max(0,min(100,(row['temperatureC']-18)*2+(100-row['humidityPct'])*0.55+row['windKmh']*0.7-row['rainMm']*2)))
+        assert abs(expected-row['score'])<=1
+    identity=data['id']
+    page.reload();page.wait_for_selector('#demo-generate',state='attached');page.click('[data-view="district-demo"]')
+    assert page.input_value('#demo-history')==identity
+    page.select_option('#demo-profile','Lluvioso');page.click('#demo-generate')
+    assert page.input_value('#demo-history')!=identity
+    page.select_option('#demo-history',identity)
+    assert identity[:8] in page.inner_text('#demo-period')
+    page.wait_for_function("window.SatipoOperations && window.SatipoOperations.getSnapshot()!==null")
+    message=page.inner_text('#demo-status')
+    page.evaluate('window.SatipoOperations.refresh()')
+    assert page.inner_text('#demo-status')==message
     page.screenshot(path='test-results/district-demo-desktop.png')
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')

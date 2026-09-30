@@ -16,7 +16,7 @@ Muestra 60 clasificaciones históricas del modelo publicado, reservadas del entr
 
 ## Simulación distrital
 
-Presenta nueve distritos reales con índices ficticios. Generar otro escenario produce resultados aleatorios locales; los filtros permiten seleccionar niveles. Exportar simulación descarga un JSON marcado SIMULATION_ONLY. El horizonte de 24 horas es ilustrativo. Esta función no modifica Supabase, no genera incidentes reales ni notifica a personas. Recargar genera un escenario diferente.
+Presenta nueve distritos reales con índices ficticios. Generar otro escenario produce resultados aleatorios locales; los filtros permiten seleccionar niveles. Exportar simulación descarga un JSON marcado SIMULATION_ONLY. El horizonte de 24 horas es ilustrativo. Esta función no modifica Supabase, no genera incidentes reales ni notifica a personas. Elige un perfil seco, lluvioso o variable antes de generar. Temperatura, humedad, lluvia y viento son ficticios y determinan un índice ilustrativo coherente. El historial local conserva los últimos diez escenarios y recupera el último al recargar; no se sincroniza entre equipos.
 
 ## Nodos, incidentes y mantenimiento
 

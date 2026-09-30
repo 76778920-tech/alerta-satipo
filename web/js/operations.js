@@ -23,7 +23,7 @@ window.SatipoOperations = (() => {
     });
     return refresh();
   }
-  function status(message,error=false){document.querySelectorAll('.operations-status').forEach(e=>{e.textContent=message;e.classList.toggle('quality-warning',error);});}
+  function status(message,error=false){document.querySelectorAll('#demo-nodes .operations-status, #demo-cases .operations-status, #demo-maintenance .operations-status').forEach(e=>{e.textContent=message;e.classList.toggle('quality-warning',error);});}
   function control(table,item,states){return `<label>Estado de ${esc(item.node_id)} <select data-operation="${table}" data-node="${esc(item.node_id)}" data-previous="${esc(item.state)}">${states.map(s=>`<option ${s===item.state?'selected':''}>${s}</option>`).join('')}</select></label>`;}
   function render(){
     const {nodes,links,cases,maintenance}=snapshot;
@@ -44,7 +44,7 @@ window.SatipoOperations = (() => {
     try{
       const {nodes,links,cases,maintenance}=await B.api('/operations');
       if(nodes.length!==6||links.length!==300||new Set(links.map(r=>r.source_row)).size!==300||links.some(r=>!r.smoke_readings)||nodes.some(n=>links.filter(l=>l.node_id===n.id).length!==50))throw Error('La relación de nodos y lecturas está incompleta.');
-      snapshot={nodes,links,cases,maintenance};render();status('Datos y estados consultados en Supabase. Cambiar un estado lo guarda para todos los administradores.');
+      snapshot={nodes,links,cases,maintenance};render();status(`Datos y estados consultados ${new Date().toLocaleString('es-PE',{timeZone:'America/Lima'})} (Perú). Estados compartidos en Supabase; lecturas históricas, no telemetría actual.`);
     }catch(error){status(`No se pudieron actualizar estas secciones. ${snapshot?'Se conserva la última consulta. ':''}Pulsa Actualizar para reintentar.`,true);}
     finally{document.querySelectorAll('.operations-retry').forEach(b=>b.disabled=false);}
   }
