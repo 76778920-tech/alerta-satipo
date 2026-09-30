@@ -33,4 +33,4 @@ with sync_playwright() as p:
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
     assert not errors,errors
     browser.close()
-print('PASS: distritos, horizontes sin resultados ficticios, navegación y móvil.')
+print('PASS: distritos, horizontes sin resultados simulados, navegación y móvil.')

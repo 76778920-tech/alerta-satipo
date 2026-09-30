@@ -16,10 +16,10 @@ with sync_playwright() as p:
     page.on('request',lambda r:writes.append(r.url) if r.method in ['POST','PATCH','PUT','DELETE'] else None)
     page.click('[data-view="district-demo"]')
     assert page.locator('#demo-cards article').count()==9
-    assert 'DATOS FICTICIOS' in page.inner_text('#district-demo')
+    assert 'DATOS SIMULADOS' in page.inner_text('#district-demo')
     first=page.inner_text('#demo-period');page.click('#demo-generate');assert first!=page.inner_text('#demo-period')
     page.select_option('#demo-filter','Alto')
-    for card in page.locator('#demo-cards article').all():assert 'Alto · ficticio' in card.inner_text()
+    for card in page.locator('#demo-cards article').all():assert 'Alto · simulado' in card.inner_text()
     page.select_option('#demo-filter','Todos')
     with page.expect_download() as info:page.click('#demo-download')
     download=info.value;data=json.loads(Path(download.path()).read_text(encoding='utf-8'))
