@@ -38,7 +38,7 @@ window.SatipoPredictions = (() => {
   }
   function init(element) {
     root=element;
-    root.innerHTML=`<div class="reading-heading"><div><p class="eyebrow">INTELIGENCIA ARTIFICIAL · EVALUACIÓN</p><h2>Predicciones del modelo</h2></div><button type="button" id="prediction-refresh" class="secondary-button">Actualizar resultados</button></div>
+    root.innerHTML=`<div class="reading-heading"><div><p class="eyebrow">INTELIGENCIA ARTIFICIAL · EVALUACIÓN</p><h2>Evaluación histórica de humo</h2></div><button type="button" id="prediction-refresh" class="secondary-button">Actualizar resultados</button></div>
     <p class="reference-note">Clasificación histórica experimental de Smoke Detection IoT. Estas 60 lecturas se reservaron para prueba y no se usaron para entrenar. No son alertas actuales ni pronósticos de incendios en Satipo. El puntaje de alarma (0–1) no es una probabilidad calibrada.</p>
     <output id="prediction-status" class="operations-status" aria-live="polite"></output>
     <div id="prediction-results" hidden><p id="prediction-version"></p><div id="prediction-summary" class="kpis-grid"></div>

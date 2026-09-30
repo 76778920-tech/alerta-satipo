@@ -10,7 +10,7 @@ Utiliza una cuenta administrativa previamente autorizada. La web no ofrece regis
 
 Consulta las 300 lecturas históricas de Smoke Detection IoT almacenadas en Supabase. Puedes filtrar, recorrer páginas y consultar detalles. Fire Alarm es la etiqueta original, no un aviso actual. Si falla la consulta, sigue el mensaje de error y reintenta; no sustituyas la muestra por valores aleatorios.
 
-## Predicciones
+## Evaluación de humo
 
 Muestra 60 clasificaciones históricas del modelo publicado, reservadas del entrenamiento de 240 lecturas. Se presentan etiqueta real, clasificación, puntaje no calibrado y errores. Hay 54 aciertos, cinco falsos negativos y uno falso positivo. Actualizar consulta la evaluación publicada; no entrena ni procesa sensores nuevos. El modelo no pronostica incendios futuros por distrito.
 
@@ -30,7 +30,7 @@ Usa Cerrar sesión al terminar, especialmente en un equipo compartido. Para una 
 
 1. Explicar el acceso restringido y entrar como administrador.
 2. Mostrar las 300 lecturas y su procedencia histórica.
-3. Abrir Predicciones; explicar resultados y errores sin presentarlos como pronóstico territorial.
+3. Abrir Evaluación de humo; explicar resultados y errores sin presentarlos como pronóstico territorial.
 4. Abrir Simulación distrital; generar y filtrar un escenario. Mostrar el aviso de datos ficticios y su exportación.
 5. Mostrar la relación de nodos virtuales, lecturas y operaciones.
 6. Explicar que ya existen datos meteorológicos territoriales, pero faltan eventos verificados para entrenar el pronóstico real.
@@ -45,3 +45,7 @@ Usa Cerrar sesión al terminar, especialmente en un equipo compartido. Para una 
 | Meteorología territorial (archivos del proyecto) | Open-Meteo ERA5 y límites MINAM | Investigación; sin etiquetas de incendio verificadas |
 
 No existe todavía un servicio automático de pronóstico territorial ni alertas operativas validadas.
+
+## Pronóstico territorial
+
+Consulta el distrito y el horizonte solicitado: 24 horas, 7 días o 30 días. Actualmente todos muestran Sin estimación disponible. Los selectores no ejecutan un modelo y la ausencia de resultado no significa riesgo bajo. No hay fecha de emisión ni versión de modelo territorial publicadas. Los botones permiten abrir la simulación ficticia de 24 h o la evaluación histórica de humo. Cada horizonte futuro requiere datos y validación propios.
