@@ -1,8 +1,8 @@
-import { PublishedPredictionResults } from './infrastructure/predictions.mjs';
+import { PublishedPredictionResults } from './adapters/out/predictions.mjs';
 import { createClient } from '@supabase/supabase-js';
-import { AdminService } from './application/admin-service.mjs';
-import { SupabaseIdentity, SupabaseRepository } from './infrastructure/supabase.mjs';
-import { createHandler } from './infrastructure/http.mjs';
+import { AdminService } from './application/use-cases/admin-service.mjs';
+import { SupabaseIdentity, SupabaseRepository } from './adapters/out/supabase.mjs';
+import { createHandler } from './adapters/in/http.mjs';
 export function compose({url,publicKey,allowedOrigins}) {
   if(!url||!publicKey)throw new Error('Falta configuración pública de Supabase.');
   let role;

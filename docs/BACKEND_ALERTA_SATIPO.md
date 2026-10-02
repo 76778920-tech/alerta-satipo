@@ -32,10 +32,10 @@ scripts/configure.mjs genera config/public.json con la URL y la clave pública. 
 
 Archivos principales:
 - supabase/migrations/: definición y evolución del esquema.
-- shared/js/backend.js: cliente Supabase, identificación, protección del acceso y cierre de sesión. Se ejecuta en el navegador.
-- shared/js/data.js: consultas de reportes, incidentes y configuración.
-- shared/js/dataset.js: consulta de lecturas históricas.
-- web/js/operations.js: nodos virtuales, casos y mantenimiento.
+- frontend/shared/js/backend.js: cliente Supabase, identificación, protección del acceso y cierre de sesión. Se ejecuta en el navegador.
+- frontend/shared/js/data.js: consultas de reportes, incidentes y configuración.
+- frontend/shared/js/dataset.js: consulta de lecturas históricas.
+- frontend/web/js/operations.js: nodos virtuales, casos y mantenimiento.
 - scripts/: preparación de datos, importación y configuración.
 - tests/: pruebas de base de datos y navegador.
 
@@ -89,7 +89,7 @@ Para reproducir en un proyecto vacío: aplicar migración 001, migración 002, c
 
 ## 2.7. Conexión y API REST
 URL del backend: https://ddfmooylklgwnrmlxqzc.supabase.co
-shared/js/backend.js crea el cliente desde la configuración pública. Una consulta equivalente a la utilizada por el panel es:
+frontend/shared/js/backend.js crea el cliente desde la configuración pública. Una consulta equivalente a la utilizada por el panel es:
 ```javascript
 const { data, error } = await client
   .from('smoke_readings')
@@ -154,4 +154,4 @@ No hay telemetría física, predicción validada de incendios ni historial real 
 Panel: https://alerta-satipo-76778920.web.app/
 Supabase: https://supabase.com/dashboard/project/ddfmooylklgwnrmlxqzc
 Repositorio privado: https://github.com/76778920-tech/alerta-satipo
-Evidencia de implementación: las tres migraciones SQL, shared/js/backend.js, shared/js/data.js, shared/js/dataset.js, web/js/operations.js, scripts/prepare_dataset.py, scripts/import-dataset.mjs y los archivos de pruebas citados. Los ejemplos del documento usan marcadores y no contienen credenciales reales.
+Evidencia de implementación: las tres migraciones SQL, frontend/shared/js/backend.js, frontend/shared/js/data.js, frontend/shared/js/dataset.js, frontend/web/js/operations.js, scripts/prepare_dataset.py, scripts/import-dataset.mjs y los archivos de pruebas citados. Los ejemplos del documento usan marcadores y no contienen credenciales reales.

@@ -22,7 +22,7 @@ Abre `index.html` directamente en tu navegador, o visita `/docs/wireframes/` con
 | Solicitar apoyo | `mobile/index.html` → `screen-help` |
 | Perfil y mis reportes | `mobile/index.html` → `screen-profile` |
 
-Reglas de interacción basadas en `mobile/js/app.js`: descripción de 20 caracteres, campos obligatorios, paso del reporte al perfil y dos condiciones para escalar. Zonas y nodos tomados de `shared/js/data.js`.
+Reglas de interacción basadas en `frontend/mobile/js/app.js`: descripción de 20 caracteres, campos obligatorios, paso del reporte al perfil y dos condiciones para escalar. Zonas y nodos tomados de `frontend/shared/js/data.js`.
 
 ## Alcance y decisiones
 

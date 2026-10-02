@@ -59,7 +59,12 @@ try:
             page.wait_for_function("!document.querySelector('#submit-btn').disabled")
             if mobile:
                 # Solo para probar el código móvil local: no existe login público de pobladores.
-                page.evaluate('(tokens)=>window.SatipoBackend.client.auth.setSession(tokens)', {'access_token':user['token'],'refresh_token':user['refresh']})
+                page.evaluate('''async tokens=>{
+                  const config=await (await fetch('/config/public.json')).json();
+                  const fixtureClient=window.createSupabaseClient(config.supabaseUrl,config.supabasePublishableKey);
+                  const result=await fixtureClient.auth.setSession(tokens);
+                  if(result.error)throw result.error;
+                }''', {'access_token':user['token'],'refresh_token':user['refresh']})
                 page.goto('http://127.0.0.1:8000/mobile/index.html')
             else:
                 page.fill('#email',user['email']);page.fill('#password',user['password'])

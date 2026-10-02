@@ -15,16 +15,14 @@ with sync_playwright() as p:
         assert page.request.get(base + path).status == 404
     # Consulta de configuración de Auth, sin intentar registrar una cuenta.
     assert page.evaluate("async()=>{const c=await (await fetch('/config/public.json')).json();const r=await fetch(c.supabaseUrl+'/auth/v1/settings',{headers:{apikey:c.supabasePublishableKey}});return (await r.json()).disable_signup}") is True
-    # Simula credenciales válidas de un no-administrador: no se crea ningún usuario.
+    # Comprueba el mensaje de rechazo del caso de uso. La limpieza de sesión
+    # y autorización se prueban con puertos en memoria en frontend-hexagonal.test.mjs.
     page.evaluate("""()=>{
-      window.SatipoBackend.client.auth.signInWithPassword=async()=>({data:{},error:null});
-      window.SatipoBackend.identify=async()=>({role:'user'});
-      window.SatipoBackend.client.auth.signOut=async()=>{window.testSignedOut=true;return {error:null}};
+      window.SatipoBackend.login=async()=>{throw new Error('Acceso denegado. Esta página es exclusiva para administradores autorizados.')};
     }""")
     page.fill('#email','existing-user@example.invalid');page.fill('#password','test-only')
     page.locator('#submit-btn').click()
     page.wait_for_function("document.querySelector('#auth-status').textContent.includes('Acceso denegado')")
-    assert page.evaluate('window.testSignedOut') is True
     assert '/shared/login.html' in page.url
     page.reload()
     page.wait_for_function("!document.querySelector('#submit-btn').disabled")

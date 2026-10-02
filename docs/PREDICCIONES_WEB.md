@@ -12,7 +12,7 @@ El caso de uso verifica identidad y condición administrativa antes de consultar
 
 ## Alcance de esta entrega
 
-Se publica una evaluación reproducible, no un servicio de inferencia en vivo. No escribe predicciones en las tablas de Supabase, no ejecuta Python desde el navegador ni crea incidentes automáticamente. Actualizar resultados vuelve a consultar la evaluación publicada; ejecutar Colab no cambia automáticamente esta versión. Para publicar una nueva evaluación deben revisarse sus CSV y métricas, actualizar el artefacto `backend/infrastructure/prediction-results.json`, pasar las pruebas y desplegar la API. La inferencia continua y la publicación automática requieren una implementación posterior.
+Se publica una evaluación reproducible, no un servicio de inferencia en vivo. No escribe predicciones en las tablas de Supabase, no ejecuta Python desde el navegador ni crea incidentes automáticamente. Actualizar resultados vuelve a consultar la evaluación publicada; ejecutar Colab no cambia automáticamente esta versión. Para publicar una nueva evaluación deben revisarse sus CSV y métricas, actualizar el artefacto `backend/adapters/out/prediction-results.json`, pasar las pruebas y desplegar la API. La inferencia continua y la publicación automática requieren una implementación posterior.
 
 El panel ofrece filtros, paginación de 15 filas, tabla con desplazamiento horizontal y errores de carga explícitos. Una consulta fallida oculta los resultados anteriores; no los presenta como una consulta exitosa. El puntaje no es una probabilidad calibrada de incendio futuro y los nodos de demostración no se presentan como sensores reales.
 

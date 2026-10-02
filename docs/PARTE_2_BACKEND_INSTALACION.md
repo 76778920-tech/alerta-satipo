@@ -5,7 +5,7 @@ Instalación y configuración del componente administrativo de Alerta Satipo
 El componente administrativo implementa una arquitectura hexagonal en JavaScript: dominio independiente, casos de uso, puertos de entrada y salida y adaptadores HTTP y Supabase. El panel consulta la API administrativa; el adaptador de persistencia accede a PostgreSQL mediante el SDK de Supabase conservando el JWT del usuario y RLS. El mismo núcleo se ejecuta en un servidor Node.js local o en Supabase Edge. No se utiliza Express: HTTP se adapta mediante Request/Response y node:http.
 Este apartado explica cómo instalar y verificar el componente presente en el repositorio alerta-satipo. La instalación de Flutter del apartado 1 y el servicio WeatherSatipo en C#/.NET del apartado 4 corresponden a otros componentes: su comunicación con este panel no se considera verificada por estos pasos. No se debe configurar ni ejecutar un servicio .NET para seguir este procedimiento.
 La página está destinada a administradores previamente autorizados y no ofrece registro público. Firebase Hosting publica sus archivos estáticos; Supabase conserva los datos. La estructura detallada de las tablas se desarrolla en el apartado 3, Base de Datos.
-La evidencia de arquitectura está en backend/domain, backend/application/ports.mjs, backend/application/admin-service.mjs, backend/infrastructure y backend/bootstrap.mjs. El núcleo no importa Supabase ni HTTP. Los adaptadores se inyectan por solicitud; las pruebas verifican dependencias, reglas y casos de uso sin red. El alcance migrado comprende lecturas, operaciones demostrativas, incidentes y configuración del panel; Auth y perfil conservan su integración directa con Supabase.
+La evidencia del servidor está en backend/domain, backend/application/ports/, backend/application/use-cases/admin-service.mjs, backend/adapters y backend/bootstrap.mjs. El núcleo no importa Supabase ni HTTP. Los adaptadores se inyectan por solicitud; las pruebas verifican dependencias, reglas y casos de uso sin red. Auth y perfil ahora tienen casos de uso en frontend/src/application/ y adaptadores de salida para Supabase. Consulta el [mapa completo vigente](ARQUITECTURA_HEXAGONAL.md) para navegador, dataset y herramientas territoriales.
 
 ## 2.2. Requisitos previos
 - Windows con PowerShell, Git y acceso autorizado al repositorio privado.
@@ -31,7 +31,7 @@ npm ci
 npm run build
 ```
 La cuenta de GitHub debe tener acceso al repositorio. Si ya existe una copia del proyecto, abrir esa carpeta y conservar los cambios locales antes de actualizarla; no es necesario clonar de nuevo.
-npm ci instala las dependencias fijadas por package-lock.json. npm run build genera shared/vendor/supabase.js. Resultado esperado: mensaje «SDK de Supabase compilado localmente». Mantener la terminal en la raíz del repositorio para los pasos posteriores.
+npm ci instala las dependencias fijadas por package-lock.json. npm run build genera frontend/shared/vendor/supabase.js. Resultado esperado: mensaje «SDK de Supabase compilado localmente». Mantener la terminal en la raíz del repositorio para los pasos posteriores.
 
 ## 2.4. Configurar la conexión con Supabase
 Comprobar si existe el archivo de configuración local:
@@ -104,7 +104,7 @@ Resultado esperado: API hexagonal: http://127.0.0.1:8787/api. En otra terminal, 
 npm start
 ```
 Resultado esperado en la terminal: «Alerta Satipo: http://127.0.0.1:8000». Mantener ese proceso activo y abrir http://127.0.0.1:8000/shared/login.html. Ingresar con la cuenta administrativa autorizada; el acceso correcto conduce a /web/index.html.
-No abrir los HTML mediante file://. El panel carga configuración y recursos por HTTP y consulta Supabase mediante HTTPS. shared/js/backend.js mantiene la sesión y envía solicitudes a la API. shared/js/dataset.js usa GET /readings; web/js/operations.js usa GET /operations y PATCH /cases/:id o /maintenance/:id. El caso de uso verifica autorización, valida el dominio e invoca el repositorio.
+No abrir los HTML mediante file://. El panel carga configuración y recursos por HTTP y consulta Supabase mediante HTTPS. frontend/shared/js/backend.js mantiene la sesión y envía solicitudes a la API. frontend/shared/js/dataset.js usa GET /readings; frontend/web/js/operations.js usa GET /operations y PATCH /cases/:id o /maintenance/:id. El caso de uso verifica autorización, valida el dominio e invoca el repositorio.
 Para detener el servidor, pulsar Ctrl+C. Si el puerto 8000 está ocupado:
 ```powershell
 python scripts/serve.py --port 8001
@@ -139,6 +139,6 @@ Conservar capturas propias de versiones, compilación, npm test y consulta corre
 - Error de red o consulta vacía: revisar conectividad, sesión, proyecto y políticas RLS; no desactivar las políticas para ocultar el problema.
 - Recuperación redirige a otro origen: verificar la URL autorizada shared/account.html y su puerto.
 La instalación queda verificada cuando el servidor inicia, un administrador accede, se consultan las 300 lecturas y seis lotes, y las pruebas locales aprueban. Esto valida el componente administrativo y su separación hexagonal. No acredita integración con Flutter o WeatherSatipo. Para despliegue de Edge ejecutar npm run build:api y desplegar admin-api con Supabase CLI; para publicar el frontend usar una API HTTPS, nunca localhost. Consultar docs/ARQUITECTURA_IMPLEMENTADA.md para instrucciones y límites de concurrencia.
-Fuentes de implementación: package.json; scripts/build.mjs; scripts/configure.mjs; scripts/serve.py; shared/js/backend.js; shared/js/dataset.js; web/js/operations.js; migraciones SQL y tests/database.test.mjs.
+Fuentes de implementación: package.json; scripts/build.mjs; scripts/configure.mjs; scripts/serve.py; frontend/shared/js/backend.js; frontend/shared/js/dataset.js; frontend/web/js/operations.js; migraciones SQL y tests/database.test.mjs.
 Configuración oficial de autenticación: https://supabase.com/docs/guides/auth/general-configuration
 Configuración oficial de redirecciones: https://supabase.com/docs/guides/auth/redirect-urls

@@ -36,7 +36,7 @@ npm ci
 npm run build
 ```
 La autenticación de Git debe utilizar una cuenta invitada al repositorio. No introducir tokens dentro de la URL del comando. Si el repositorio ya está descargado, abrir su carpeta y conservar los cambios locales antes de actualizarlo; no es necesario clonarlo de nuevo.
-npm ci instala las versiones fijadas en package-lock.json. npm run build genera shared/vendor/supabase.js. Resultado esperado: mensaje «SDK de Supabase compilado localmente».
+npm ci instala las versiones fijadas en package-lock.json. npm run build genera frontend/shared/vendor/supabase.js. Resultado esperado: mensaje «SDK de Supabase compilado localmente».
 
 ## 4. Configurar la conexión local
 Comprobar si ya existe .env antes de copiar la plantilla:

@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { AdminService } from '../backend/application/admin-service.mjs';
-import { MemoryIdentity, MemoryRepository } from '../backend/infrastructure/memory.mjs';
-import { PublishedPredictionResults } from '../backend/infrastructure/predictions.mjs';
-import { createHandler } from '../backend/infrastructure/http.mjs';
+import { AdminService } from '../backend/application/use-cases/admin-service.mjs';
+import { MemoryIdentity, MemoryRepository } from '../backend/adapters/out/memory.mjs';
+import { PublishedPredictionResults } from '../backend/adapters/out/predictions.mjs';
+import { createHandler } from '../backend/adapters/in/http.mjs';
 test('Predicciones: autenticación y autorización antes de consultar resultados',async()=>{
   let calls=0;
   const service=new AdminService({identity:new MemoryIdentity(),repository:new MemoryRepository(),predictions:{results(){calls++;return {};}}});

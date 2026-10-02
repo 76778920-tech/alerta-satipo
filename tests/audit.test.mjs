@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { AdminService } from '../backend/application/admin-service.mjs';
-import { MemoryIdentity, MemoryRepository } from '../backend/infrastructure/memory.mjs';
-import { createHandler } from '../backend/infrastructure/http.mjs';
+import { AdminService } from '../backend/application/use-cases/admin-service.mjs';
+import { MemoryIdentity, MemoryRepository } from '../backend/adapters/out/memory.mjs';
+import { createHandler } from '../backend/adapters/in/http.mjs';
 import { compose } from '../backend/bootstrap.mjs';
 import { build } from 'esbuild';
 
@@ -36,7 +36,7 @@ test('Auditoría: composición rechaza claves administrativas antes de crear cli
   assert.throws(()=>compose({...options,publicKey:privileged}));
 });
 test('Auditoría: grafo transitivo del núcleo no alcanza infraestructura ni paquetes externos',async()=>{
-  for(const entry of ['backend/domain/operation.mjs','backend/application/admin-service.mjs']) {
+  for(const entry of ['backend/domain/operation.mjs','backend/application/use-cases/admin-service.mjs']) {
     const {metafile}=await build({entryPoints:[entry],bundle:true,write:false,metafile:true,platform:'neutral',packages:'external',format:'esm'});
     const allowed=entry.includes('/domain/')?['backend/domain/']:['backend/domain/','backend/application/'];
     for(const name of Object.keys(metafile.inputs))assert.ok(allowed.some(prefix=>name.replaceAll('\\','/').startsWith(prefix)),`Dependencia prohibida: ${name}`);

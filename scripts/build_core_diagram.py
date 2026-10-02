@@ -29,7 +29,7 @@ def card(x,y,w,h,tag,title,lines,color=blue):
  ax.text(x+.38,y+h-.67,title,fontsize=14,weight='bold',color=ink,va='top')
  ax.text(x+.38,y+h-1.14,lines,fontsize=10.5,color=muted,va='top',linespacing=1.65)
 
-card(.7,8.25,4.35,2.6,'ADAPTADOR DE ENTRADA','HTTP / createHandler','GET: lecturas, operación, actividad\nPATCH: estados y configuración\nMapea solicitudes y errores\nbackend/infrastructure/http.mjs')
+card(.7,8.25,4.35,2.6,'ADAPTADOR DE ENTRADA','HTTP / createHandler','GET: lecturas, operación, actividad\nPATCH: estados y configuración\nMapea solicitudes y errores\nbackend/adapters/in/http.mjs')
 card(.7,4.5,4.35,2.6,'ENTRADA DE PRUEBAS','Pruebas de aplicación','Invocan AdminService sin HTTP\nInyectan puertos de memoria\nComprueban reglas y conflictos\ntests/hexagonal.test.mjs')
 card(7.55,8.4,3.75,2.4,'PUERTO DE ENTRADA','AdminUseCases','listReadings · listOperations\ngetActivity · updateState\nupdateSettings',green)
 card(12.65,8.4,3.8,2.4,'APLICACIÓN','AdminService','Autoriza al administrador\nCoordina reglas y repositorios\nDetecta ausencia y conflicto',green)

@@ -6,7 +6,7 @@ Cómo usar:
    (o copia el contenido en una celda).
 2. Ejecuta todas las celdas.
 3. Descarga satipo_umbrales.json
-4. Reemplaza shared/models/satipo_umbrales.json en el proyecto
+4. Reemplaza frontend/shared/models/satipo_umbrales.json en el proyecto
 5. Recarga mobile/ o web/ en el navegador
 
 Este script NO es Edge AI en producción: calibra umbrales/pesos

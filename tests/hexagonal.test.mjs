@@ -1,11 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
-import { AdminService } from '../backend/application/admin-service.mjs';
+import { AdminService } from '../backend/application/use-cases/admin-service.mjs';
 import { changeCommand } from '../backend/domain/operation.mjs';
-import { MemoryIdentity, MemoryRepository } from '../backend/infrastructure/memory.mjs';
-import { SupabaseIdentity, SupabaseRepository } from '../backend/infrastructure/supabase.mjs';
-import { createHandler } from '../backend/infrastructure/http.mjs';
+import { MemoryIdentity, MemoryRepository } from '../backend/adapters/out/memory.mjs';
+import { SupabaseIdentity, SupabaseRepository } from '../backend/adapters/out/supabase.mjs';
+import { createHandler } from '../backend/adapters/in/http.mjs';
 const setup=()=>new AdminService({identity:new MemoryIdentity(),repository:new MemoryRepository()});
 test('Dominio: estados válidos y reapertura; rechaza tipos y valores incorrectos',()=>{
   assert.equal(changeCommand('maintenance','V-01','Completada','Pendiente').nextState,'Pendiente');
@@ -67,12 +67,14 @@ test('Adaptador identidad: token inválido y servicio caído no son autorizació
   await assert.rejects(identity.authenticate('token'),{code:'UNAVAILABLE'});
 });
 test('Arquitectura: dominio y aplicación no importan SDK, HTTP, navegador ni infraestructura',async()=>{
-  for(const dir of ['domain','application'])for(const name of await readdir('backend/'+dir)) {
+  for(const dir of ['domain','application'])for(const name of await readdir('backend/'+dir,{recursive:true})) {
+    if(!name.endsWith('.mjs'))continue;
     const source=await readFile(`backend/${dir}/${name}`,'utf8');
     assert.ok(!/\b(window|document|fetch|Deno|process)\b/.test(source),name);
     for(const match of source.matchAll(/(?:from\s*|import\s*\()(['"])(.*?)\1/g)){
       const target=match[2];assert.ok(target.startsWith('.'),`${name}: dependencia externa ${target}`);
       assert.ok(!target.includes('infrastructure'),name);
+      assert.ok(!target.includes('adapters'),name);
       if(dir==='domain')assert.ok(!target.includes('application'),name);
     }
   }

@@ -42,11 +42,11 @@ Lecturas históricas: claves dataset_id y source_row preservan la trazabilidad. 
 
 Paso 1: crear backend/src/domain, application/ports, application/use-cases, adapters/in/http, adapters/out/supabase y bootstrap. Los directorios solo organizan; la independencia se demuestra con importaciones y pruebas.
 
-Paso 2: extraer la actualización de mantenimiento de web/js/operations.js a un caso de uso. Definir los contratos antes de implementar el adaptador. Mantener las reglas SQL de la migración 003.
+Paso 2: extraer la actualización de mantenimiento de frontend/web/js/operations.js a un caso de uso. Definir los contratos antes de implementar el adaptador. Mantener las reglas SQL de la migración 003.
 
 Paso 3: implementar adaptadores HTTP, identidad y persistencia; trasladar la invocación del panel al nuevo endpoint. Configurar alojamiento del servicio, HTTPS, origen permitido y variables privadas. Firebase Hosting actual publica archivos, no el nuevo proceso Express.
 
-Paso 4: migrar consultas de lecturas desde shared/js/dataset.js y casos desde operations.js; no reescribir todo en una sola entrega. Mantener verificaciones de las 300 filas y los vínculos existentes.
+Paso 4: migrar consultas de lecturas desde frontend/shared/js/dataset.js y casos desde operations.js; no reescribir todo en una sola entrega. Mantener verificaciones de las 300 filas y los vínculos existentes.
 
 Aceptación: pruebas unitarias del dominio sin SDK; casos de uso con repositorio en memoria; pruebas de contrato que ejecuten la misma suite sobre memoria y Supabase de prueba; pruebas HTTP de 401/403/404/409/422/503; integración que demuestre RLS; dos actualizaciones concurrentes con un mismo estado esperado y destino distinto; prueba de regresión que conserve los 300 registros.
 
@@ -58,5 +58,5 @@ Explicación: “Separamos reglas, coordinación e infraestructura. El núcleo d
 
 Si preguntan por qué usar hexagonal: permite sustituir adaptadores y probar casos de uso sin red, a cambio de mayor complejidad. Si preguntan si cambiar de base de datos es gratis: no; se reemplaza el adaptador y se migran esquema, políticas y funciones, aunque los casos de uso deberían permanecer estables. Si preguntan qué prueba la arquitectura: los contratos, la composición, las importaciones y las pruebas, no la forma del dibujo.
 
-Fuentes internas: shared/js/backend.js (identidad y guard); web/js/operations.js (estados y actualización condicional); shared/js/dataset.js (lecturas); supabase/migrations/202609230003_demo_operations.sql (relaciones y RLS); tests/database.test.mjs y tests/panel_operations.py (verificación actual). Estos archivos respaldan el punto de partida; no demuestran la implementación del diseño futuro.
+Fuentes internas: frontend/shared/js/backend.js (identidad y guard); frontend/web/js/operations.js (estados y actualización condicional); frontend/shared/js/dataset.js (lecturas); supabase/migrations/202609230003_demo_operations.sql (relaciones y RLS); tests/database.test.mjs y tests/panel_operations.py (verificación actual). Estos archivos respaldan el punto de partida; no demuestran la implementación del diseño futuro.
 

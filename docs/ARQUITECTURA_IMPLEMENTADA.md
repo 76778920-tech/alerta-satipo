@@ -1,6 +1,6 @@
 # Arquitectura hexagonal implementada — panel administrativo
 
-Estado: implementada el 25 de septiembre de 2026. Esta descripción sustituye la condición de «propuesta pendiente» de los documentos anteriores para el alcance del panel administrativo. Flutter y WeatherSatipo no forman parte de este repositorio ni de esta verificación.
+Estado: API implementada el 25 de septiembre de 2026; separación ampliada el 2 de octubre de 2026. Esta página describe el servidor administrativo. El mapa vigente de navegador, dataset y herramientas territoriales está en [Arquitectura hexagonal](ARQUITECTURA_HEXAGONAL.md). Flutter y WeatherSatipo no forman parte de este repositorio ni de esta verificación.
 
 ## Estructura y dirección de dependencias
 
@@ -10,16 +10,26 @@ backend/
     operation.mjs          OperationalRecord, estados y umbrales
     errors.mjs             Errores propios sin códigos HTTP
   application/
-    ports.mjs              AdminUseCases, IdentityPort, RepositoryPort
-    admin-service.mjs      Implementación de casos de uso
-  infrastructure/
-    http.mjs               Adaptador de entrada Request/Response
-    supabase.mjs           Adaptadores de identidad y persistencia
-    memory.mjs             Adaptadores de prueba sin red
+    ports/in/              AdminUseCases
+    ports/out/             IdentityPort, RepositoryPort, PredictionResultsPort
+    use-cases/             AdminService: implementación de casos de uso
+  adapters/
+    in/http.mjs            Adaptador de entrada Request/Response
+    out/supabase.mjs       Adaptadores de identidad y persistencia
+    out/memory.mjs         Adaptadores de prueba sin red
+    out/predictions.mjs    Lectura de la evaluación publicada
+    out/prediction-results.json  Artefacto de evaluación
   bootstrap.mjs            Composición e inyección por solicitud
   server.mjs               Host HTTP Node.js para desarrollo
   edge.mjs                 Host Supabase Edge para producción
 ```
+
+Organización revisada el 2 de octubre de 2026. Las interfaces y entradas HTML
+se agrupan en `frontend/`; las rutas públicas se mantienen mediante el servidor
+local y el empaquetado de Hosting. Los puertos de entrada y salida pertenecen a
+la aplicación, y las implementaciones externas se agrupan según su dirección.
+Las pruebas recorren también los subdirectorios del núcleo para detectar
+dependencias hacia adaptadores, SDK o APIs de entorno.
 
 El dominio no importa aplicación ni infraestructura. La aplicación importa dominio y define los puertos. SupabaseIdentity y SupabaseRepository implementan los puertos de salida; AdminService implementa el puerto de entrada AdminUseCases. El adaptador HTTP recibe una fábrica de servicios y no conoce tablas. bootstrap.mjs instancia los adaptadores e inyecta sus contratos en el caso de uso. La arquitectura se basa en estas dependencias, no en nombres de carpetas.
 
@@ -35,7 +45,7 @@ El dominio no importa aplicación ni infraestructura. La aplicación importa dom
 | updateState (incidents) | PATCH /incidents/:id | Incidentes / incidentes y disparador de auditoría existente |
 | updateSettings | PATCH /settings | Configuración / app_settings |
 
-Los identificadores de historias de usuario deben vincularse al backlog aprobado; esta tabla no inventa códigos HU. El inicio de sesión, recuperación de contraseña y perfil siguen usando Supabase Auth/SDK; no son casos de uso del nuevo núcleo. Las funciones móviles locales no han sido migradas a esta API administrativa.
+Los identificadores de historias de usuario deben vincularse al backlog aprobado; esta tabla no inventa códigos HU. Inicio de sesión, recuperación, contraseña, perfil y operaciones comunitarias pertenecen a los casos de uso de `frontend/src/application/`. Sus adaptadores encapsulan Supabase Auth y persistencia bajo RLS. Las consultas comunitarias usan su puerto de salida; los endpoints de esta API mantienen la autorización exclusiva de administradores.
 
 ## Flujo ejecutable
 

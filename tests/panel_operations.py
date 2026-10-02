@@ -41,7 +41,7 @@ with sync_playwright() as p:
             page.click(f'[data-view="{view}"]')
             assert page.locator(f'[data-operation="{table}"][data-node="{node}"]').input_value()==target
         finally:
-            page.evaluate("async ([t,n,s])=>{const r=await SatipoBackend.client.from(t).update({state:s}).eq('node_id',n);if(r.error)throw r.error}",[table,node,previous])
+            page.evaluate("async ([t,n,s,expected])=>{await SatipoBackend.updateState(t==='demo_cases'?'cases':'maintenance',n,{state:s,expectedState:expected})}",[table,node,previous,target])
     page.click('[data-view="nodes"]')
     assert page.locator('#demo-nodes .operation-card').count()==6
     page.route('**/functions/v1/admin-api/operations*',lambda route:route.abort())

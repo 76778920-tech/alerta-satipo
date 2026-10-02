@@ -60,11 +60,11 @@ MemoryIdentity y MemoryRepository permiten probar el núcleo sin red.
 | Responsabilidad | Evidencia en el repositorio |
 |---|---|
 | Entidad, estados, umbrales y errores | `backend/domain/` |
-| Puertos de entrada y salida | `backend/application/ports.mjs` |
-| Casos de uso | `backend/application/admin-service.mjs` |
-| Adaptador HTTP | `backend/infrastructure/http.mjs` |
-| Adaptadores Supabase | `backend/infrastructure/supabase.mjs` |
-| Adaptadores de prueba | `backend/infrastructure/memory.mjs` |
+| Puertos de entrada y salida | `backend/application/ports/` |
+| Casos de uso | `backend/application/use-cases/admin-service.mjs` |
+| Adaptador HTTP | `backend/adapters/in/http.mjs` |
+| Adaptadores Supabase | `backend/adapters/out/supabase.mjs` |
+| Adaptadores de prueba | `backend/adapters/out/memory.mjs` |
 | Inyección de dependencias | `backend/bootstrap.mjs` |
 | Host local y host desplegado | `backend/server.mjs`, `backend/edge.mjs` |
 | Compilación de la función | `scripts/build-api.mjs` |

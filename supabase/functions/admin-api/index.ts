@@ -1,60 +1,12 @@
 // Generado por npm run build:api. Editar backend/, no este archivo.
-// backend/application/ports.mjs
-var AdminUseCases = class {
-  async listPredictions(token) {
-    throw new Error("AdminUseCases.listPredictions");
-  }
-  async listReadings(token) {
-    throw new Error("AdminUseCases.listReadings");
-  }
-  async listOperations(token) {
-    throw new Error("AdminUseCases.listOperations");
-  }
-  async getActivity(token) {
-    throw new Error("AdminUseCases.getActivity");
-  }
-  async updateState(token, kind, id, input) {
-    throw new Error("AdminUseCases.updateState");
-  }
-  async updateSettings(token, input) {
-    throw new Error("AdminUseCases.updateSettings");
-  }
-};
-var IdentityPort = class {
-  /** Retorna {id, isAdmin} a partir de una credencial verificada. */
-  async authenticate(token) {
-    throw new Error("IdentityPort.authenticate");
-  }
-};
-var RepositoryPort = class {
-  async readings() {
-    throw new Error("RepositoryPort.readings");
-  }
-  /** {nodes, links, cases, maintenance}; DTO con datos planos. */
-  async operations() {
-    throw new Error("RepositoryPort.operations");
-  }
-  async activity() {
-    throw new Error("RepositoryPort.activity");
-  }
-  /** Retorna DTO actualizado o null cuando no coincide el estado esperado. */
-  async compareAndSet(command) {
-    throw new Error("RepositoryPort.compareAndSet");
-  }
-  async exists(kind, id) {
-    throw new Error("RepositoryPort.exists");
-  }
-  async saveSettings(settings) {
-    throw new Error("RepositoryPort.saveSettings");
-  }
-};
+// backend/application/ports/out/prediction-results.mjs
 var PredictionResultsPort = class {
   async results() {
     throw new Error("PredictionResultsPort.results");
   }
 };
 
-// backend/infrastructure/prediction-results.json
+// backend/adapters/out/prediction-results.json
 var prediction_results_default = {
   version: "rf-20260926-eval-v1",
   dataset_id: "smoke-detection-iot-300-v1",
@@ -529,7 +481,7 @@ var prediction_results_default = {
   ]
 };
 
-// backend/infrastructure/predictions.mjs
+// backend/adapters/out/predictions.mjs
 var PublishedPredictionResults = class extends PredictionResultsPort {
   async results() {
     return structuredClone(prediction_results_default);
@@ -585,7 +537,29 @@ function requireObject(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new ApplicationError("VALIDATION", "Se requiere un objeto de datos.");
 }
 
-// backend/application/admin-service.mjs
+// backend/application/ports/in/admin-use-cases.mjs
+var AdminUseCases = class {
+  async listPredictions(token) {
+    throw new Error("AdminUseCases.listPredictions");
+  }
+  async listReadings(token) {
+    throw new Error("AdminUseCases.listReadings");
+  }
+  async listOperations(token) {
+    throw new Error("AdminUseCases.listOperations");
+  }
+  async getActivity(token) {
+    throw new Error("AdminUseCases.getActivity");
+  }
+  async updateState(token, kind, id, input) {
+    throw new Error("AdminUseCases.updateState");
+  }
+  async updateSettings(token, input) {
+    throw new Error("AdminUseCases.updateSettings");
+  }
+};
+
+// backend/application/use-cases/admin-service.mjs
 var AdminService = class extends AdminUseCases {
   constructor({ identity, repository, predictions }) {
     super();
@@ -631,7 +605,39 @@ var AdminService = class extends AdminUseCases {
   }
 };
 
-// backend/infrastructure/supabase.mjs
+// backend/application/ports/out/identity.mjs
+var IdentityPort = class {
+  /** Retorna {id, isAdmin} a partir de una credencial verificada. */
+  async authenticate(token) {
+    throw new Error("IdentityPort.authenticate");
+  }
+};
+
+// backend/application/ports/out/repository.mjs
+var RepositoryPort = class {
+  async readings() {
+    throw new Error("RepositoryPort.readings");
+  }
+  /** {nodes, links, cases, maintenance}; DTO con datos planos. */
+  async operations() {
+    throw new Error("RepositoryPort.operations");
+  }
+  async activity() {
+    throw new Error("RepositoryPort.activity");
+  }
+  /** Retorna DTO actualizado o null cuando no coincide el estado esperado. */
+  async compareAndSet(command) {
+    throw new Error("RepositoryPort.compareAndSet");
+  }
+  async exists(kind, id) {
+    throw new Error("RepositoryPort.exists");
+  }
+  async saveSettings(settings) {
+    throw new Error("RepositoryPort.saveSettings");
+  }
+};
+
+// backend/adapters/out/supabase.mjs
 var tables = { maintenance: ["demo_maintenance", "node_id"], cases: ["demo_cases", "node_id"], incidents: ["incidentes", "id"] };
 function check(result) {
   if (result.error) {
@@ -698,7 +704,7 @@ var SupabaseRepository = class extends RepositoryPort {
   }
 };
 
-// backend/infrastructure/http.mjs
+// backend/adapters/in/http.mjs
 var status = { UNAUTHENTICATED: 401, FORBIDDEN: 403, NOT_FOUND: 404, CONFLICT: 409, VALIDATION: 422, UNAVAILABLE: 503 };
 async function boundedBody(request) {
   if (!request.body) return "";

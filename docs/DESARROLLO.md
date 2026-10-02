@@ -15,9 +15,9 @@ El código ya no mezcla móvil y panel en la misma carpeta:
 
 | Carpeta | Responsabilidad |
 | --- | --- |
-| `mobile/` | App comunitaria: riesgo, alertas, mapa, reportes, apoyo |
-| `web/` | Panel operativo: KPIs, triaje, nodos, incidentes, mantenimiento |
-| `shared/` | Design system, login y capa de datos común |
+| `frontend/mobile/` | App comunitaria: riesgo, alertas, mapa, reportes, apoyo |
+| `frontend/web/` | Panel operativo: KPIs, triaje, nodos, incidentes, mantenimiento |
+| `frontend/shared/` | Design system, login y capa de datos común |
 | `docs/` | Documentación |
 
 ## Flujo
@@ -29,13 +29,13 @@ index.html
       → web/index.html      (rol admin)
 ```
 
-Ambas UIs cargan `shared/js/data.js` (`SatipoData`) para:
+Ambas UIs cargan `frontend/shared/js/data.js` (`SatipoData`) para:
 
 - sensores y cálculo de riesgo
 - umbrales persistidos
 - reportes comunitarios
 - incidentes compartidos
-- modelo Colab desde `shared/models/satipo_umbrales.json`
+- modelo Colab desde `frontend/shared/models/satipo_umbrales.json`
 
 Guía: [`COLAB.md`](COLAB.md).
 
@@ -60,7 +60,7 @@ Rutas útiles:
 
 ## Supabase
 
-La conexión real utiliza `shared/js/backend.js`, Supabase Auth y RLS. Consulta [SUPABASE.md](SUPABASE.md) para las cuentas, tablas y configuración. Los 300 registros históricos se consultan aparte de la telemetría de campo.
+La conexión real utiliza `frontend/shared/js/backend.js`, Supabase Auth y RLS. Consulta [SUPABASE.md](SUPABASE.md) para las cuentas, tablas y configuración. Los 300 registros históricos se consultan aparte de la telemetría de campo.
 
 ## Credenciales demo (solo con SATIPO_MODE=demo)
 

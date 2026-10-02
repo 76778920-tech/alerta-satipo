@@ -1,6 +1,6 @@
 # Alerta Satipo
 
-**Backend hexagonal implementado:** [estructura, instalación, endpoints y pruebas](docs/ARQUITECTURA_IMPLEMENTADA.md). El panel consulta la API administrativa; su núcleo comparte ejecución en Node.js local y Supabase Edge.
+**Arquitectura hexagonal:** [módulos, dependencias y pruebas](docs/ARQUITECTURA_HEXAGONAL.md). La API administrativa, los casos de uso del navegador, la preparación del dataset y las herramientas territoriales separan núcleo, puertos y adaptadores. La API comparte ejecución en Node.js local y Supabase Edge; sus [endpoints e instalación](docs/ARQUITECTURA_IMPLEMENTADA.md) se conservan.
 
 > **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
 
@@ -55,20 +55,42 @@ Estos accesos no son cuentas del proyecto Supabase. Un fallo de Supabase no acti
 
 | Ruta | Contenido |
 | --- | --- |
-| `mobile/` | Interfaz comunitaria |
-| `web/` | Panel administrativo |
-| `shared/` | Auth, conexión, lógica compartida y estilos |
+| `frontend/` | Entradas HTML e interfaces web, móvil y recursos compartidos |
+| `frontend/src/` | Dominio, casos de uso, puertos, adaptadores y composición del navegador |
+| `backend/domain/` | Reglas de negocio independientes de HTTP y Supabase |
+| `backend/application/` | Puertos de entrada/salida y casos de uso |
+| `backend/adapters/in/` | Adaptador HTTP que invoca los casos de uso |
+| `backend/adapters/out/` | Identidad, persistencia, resultados publicados y memoria |
+| `backend/bootstrap.mjs` | Composición e inyección de adaptadores |
 | `supabase/migrations/` | Esquema, funciones y permisos versionados |
 | `supabase/seed.sql` | Muestra idempotente de 300 filas |
 | `data/` | CSV, JSON, diccionario y trazabilidad |
+| `dataset/` | Muestreo puro, caso de uso y adaptadores HTTP/archivos |
+| `territorial/` | Núcleo de investigación, puertos y adaptadores de fuentes, archivos y entrenamiento |
 | `scripts/` | Configuración, importación, compilación y servidor seguro |
 | `tests/` | Pruebas SQL y recorrido contra Supabase real |
 | `docs/` | Guías, revisión y wireframes |
+
+Los archivos de interfaz están en `frontend/web/`, `frontend/mobile/` y
+`frontend/shared/`. El servidor local y la compilación de Hosting conservan las
+URL `/web/`, `/mobile/` y `/shared/`; no se agrega `/frontend/` a los enlaces.
+`supabase/` conserva la estructura de despliegue de la CLI. `colab/` contiene
+notebooks y experimentos independientes. `scripts/prepare_dataset.py` es la
+entrada CLI del caso de uso en `dataset/`. El SDK de Supabase del navegador
+queda encapsulado en adaptadores de salida; las pantallas consumen casos de uso.
+Los archivos `frontend/shared/js/backend.js` y `data.js` se generan con
+`npm run build`; sus fuentes editables están en `frontend/src/`.
 
 ## Verificación
 
 ```powershell
 npm test
+python -m pip install -r territorial/requirements.txt
+npm run test:python
+# Recorrido local aislado: requiere Playwright y Edge en Windows.
+python -m pip install playwright
+# En Linux: python -m playwright install chromium
+npm run test:browser
 npm audit --omit=dev
 ```
 

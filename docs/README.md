@@ -2,6 +2,8 @@
 
 # Alerta Satipo - Documentación del Proyecto
 
+La organización vigente y sus pruebas están en [Arquitectura hexagonal](ARQUITECTURA_HEXAGONAL.md).
+
 ## Descripción general
 
 **Alerta Satipo** es un sistema de detección temprana de incendios forestales desarrollado para comunidades remotas de Satipo, Perú. Combina Edge AI, LoRaWAN y energía solar para operar sin depender de internet centralizado o línea eléctrica.

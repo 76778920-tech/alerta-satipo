@@ -13,9 +13,9 @@ Google Colab (export_umbrales.py)
         ↓
 satipo_umbrales.json
         ↓
-shared/models/satipo_umbrales.json
+frontend/shared/models/satipo_umbrales.json
         ↓
-shared/js/data.js  →  mobile/ y web/
+frontend/shared/js/data.js  →  mobile/ y web/
 ```
 
 ## Por qué este diseño
@@ -47,7 +47,7 @@ O copia el contenido de `export_umbrales.py` en celdas.
 5. Reemplaza el archivo del proyecto:
 
 ```text
-shared/models/satipo_umbrales.json
+frontend/shared/models/satipo_umbrales.json
 ```
 
 6. Recarga:
@@ -104,7 +104,7 @@ Desde la raíz del proyecto:
 python colab/export_umbrales.py
 ```
 
-Luego copia el JSON generado a `shared/models/satipo_umbrales.json` (o deja el que ya está).
+Luego copia el JSON generado a `frontend/shared/models/satipo_umbrales.json` (o deja el que ya está).
 
 ## Qué NO es esto
 
