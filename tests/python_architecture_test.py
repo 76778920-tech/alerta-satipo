@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class ArchitectureTests(unittest.TestCase):
     def test_core_imports_and_io_boundaries(self):
         allowed_external={'typing','math','random','collections','datetime','pandas','numpy','shapely'}
-        for package in ['dataset','territorial']:
+        for package in ['dataset','territorial','acquisition']:
             for layer in ['domain','application']:
                 prefixes=[f'{package}.domain']+([f'{package}.application'] if layer=='application' else [])
                 for path in (ROOT/package/layer).rglob('*.py'):

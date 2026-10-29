@@ -16,6 +16,9 @@ export class HttpAdmin extends AdminPort {
     return payload;
   }
   readings() { return this.send('/readings'); }
+  environment() { return this.send('/environment'); }
+  savePmv1(reading) { return this.send('/pmv1','PATCH',reading); }
+  pmv1History() { return this.send('/pmv1'); }
   operations() { return this.send('/operations'); }
   predictions() { return this.send('/predictions'); }
   activity() { return this.send('/activity'); }

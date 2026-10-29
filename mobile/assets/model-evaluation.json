@@ -1,0 +1,43 @@
+{
+  "version": "pmv1-synthetic-tree-v1",
+  "provenance": "SYNTHETIC_ONLY",
+  "train_rows": 3000,
+  "test_rows": 900,
+  "train_seed": 20261026,
+  "test_seed": 20261027,
+  "features": [
+    "temperature_c",
+    "humidity_pct",
+    "smoke_index",
+    "gas_index",
+    "dust_ugm3"
+  ],
+  "labels": [
+    "Normal",
+    "Advertencia",
+    "Emergencia"
+  ],
+  "accuracy": 0.9022222222222223,
+  "f1_macro": 0.901269076497314,
+  "confusion_matrix": [
+    [
+      285,
+      15,
+      0
+    ],
+    [
+      32,
+      245,
+      18
+    ],
+    [
+      0,
+      23,
+      282
+    ]
+  ],
+  "false_alarms": 15,
+  "normal_test_rows": 300,
+  "missed_emergencies": 23,
+  "limitation": "Escenarios artificiales: no estima desempe\u00f1o forestal, sensores, Edge Impulse ni ESP32-S3."
+}

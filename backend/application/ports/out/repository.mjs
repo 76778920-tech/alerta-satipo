@@ -1,4 +1,6 @@
 export class RepositoryPort {
+  async savePmv1(record) { throw new Error('RepositoryPort.savePmv1'); }
+  async pmv1History() { throw new Error('RepositoryPort.pmv1History'); }
   async readings() { throw new Error('RepositoryPort.readings'); }
   /** {nodes, links, cases, maintenance}; DTO con datos planos. */
   async operations() { throw new Error('RepositoryPort.operations'); }

@@ -35,6 +35,8 @@ export function createHandler({ serviceFactory, allowedOrigins }) {
     try {
       const service=serviceFactory(token);
       if(request.method==='GET') {
+        if(path==='/pmv1')return respond(await service.listPmv1(token));
+        if(path==='/environment')return respond(await service.getEnvironment(token));
         if(path==='/predictions')return respond(await service.listPredictions(token));
         if(path==='/readings')return respond(await service.listReadings(token));
         if(path==='/operations')return respond(await service.listOperations(token));
@@ -46,6 +48,7 @@ export function createHandler({ serviceFactory, allowedOrigins }) {
         if(raw===null)return respond({error:'Solicitud demasiado grande.'},413);
         let input;try{input=JSON.parse(raw);}catch{return respond({error:'JSON inválido.'},400);}
         if(!input || Array.isArray(input) || typeof input!=='object')return respond({error:'Objeto JSON requerido.'},400);
+        if(path==='/pmv1')return respond(await service.savePmv1(token,input));
         if(path==='/settings')return respond(await service.updateSettings(token,input));
         const match=/^\/(maintenance|cases|incidents)\/([^/]+)$/.exec(path);
         if(match)return respond(await service.updateState(token,match[1],match[2],input));

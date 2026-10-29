@@ -1,5 +1,10 @@
 # Alerta Satipo
 
+**Integración del informe final (23/10/2026):** nueva vista **Informe y API**
+con los 52 requisitos/historias/salidas del informe, y adquisición HTTP con
+historial local SQLite. Variante sin sensores solicitada por el usuario;
+proveedor real y modelo compatible pendientes. [Guía y revisión detallada](docs/INTEGRACION_INFORME_FINAL.md).
+
 **Arquitectura hexagonal:** [módulos, dependencias y pruebas](docs/ARQUITECTURA_HEXAGONAL.md). La API administrativa, los casos de uso del navegador, la preparación del dataset y las herramientas territoriales separan núcleo, puertos y adaptadores. La API comparte ejecución en Node.js local y Supabase Edge; sus [endpoints e instalación](docs/ARQUITECTURA_IMPLEMENTADA.md) se conservan.
 
 > **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
@@ -106,9 +111,11 @@ GitHub Actions ejecuta las pruebas de base de datos y comprobación de sintaxis 
 
 ## Documentación vigente
 
+- [Aplicación Android Flutter: instalación, roles locales, BLE y pendientes](mobile/README.md)
+- [PMV1: cinco variables, modelo local, Supabase y firmware preparado](docs/PMV1_IMPLEMENTADO.md)
 - [Conexión, esquema y cuentas en Supabase](docs/SUPABASE.md)
 - [Revisión a fondo: cambios, pruebas y pendientes](docs/REVISION_TECNICA.md)
 - [Origen y diccionario de los 300 registros](data/README.md)
 - [Desarrollo](docs/DESARROLLO.md)
 
-El modelo de `colab/` es una calibración demostrativa con datos sintéticos; no es un modelo entrenado ni validado con el nuevo CSV. Los documentos marcados como históricos describen versiones anteriores.
+El PMV1 incluye un árbol entrenado con cinco variables sintéticas y tres clases, separado del experimento histórico de 300 lecturas. Ninguno acredita validación física en Satipo. El firmware compila, pero faltan placa, sensores calibrados y la exportación real de Edge Impulse. Los documentos marcados como históricos describen versiones anteriores.

@@ -15,6 +15,14 @@ operations={'nodes':nodes,'links':[{'node_id':f'V-0{i//50+1}','source_row':row['
             'cases':[{'node_id':node['id'],'state':'Pendiente'} for node in nodes],
             'maintenance':[{'node_id':node['id'],'state':'Pendiente','task':'Revisión de prueba'} for node in nodes]}
 activity={'reports':[],'incidents':[],'settings':{'temp_critical':39,'smoke_critical':65,'humidity_dry':38,'wind_risk':18}}
+territory=json.loads((ROOT/'backend/adapters/out/territory.json').read_text(encoding='utf-8'))
+environment={'version':1,'retrieved_at':'2026-10-23T16:00:00Z','cached':False,
+    'territory':{**territory,'scope':'Rectángulo de consulta; puede incluir territorios vecinos.'},
+    'weather':{'status':'ok','rows':[{'location':location,'observed_at':'2026-10-23T15:45:00Z','kind':'weather_model','interval_seconds':900,
+         'values':{'temperature_c':25,'humidity_pct':79,'rain_mm':0,'wind_kmh':1.1}} for location in territory['locations']]},
+    'fires':{'status':'not_configured','rows':[]}}
+environment_failure=False
+pmv1_saved={}
 http=server.ThreadingHTTPServer(('127.0.0.1',0),QuietHandler)
 thread=Thread(target=http.serve_forever,daemon=True)
 thread.start()
@@ -32,6 +40,16 @@ def route_request(route):
         route.fulfill(json={'mode':'supabase','supabaseUrl':'https://fixture.invalid','supabasePublishableKey':'sb_publishable_fixture','apiUrl':'https://fixture.invalid/api'})
     elif url.startswith('https://fixture.invalid/api/'):
         name=path.split('/')[2]
+        if name=='pmv1':
+            if route.request.method=='PATCH':
+                row=route.request.post_data_json
+                pmv1_saved[row['id']]=row
+                route.fulfill(json={'id':row['id'],'duplicate':False})
+            else:route.fulfill(json=[])
+            return
+        if name=='environment':
+            route.fulfill(status=503 if environment_failure else 200,json={'error':'Prueba de indisponibilidad'} if environment_failure else environment)
+            return
         if route.request.method=='PATCH':
             payload=route.request.post_data_json
             if name in ['cases','maintenance']:
@@ -70,6 +88,82 @@ try:
         page.click('[data-view="predictions"]')
         page.wait_for_selector('#prediction-results',state='visible')
         assert page.locator('#prediction-rows tr').count()==15
+        page.click('[data-view="pmv1"]')
+        page.click('#pmv1-ten')
+        page.wait_for_function("document.querySelector('#pmv1-count').textContent.includes('10 registros')")
+        assert page.locator('#pmv1-rows tr').count()==10
+        context.set_offline(True)
+        page.select_option('#pmv1-scenario','Emergencia');page.click('#pmv1-once')
+        page.wait_for_function("document.querySelector('#pmv1-count').textContent.includes('11 registros')")
+        assert 'Emergencia' in page.locator('#pmv1-current').inner_text()
+        page.select_option('#pmv1-scenario','Advertencia');page.click('#pmv1-once')
+        page.wait_for_function("document.querySelector('#pmv1-count').textContent.includes('12 registros')")
+        assert 'Advertencia' in page.locator('#pmv1-current').inner_text()
+        context.set_offline(False)
+        page.reload();page.wait_for_function('window.SatipoOperations.getSnapshot() !== null')
+        page.click('[data-view="pmv1"]')
+        assert '12 registros' in page.locator('#pmv1-count').inner_text()
+        page.click('#pmv1-sync')
+        page.wait_for_function("document.querySelector('#pmv1-count').textContent.includes('0 pendientes')")
+        assert len(pmv1_saved)==12
+        page.set_input_files('#pmv1-file',{'name':'invalid.json','mimeType':'application/json','buffer':b'[{"values":{}}]'})
+        page.wait_for_function("document.querySelector('#pmv1-status').textContent.includes('inválido')")
+        assert '12 registros' in page.locator('#pmv1-count').inner_text()
+        Path('test-results').mkdir(exist_ok=True)
+        page.screenshot(path='test-results/pmv1-desktop.png',full_page=True)
+        page.set_viewport_size({'width':390,'height':844})
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+        page.screenshot(path='test-results/pmv1-mobile.png',full_page=True)
+        page.set_viewport_size({'width':1440,'height':1000})
+        page.click('[data-view="environment"]')
+        page.click('#environment-refresh')
+        page.wait_for_selector('#environment-results',state='visible')
+        assert page.locator('#environment-weather tr').count()==9
+        assert 'pendiente' in page.locator('#fires-status').inner_text()
+        environment['fires']={'status':'partial','message':'Un producto no disponible.','rows':[{
+            'source':'VIIRS_NOAA20_NRT','latitude':-11.2,'longitude':-74.5,'observed_at':'2026-10-23T09:45:00Z',
+            'confidence':'n','frp_mw':3.2,'confirmed_fire':False}]}
+        page.click('#environment-refresh')
+        page.wait_for_function("document.querySelector('#fires-status').textContent.includes('parcial')")
+        assert 'Nominal' in page.locator('#environment-fires').inner_text()
+        Path('test-results').mkdir(exist_ok=True)
+        page.screenshot(path='test-results/environment-desktop.png',full_page=True)
+        page.set_viewport_size({'width':390,'height':844})
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+        page.screenshot(path='test-results/environment-mobile.png',full_page=True)
+        page.set_viewport_size({'width':1440,'height':1000})
+        environment_failure=True
+        page.click('#environment-refresh')
+        page.wait_for_function("document.querySelector('#environment-status').textContent.includes('No se pudo')")
+        assert page.locator('#environment-results').is_hidden()
+        page.click('[data-view="project"]')
+        assert page.locator('#project-rows tr').count()==52
+        page.select_option('#project-type','HU')
+        assert page.locator('#project-rows tr').count()==18
+        page.fill('#project-query','HU-016')
+        assert page.locator('#project-rows tr').count()==1
+        assert 'Consultar offline' in page.locator('#project-rows').inner_text()
+        page.fill('#project-query','')
+        export={'schema_version':1,'operational':False,'rows':[{'reading':{
+            'source':'fixture-api','external_id':'1','node_id':'station-1','kind':'weather','provenance':'api',
+            'observed_at':'2026-10-23T15:00:00+00:00','values':{'temperature_c':26,'humidity_pct':70},
+            'units':{'temperature_c':'degC','humidity_pct':'%'}},'prediction':None}]}
+        page.set_input_files('#acquisition-file',{'name':'fixture.json','mimeType':'application/json','buffer':json.dumps(export).encode()})
+        page.wait_for_function("document.querySelector('#acquisition-status').textContent.includes('1 lecturas')")
+        assert 'Sin inferencia' in page.locator('#acquisition-rows').inner_text()
+        Path('test-results').mkdir(exist_ok=True)
+        page.screenshot(path='test-results/report-api-desktop.png',full_page=True)
+        page.set_viewport_size({'width':390,'height':844})
+        page.screenshot(path='test-results/report-api-mobile.png',full_page=True)
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+        page.locator('#acquisition-file').scroll_into_view_if_needed()
+        page.screenshot(path='test-results/report-api-history-mobile.png',full_page=True)
+        page.set_viewport_size({'width':1440,'height':1000})
+        page.locator('#acquisition-file').scroll_into_view_if_needed()
+        page.screenshot(path='test-results/report-api-history-desktop.png',full_page=True)
+        page.set_input_files('#acquisition-file',{'name':'invalid.json','mimeType':'application/json','buffer':b'{}'})
+        page.wait_for_function("document.querySelector('#acquisition-status').textContent.includes('Archivo inválido')")
+        assert page.locator('#acquisition-rows tr').count()==0
         page.click('[data-view="district-demo"]')
         assert page.locator('#demo-cards article').count()==9
         initial=page.input_value('#demo-history')

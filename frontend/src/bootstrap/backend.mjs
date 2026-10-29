@@ -4,6 +4,15 @@ import { HttpAdmin, HttpAssets } from '../adapters/out/http.mjs';
 import { BrowserStorage, BrowserEntropy } from '../adapters/out/browser.mjs';
 import { SimulationService } from '../application/use-cases/simulation-service.mjs';
 import { browserPresenter } from '../adapters/in/browser-presenter.mjs';
+import catalog from '../adapters/out/report-catalog.json';
+import { ProjectFiles } from '../adapters/out/project-files.mjs';
+import { ProjectService } from '../application/use-cases/project-service.mjs';
+import { Pmv1Service } from '../application/use-cases/pmv1-service.mjs';
+import { Pmv1Store } from '../adapters/out/pmv1-store.mjs';
+
+window.SatipoProject = new ProjectService({catalog,files:new ProjectFiles()});
+window.SatipoPmv1Files=new ProjectFiles();
+window.createPmv1Service=owner=>new Pmv1Service({store:new Pmv1Store(owner),entropy:new BrowserEntropy(),remote:window.SatipoBackend});
 
 const base = new URL('../../', document.currentScript.src);
 const presenter = browserPresenter(base);
@@ -27,7 +36,7 @@ const ready = (async () => {
 })();
 ready.catch(() => {});
 const actions = Object.fromEntries(['identify','login','recover','changePassword','savePreference',
-  'listReadings','listOperations','listPredictions','getActivity','updateState','saveSettings','createReport','requestHelp'
+  'listReadings','listOperations','listPredictions','getEnvironment','savePmv1','pmv1History','getActivity','updateState','saveSettings','createReport','requestHelp'
 ].map(name => [name, async (...args) => {await ready; return service[name](...args);} ]));
 window.SatipoBackend = {
   ...actions, ready, escapeHTML:presenter.escapeHTML, fatal:presenter.fatal,

@@ -1,6 +1,7 @@
 import { BrowserUseCases } from '../ports/in/browser-use-cases.mjs';
 import { preferenceField, preferenceFields, requireAdmin, validateReport, validateHelp } from '../../domain/account.mjs';
 import { validateReadings, validateOperations, validatePredictions } from '../../domain/historical.mjs';
+import { validateEnvironment } from '../../domain/environment.mjs';
 
 export class BrowserService extends BrowserUseCases {
   constructor({identity, profiles, community, admin, assets, session, preferences, cloud}) {
@@ -67,6 +68,9 @@ export class BrowserService extends BrowserUseCases {
     return validateReadings(rows);
   }
   async listOperations() { return validateOperations(await this.admin.operations()); }
+  async getEnvironment() { return validateEnvironment(await this.admin.environment()); }
+  async savePmv1(reading) { return this.admin.savePmv1(reading); }
+  async pmv1History() { return this.admin.pmv1History(); }
   async listPredictions() { return validatePredictions(await this.admin.predictions()); }
   async getActivity() {
     return this.profile?.role === 'user' ? this.community.activity(this.profile.id) : this.admin.activity();

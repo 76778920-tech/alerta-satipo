@@ -525,9 +525,9 @@ function changeCommand(kind, id, expectedState, nextState) {
 }
 function validateThresholds(value) {
   requireObject(value);
-  const bounds = { temp_critical: [20, 55], smoke_critical: [Number.MIN_VALUE, 100], humidity_dry: [10, 90], wind_risk: [1, 80] };
+  const bounds2 = { temp_critical: [20, 55], smoke_critical: [Number.MIN_VALUE, 100], humidity_dry: [10, 90], wind_risk: [1, 80] };
   const result = {};
-  for (const [key, [min, max]] of Object.entries(bounds)) {
+  for (const [key, [min, max]] of Object.entries(bounds2)) {
     if (typeof value[key] !== "number" || !Number.isFinite(value[key]) || value[key] < min || value[key] > max) throw new ApplicationError("VALIDATION", "Umbrales fuera del rango permitido.");
     result[key] = value[key];
   }
@@ -539,6 +539,15 @@ function requireObject(value) {
 
 // backend/application/ports/in/admin-use-cases.mjs
 var AdminUseCases = class {
+  async savePmv1(token, input) {
+    throw new Error("AdminUseCases.savePmv1");
+  }
+  async listPmv1(token) {
+    throw new Error("AdminUseCases.listPmv1");
+  }
+  async getEnvironment(token) {
+    throw new Error("AdminUseCases.getEnvironment");
+  }
   async listPredictions(token) {
     throw new Error("AdminUseCases.listPredictions");
   }
@@ -559,13 +568,55 @@ var AdminUseCases = class {
   }
 };
 
+// backend/domain/pmv1-model.mjs
+var pmv1_model_default = { "version": "pmv1-synthetic-tree-v1", "features": ["temperature_c", "humidity_pct", "smoke_index", "gas_index", "dust_ugm3"], "labels": ["Normal", "Advertencia", "Emergencia"], "experimental": true, "left": [1, 2, 3, 4, 5, 6, -1, -1, -1, 10, 11, -1, -1, -1, 15, 16, 17, -1, -1, 20, -1, -1, 23, -1, -1, 26, 27, 28, 29, -1, -1, 32, -1, -1, -1, 36, -1, -1, 39, 40, 41, 42, 43, -1, -1, 46, -1, -1, 49, 50, -1, -1, -1, 54, 55, 56, -1, -1, -1, 60, -1, -1, 63, 64, 65, 66, -1, -1, -1, 70, 71, -1, -1, -1, 75, 76, 77, -1, -1, -1, 81, 82, -1, -1, 85, -1, -1], "right": [38, 25, 14, 9, 8, 7, -1, -1, -1, 13, 12, -1, -1, -1, 22, 19, 18, -1, -1, 21, -1, -1, 24, -1, -1, 35, 34, 31, 30, -1, -1, 33, -1, -1, -1, 37, -1, -1, 62, 53, 48, 45, 44, -1, -1, 47, -1, -1, 52, 51, -1, -1, -1, 59, 58, 57, -1, -1, -1, 61, -1, -1, 74, 69, 68, 67, -1, -1, -1, 73, 72, -1, -1, -1, 80, 79, 78, -1, -1, -1, 84, 83, -1, -1, 86, -1, -1], "feature": [2, 3, 1, 4, 2, 0, -2, -2, -2, 0, 3, -2, -2, -2, 0, 0, 2, -2, -2, 4, -2, -2, 4, -2, -2, 1, 3, 4, 0, -2, -2, 0, -2, -2, -2, 4, -2, -2, 3, 4, 2, 2, 4, -2, -2, 0, -2, -2, 1, 0, -2, -2, -2, 0, 4, 4, -2, -2, -2, 2, -2, -2, 2, 4, 0, 1, -2, -2, -2, 1, 1, -2, -2, -2, 0, 1, 3, -2, -2, -2, 1, 2, -2, -2, 2, -2, -2], "threshold": [28.470335960388184, 33.222251892089844, 47.2463321685791, 48.10173416137695, 17.44183349609375, 30.688135147094727, -2, -2, -2, 33.925771713256836, 17.45177936553955, -2, -2, -2, 39.31193733215332, 35.715349197387695, 22.361757278442383, -2, -2, 50.21355438232422, -2, -2, 49.19426918029785, -2, -2, 64.57579803466797, 76.20793914794922, 21.544191360473633, 35.03434181213379, -2, -2, 47.51317024230957, -2, -2, -2, 57.331966400146484, -2, -2, 54.29111289978027, 191.45748901367188, 77.3489875793457, 33.8106575012207, 39.54125213623047, -2, -2, 52.38118553161621, -2, -2, 41.92910575866699, 44.519968032836914, -2, -2, -2, 40.05462074279785, 248.16212463378906, 216.69742584228516, -2, -2, -2, 62.16301155090332, -2, -2, 52.44999885559082, 179.8333282470703, 48.66708755493164, 26.094680786132812, -2, -2, -2, 46.145559310913086, 35.28714179992676, -2, -2, -2, 35.289249420166016, 49.433441162109375, 65.02591323852539, -2, -2, -2, 43.723520278930664, 57.1257438659668, -2, -2, 60.688093185424805, -2, -2], "scores": [[0.334, 0.33266666666666667, 0.3333333333333333], [0.7937551355792933, 0.19967132292522596, 0.00657354149548069], [0.9205103042198234, 0.07948969578017664, 0], [0.576271186440678, 0.423728813559322, 0], [0.8260869565217391, 0.17391304347826086, 0], [0.92, 0.08, 0], [0.9736842105263158, 0.02631578947368421, 0], [0.75, 0.25, 0], [0.5789473684210527, 0.42105263157894735, 0], [0.22448979591836735, 0.7755102040816326, 0], [0.36666666666666664, 0.6333333333333333, 0], [0.5, 0.5, 0], [0.21428571428571427, 0.7857142857142857, 0], [0, 1, 0], [0.9655937846836848, 0.03440621531631521, 0], [0.9827784156142365, 0.01722158438576349, 0], [0.9914841849148418, 0.00851581508515815, 0], [0.9972972972972973, 0.002702702702702703, 0], [0.9390243902439024, 0.06097560975609756, 0], [0.8367346938775511, 0.16326530612244897, 0], [0.9714285714285714, 0.02857142857142857, 0], [0.5, 0.5, 0], [0.4666666666666667, 0.5333333333333333, 0], [0.8571428571428571, 0.14285714285714285, 0], [0.125, 0.875, 0], [0.1414141414141414, 0.8181818181818182, 0.04040404040404041], [0.06172839506172839, 0.8888888888888888, 0.04938271604938271], [0.06711409395973154, 0.9194630872483222, 0.013422818791946308], [0.2692307692307692, 0.7307692307692307, 0], [0.5, 0.5, 0], [0.07142857142857142, 0.9285714285714286, 0], [0.024390243902439025, 0.959349593495935, 0.016260162601626018], [0.02702702702702703, 0.972972972972973, 0], [0, 0.8333333333333334, 0.16666666666666666], [0, 0.5384615384615384, 0.46153846153846156], [0.5, 0.5, 0], [0.9230769230769231, 0.07692307692307693, 0], [0.2608695652173913, 0.7391304347826086, 0], [0.020190689848569827, 0.42344363432417276, 0.5563656758272574], [0.04580152671755725, 0.7659033078880407, 0.18829516539440203], [0.05239520958083832, 0.8592814371257484, 0.08832335329341318], [0.05663430420711974, 0.8996763754045307, 0.043689320388349516], [0.25892857142857145, 0.7410714285714286, 0], [0.6363636363636364, 0.36363636363636365, 0], [0.10126582278481013, 0.8987341772151899, 0], [0.011857707509881422, 0.9347826086956522, 0.0533596837944664], [0.012219959266802445, 0.9490835030549899, 0.03869653767820774], [0, 0.4666666666666667, 0.5333333333333333], [0, 0.36, 0.64], [0, 0.17647058823529413, 0.8235294117647058], [0, 0.375, 0.625], [0, 0, 1], [0, 0.75, 0.25], [0.00847457627118644, 0.23728813559322035, 0.7542372881355932], [0.02631578947368421, 0.631578947368421, 0.34210526315789475], [0.04, 0.84, 0.12], [0.07692307692307693, 0.9230769230769231, 0], [0, 0.75, 0.25], [0, 0.23076923076923078, 0.7692307692307693], [0, 0.05, 0.95], [0, 0.2222222222222222, 0.7777777777777778], [0, 0, 1], [0, 0.1534603811434303, 0.8465396188565697], [0, 0.5573770491803278, 0.4426229508196721], [0, 0.7661290322580645, 0.23387096774193547], [0, 0.8737864077669902, 0.1262135922330097], [0, 0.5, 0.5], [0, 0.9230769230769231, 0.07692307692307693], [0, 0.23809523809523808, 0.7619047619047619], [0, 0.11864406779661017, 0.8813559322033898], [0, 0.02127659574468085, 0.9787234042553191], [0, 0, 1], [0, 0.08333333333333333, 0.9166666666666666], [0, 0.5, 0.5], [0, 0.06265356265356266, 0.9373464373464373], [0, 0.25925925925925924, 0.7407407407407407], [0, 0.17647058823529413, 0.8235294117647058], [0, 0.6111111111111112, 0.3888888888888889], [0, 0.09900990099009901, 0.900990099009901], [0, 0.875, 0.125], [0, 0.023564064801178203, 0.9764359351988218], [0, 0.0034662045060658577, 0.9965337954939342], [0, 0.05555555555555555, 0.9444444444444444], [0, 0, 1], [0, 0.13725490196078433, 0.8627450980392157], [0, 0.4, 0.6], [0, 0.07317073170731707, 0.926829268292683]] };
+
+// backend/domain/pmv1.mjs
+var bounds = [[-20, 80], [0, 100], [0, 100], [0, 100], [0, 1e3]];
+function validatePmv1(input) {
+  const fail = () => {
+    throw new ApplicationError("VALIDATION", "Registro PMV1 inv\xE1lido: se requieren cinco variables completas y dentro de rango.");
+  };
+  if (!input || Array.isArray(input) || !input.values || Array.isArray(input.values)) fail();
+  if (input.device_prediction && input.device_prediction.model_version !== pmv1_model_default.version)
+    throw new ApplicationError("VALIDATION", "La exportaci\xF3n del dispositivo usa otro modelo. Se requiere integrar y validar esa versi\xF3n antes de importar sus lecturas.");
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (!uuid.test(input.id) || !uuid.test(input.node_id) || !["simulation", "sensor"].includes(input.source)) fail();
+  if (typeof input.observed_at !== "string" || !/(Z|[+-]\d{2}:\d{2})$/.test(input.observed_at) || !Number.isFinite(Date.parse(input.observed_at))) fail();
+  if (Object.keys(input.values).length !== 5) fail();
+  const values = {};
+  pmv1_model_default.features.forEach((key, i) => {
+    const value = input.values[key];
+    if (typeof value !== "number" || !Number.isFinite(value) || value < bounds[i][0] || value > bounds[i][1]) fail();
+    values[key] = value;
+  });
+  return { id: input.id, node_id: input.node_id, source: input.source, observed_at: new Date(input.observed_at).toISOString(), values };
+}
+function evaluatePmv1(input) {
+  const reading = validatePmv1(input), x = pmv1_model_default.features.map((key) => Math.fround(reading.values[key]));
+  let n = 0;
+  while (pmv1_model_default.left[n] >= 0) n = x[pmv1_model_default.feature[n]] <= pmv1_model_default.threshold[n] ? pmv1_model_default.left[n] : pmv1_model_default.right[n];
+  const scores = pmv1_model_default.scores[n], index = scores.indexOf(Math.max(...scores));
+  return {
+    reading,
+    prediction: { level: pmv1_model_default.labels[index], scores, model_version: pmv1_model_default.version, experimental: true },
+    alert: index === 0 ? null : { level: pmv1_model_default.labels[index], channel: "software", experimental: true }
+  };
+}
+
 // backend/application/use-cases/admin-service.mjs
 var AdminService = class extends AdminUseCases {
-  constructor({ identity, repository, predictions }) {
+  constructor({ identity, repository, predictions, environment }) {
     super();
     this.identity = identity;
     this.repository = repository;
     this.predictions = predictions;
+    this.environment = environment;
+  }
+  async getEnvironment(token) {
+    await this.authorize(token);
+    if (!this.environment) throw new ApplicationError("UNAVAILABLE", "Fuentes ambientales no configuradas.");
+    return this.environment.snapshot();
   }
   async listPredictions(token) {
     await this.authorize(token);
@@ -581,6 +632,14 @@ var AdminService = class extends AdminUseCases {
   async listReadings(token) {
     await this.authorize(token);
     return this.repository.readings();
+  }
+  async savePmv1(token, input) {
+    await this.authorize(token);
+    return this.repository.savePmv1(evaluatePmv1(input));
+  }
+  async listPmv1(token) {
+    await this.authorize(token);
+    return this.repository.pmv1History();
   }
   async listOperations(token) {
     await this.authorize(token);
@@ -615,6 +674,12 @@ var IdentityPort = class {
 
 // backend/application/ports/out/repository.mjs
 var RepositoryPort = class {
+  async savePmv1(record) {
+    throw new Error("RepositoryPort.savePmv1");
+  }
+  async pmv1History() {
+    throw new Error("RepositoryPort.pmv1History");
+  }
   async readings() {
     throw new Error("RepositoryPort.readings");
   }
@@ -669,6 +734,12 @@ var SupabaseRepository = class extends RepositoryPort {
   constructor(client) {
     super();
     this.client = client;
+  }
+  async savePmv1(record) {
+    return check(await this.client.rpc("pmv1_store", { p_record: record }));
+  }
+  async pmv1History() {
+    return check(await this.client.from("LecturaAmbiental").select("*,HistoricoPrediccion(*,EventoAlerta(*))").order("observed_at", { ascending: false }).limit(100));
   }
   async readings() {
     return check(await this.client.from("smoke_readings").select("*").eq("dataset_id", "smoke-detection-iot-300-v1").order("source_row").limit(300));
@@ -753,6 +824,8 @@ function createHandler({ serviceFactory, allowedOrigins }) {
     try {
       const service = serviceFactory(token);
       if (request.method === "GET") {
+        if (path === "/pmv1") return respond(await service.listPmv1(token));
+        if (path === "/environment") return respond(await service.getEnvironment(token));
         if (path === "/predictions") return respond(await service.listPredictions(token));
         if (path === "/readings") return respond(await service.listReadings(token));
         if (path === "/operations") return respond(await service.listOperations(token));
@@ -769,6 +842,7 @@ function createHandler({ serviceFactory, allowedOrigins }) {
           return respond({ error: "JSON inv\xE1lido." }, 400);
         }
         if (!input || Array.isArray(input) || typeof input !== "object") return respond({ error: "Objeto JSON requerido." }, 400);
+        if (path === "/pmv1") return respond(await service.savePmv1(token, input));
         if (path === "/settings") return respond(await service.updateSettings(token, input));
         const match = /^\/(maintenance|cases|incidents)\/([^/]+)$/.exec(path);
         if (match) return respond(await service.updateState(token, match[1], match[2], input));
@@ -781,8 +855,244 @@ function createHandler({ serviceFactory, allowedOrigins }) {
   };
 }
 
+// backend/application/ports/out/environment.mjs
+var EnvironmentPort = class {
+  async snapshot() {
+    throw new Error("EnvironmentPort.snapshot");
+  }
+};
+
+// backend/adapters/out/territory.json
+var territory_default = {
+  source: "MINAM; data/territorial/2025/manifest.json and districts.geojson",
+  bbox: [
+    -75.051,
+    -12.38699,
+    -73.35513,
+    -10.73401
+  ],
+  locations: [
+    {
+      id: "120601",
+      name: "SATIPO",
+      latitude: -11.154121,
+      longitude: -74.522598
+    },
+    {
+      id: "120602",
+      name: "COVIRIALI",
+      latitude: -11.319209,
+      longitude: -74.659276
+    },
+    {
+      id: "120603",
+      name: "LLAYLLA",
+      latitude: -11.477792,
+      longitude: -74.663441
+    },
+    {
+      id: "120604",
+      name: "MAZAMARI",
+      latitude: -11.376465,
+      longitude: -74.288813
+    },
+    {
+      id: "120605",
+      name: "PAMPA HERMOSA",
+      latitude: -11.433443,
+      longitude: -74.834495
+    },
+    {
+      id: "120606",
+      name: "PANGOA",
+      latitude: -11.766741,
+      longitude: -74.31047
+    },
+    {
+      id: "120607",
+      name: "RIO NEGRO",
+      latitude: -11.10385,
+      longitude: -74.723471
+    },
+    {
+      id: "120608",
+      name: "RIO TAMBO",
+      latitude: -11.560131,
+      longitude: -73.784304
+    },
+    {
+      id: "120609",
+      name: "VIZCATAN DEL ENE",
+      latitude: -12.198107,
+      longitude: -74.176859
+    }
+  ]
+};
+
+// backend/adapters/out/environment.mjs
+var WEATHER_FIELDS = ["temperature_2m", "relative_humidity_2m", "rain", "wind_speed_10m"];
+var SOURCES = ["VIIRS_NOAA20_NRT", "VIIRS_NOAA21_NRT"];
+var finite = (v, min = -Infinity, max = Infinity) => typeof v === "number" && Number.isFinite(v) && v >= min && v <= max;
+var failed = () => {
+  throw Error("Respuesta del proveedor inv\xE1lida");
+};
+function normalizeWeather(payload, locations = territory_default.locations) {
+  const list = Array.isArray(payload) ? payload : [payload];
+  if (list.length !== locations.length) failed();
+  return list.map((item, i) => {
+    const c = item?.current, u = item?.current_units;
+    if (!c || !u || u.temperature_2m !== "\xB0C" || u.relative_humidity_2m !== "%" || u.rain !== "mm" || u.wind_speed_10m !== "km/h" || item.utc_offset_seconds !== 0) failed();
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(c.time) || !finite(item.latitude, -90, 90) || !finite(item.longitude, -180, 180) || !finite(c.interval, 1, 86400)) failed();
+    const observedAt = c.time + "Z";
+    if (!Number.isFinite(Date.parse(observedAt))) failed();
+    const values = { temperature_c: c.temperature_2m, humidity_pct: c.relative_humidity_2m, rain_mm: c.rain, wind_kmh: c.wind_speed_10m };
+    for (const [key, v] of Object.entries(values)) if (v !== null && !finite(v, key === "temperature_c" ? -100 : 0, key === "humidity_pct" ? 100 : Infinity)) failed();
+    if (Object.values(values).some((v) => v === void 0)) failed();
+    return {
+      location: locations[i],
+      grid: { latitude: item.latitude, longitude: item.longitude },
+      observed_at: observedAt,
+      interval_seconds: c.interval,
+      values,
+      units: { temperature_c: "degC", humidity_pct: "%", rain_mm: "mm", wind_kmh: "km/h" },
+      kind: "weather_model",
+      source: "Open-Meteo",
+      missing: Object.entries(values).filter(([, v]) => v === null).map(([k]) => k)
+    };
+  });
+}
+function parseFirms(csv, source, bbox = territory_default.bbox) {
+  if (!SOURCES.includes(source) || typeof csv !== "string") failed();
+  const lines = csv.replace(/^\uFEFF/, "").trim().split(/\r?\n/);
+  const headers = lines.shift().split(",").map((v) => v.trim());
+  const required = ["latitude", "longitude", "acq_date", "acq_time", "confidence", "frp", "satellite", "instrument"];
+  if (!required.every((v) => headers.includes(v)) || new Set(headers).size !== headers.length) failed();
+  const unique = /* @__PURE__ */ new Map();
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const cells = line.split(",").map((v) => v.trim());
+    if (cells.length !== headers.length) failed();
+    const row = Object.fromEntries(headers.map((h, i) => [h, cells[i]]));
+    if (!row.latitude || !row.longitude || !row.frp) failed();
+    const latitude = Number(row.latitude), longitude = Number(row.longitude), frp = Number(row.frp);
+    if (!finite(latitude, -90, 90) || !finite(longitude, -180, 180) || !finite(frp, 0) || !["l", "n", "h"].includes(row.confidence)) failed();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.acq_date) || !/^\d{1,4}$/.test(row.acq_time)) failed();
+    const hhmm = row.acq_time.padStart(4, "0"), hour = Number(hhmm.slice(0, 2)), minute = Number(hhmm.slice(2));
+    if (hour > 23 || minute > 59) failed();
+    const observed_at = `${row.acq_date}T${hhmm.slice(0, 2)}:${hhmm.slice(2)}:00Z`;
+    if (!Number.isFinite(Date.parse(observed_at)) || new Date(observed_at).toISOString().slice(0, 10) !== row.acq_date) failed();
+    if (longitude < bbox[0] || longitude > bbox[2] || latitude < bbox[1] || latitude > bbox[3]) continue;
+    const id = [source, observed_at, latitude, longitude].join(":");
+    unique.set(id, {
+      id,
+      source,
+      latitude,
+      longitude,
+      observed_at,
+      confidence: row.confidence,
+      frp_mw: frp,
+      satellite: row.satellite,
+      instrument: row.instrument,
+      kind: "satellite_hotspot",
+      confirmed_fire: false
+    });
+  }
+  return [...unique.values()];
+}
+var PublicEnvironment = class extends EnvironmentPort {
+  constructor({ firmsKey = "", request = globalThis.fetch, clock = () => Date.now(), ttlMs = 9e5 } = {}) {
+    super();
+    Object.assign(this, { firmsKey, request, clock, ttlMs });
+    this.cached = null;
+    this.pending = null;
+  }
+  async read(url, maxBytes = 4e6) {
+    const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 15e3);
+    try {
+      const response = await this.request(url, { signal: controller.signal, redirect: "error" });
+      if (!response.ok || !response.body) failed();
+      const reader = response.body.getReader();
+      let size = 0;
+      const chunks = [];
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          size += value.length;
+          if (size > maxBytes) {
+            await reader.cancel();
+            failed();
+          }
+          chunks.push(value);
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      const bytes = new Uint8Array(size);
+      let offset = 0;
+      for (const part of chunks) {
+        bytes.set(part, offset);
+        offset += part.length;
+      }
+      return new TextDecoder().decode(bytes);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  async weather() {
+    try {
+      const params = new URLSearchParams({ latitude: territory_default.locations.map((r) => r.latitude).join(","), longitude: territory_default.locations.map((r) => r.longitude).join(","), current: WEATHER_FIELDS.join(","), timezone: "GMT", wind_speed_unit: "kmh", temperature_unit: "celsius", precipitation_unit: "mm", forecast_days: "1" });
+      return { status: "ok", rows: normalizeWeather(JSON.parse(await this.read("https://api.open-meteo.com/v1/forecast?" + params))) };
+    } catch {
+      return { status: "unavailable", rows: [], message: "Open-Meteo no respondi\xF3 con datos v\xE1lidos. Intenta m\xE1s tarde." };
+    }
+  }
+  async fires() {
+    if (!this.firmsKey) return { status: "not_configured", rows: [], message: "Falta configurar FIRMS_MAP_KEY en el servidor." };
+    const results = await Promise.all(SOURCES.map(async (source) => {
+      try {
+        const url = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${encodeURIComponent(this.firmsKey)}/${source}/${territory_default.bbox.join(",")}/2`;
+        return { source, status: "ok", rows: parseFirms(await this.read(url), source) };
+      } catch {
+        return { source, status: "unavailable", rows: [] };
+      }
+    }));
+    const count = results.filter((r) => r.status === "ok").length;
+    return {
+      status: count === 2 ? "ok" : count ? "partial" : "unavailable",
+      sources: results.map(({ source, status: status2 }) => ({ source, status: status2 })),
+      rows: results.flatMap((r) => r.rows).sort((a, b) => b.observed_at.localeCompare(a.observed_at)),
+      message: count === 2 ? "Consulta de hoy y ayer en UTC. Un mismo fuego puede producir varias detecciones." : "Consulta incompleta: uno o m\xE1s productos FIRMS no est\xE1n disponibles; no equivale a ausencia de fuego."
+    };
+  }
+  async snapshot() {
+    if (this.cached && this.clock() < this.cached.expires) return { ...this.cached.value, cached: true };
+    if (this.pending) return this.pending;
+    this.pending = (async () => {
+      const [weather, fires] = await Promise.all([this.weather(), this.fires()]);
+      const value = {
+        version: 1,
+        retrieved_at: new Date(this.clock()).toISOString(),
+        cached: false,
+        cache_seconds: this.ttlMs / 1e3,
+        territory: { bbox: territory_default.bbox, locations: territory_default.locations, scope: "Rect\xE1ngulo envolvente de Satipo; puede incluir territorios vecinos. Sin asignaci\xF3n distrital de focos." },
+        weather,
+        fires,
+        attribution: { weather: "https://open-meteo.com/", fires: "https://firms.modaps.eosdis.nasa.gov/" }
+      };
+      this.cached = { value, expires: this.clock() + this.ttlMs };
+      return value;
+    })();
+    try {
+      return await this.pending;
+    } finally {
+      this.pending = null;
+    }
+  }
+};
+
 // backend/bootstrap.mjs
-function compose({ url, publicKey, allowedOrigins }) {
+function compose({ url, publicKey, allowedOrigins, firmsKey = "" }) {
   if (!url || !publicKey) throw new Error("Falta configuraci\xF3n p\xFAblica de Supabase.");
   let role;
   try {
@@ -791,12 +1101,13 @@ function compose({ url, publicKey, allowedOrigins }) {
   } catch {
   }
   if (!publicKey.startsWith("sb_publishable_") && role !== "anon") throw new Error("La API requiere una clave p\xFAblica publishable o anon, nunca una clave administrativa.");
+  const environment = new PublicEnvironment({ firmsKey });
   return createHandler({ allowedOrigins, serviceFactory: (token) => {
     const client = createClient(url, publicKey, { global: { headers: { Authorization: `Bearer ${token}` } }, auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
-    return new AdminService({ identity: new SupabaseIdentity(client), repository: new SupabaseRepository(client), predictions: new PublishedPredictionResults() });
+    return new AdminService({ identity: new SupabaseIdentity(client), repository: new SupabaseRepository(client), predictions: new PublishedPredictionResults(), environment });
   } });
 }
 
 // backend/edge.mjs
-var handler = compose({ url: Deno.env.get("SUPABASE_URL"), publicKey: Deno.env.get("SUPABASE_ANON_KEY"), allowedOrigins: ["https://alerta-satipo-76778920.web.app", "https://alerta-satipo-76778920.firebaseapp.com", "http://127.0.0.1:8000", "http://localhost:8000"] });
+var handler = compose({ url: Deno.env.get("SUPABASE_URL"), publicKey: Deno.env.get("SUPABASE_ANON_KEY"), firmsKey: Deno.env.get("FIRMS_MAP_KEY"), allowedOrigins: ["https://alerta-satipo-76778920.web.app", "https://alerta-satipo-76778920.firebaseapp.com", "http://127.0.0.1:8000", "http://localhost:8000"] });
 Deno.serve(handler);

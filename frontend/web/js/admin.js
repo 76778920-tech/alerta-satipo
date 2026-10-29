@@ -393,6 +393,9 @@ const AdminModule = (() => {
     window.SatipoForecast.init($('#forecast-explorer'));
     window.SatipoDistrictDemo.init($('#district-demo'));
     window.SatipoPredictions.init($('#prediction-explorer'));
+    window.SatipoProjectView.init($('#project-explorer'));
+    window.SatipoEnvironment.init($('#environment-explorer'));
+    await window.SatipoPmv1.init($('#pmv1-explorer'));
     await window.SatipoDataset.init($('#dataset-explorer'));
     if(B.cloud) await window.SatipoOperations.setup();
   };

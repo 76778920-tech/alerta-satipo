@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { compose } from './bootstrap.mjs';
-const handler=compose({url:process.env.SUPABASE_URL,publicKey:process.env.SUPABASE_PUBLISHABLE_KEY,allowedOrigins:(process.env.API_ALLOWED_ORIGINS||'http://127.0.0.1:8000,http://localhost:8000').split(',')});
+const handler=compose({url:process.env.SUPABASE_URL,publicKey:process.env.SUPABASE_PUBLISHABLE_KEY,firmsKey:process.env.FIRMS_MAP_KEY||process.env.NASA_FIRMS_MAP_KEY,allowedOrigins:(process.env.API_ALLOWED_ORIGINS||'http://127.0.0.1:8000,http://localhost:8000').split(',')});
 const port=Number(process.env.API_PORT||8787);
 createServer(async(req,res)=>{
   try {

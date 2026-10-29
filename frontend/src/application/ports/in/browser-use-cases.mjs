@@ -1,5 +1,7 @@
 /** Operaciones invocadas por los controladores de las pantallas. */
 export class BrowserUseCases {
+  async savePmv1(input) { throw new Error('BrowserUseCases.savePmv1'); }
+  async pmv1History() { throw new Error('BrowserUseCases.pmv1History'); }
   async identify() { throw new Error('BrowserUseCases.identify'); }
   async login(credentials) { throw new Error('BrowserUseCases.login'); }
   async logout() { throw new Error('BrowserUseCases.logout'); }

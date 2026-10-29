@@ -18,6 +18,9 @@ export class CommunityPort {
   async requestHelp(input) { throw new Error('CommunityPort.requestHelp'); }
 }
 export class AdminPort {
+  async savePmv1(input) { throw new Error('AdminPort.savePmv1'); }
+  async pmv1History() { throw new Error('AdminPort.pmv1History'); }
+  async environment() { throw new Error('AdminPort.environment'); }
   async readings() { throw new Error('AdminPort.readings'); }
   async operations() { throw new Error('AdminPort.operations'); }
   async predictions() { throw new Error('AdminPort.predictions'); }

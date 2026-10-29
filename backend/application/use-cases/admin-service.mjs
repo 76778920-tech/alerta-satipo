@@ -1,9 +1,15 @@
 import { ApplicationError } from '../../domain/errors.mjs';
 import { changeCommand, validateThresholds, requireObject } from '../../domain/operation.mjs';
 import { AdminUseCases } from '../ports/in/admin-use-cases.mjs';
+import { evaluatePmv1 } from '../../domain/pmv1.mjs';
 /** Puerto de entrada: API de aplicación consumida por HTTP y pruebas. */
 export class AdminService extends AdminUseCases {
-  constructor({ identity, repository, predictions }) { super(); this.identity=identity; this.repository=repository; this.predictions=predictions; }
+  constructor({ identity, repository, predictions, environment }) { super(); this.identity=identity; this.repository=repository; this.predictions=predictions; this.environment=environment; }
+  async getEnvironment(token) {
+    await this.authorize(token);
+    if(!this.environment)throw new ApplicationError('UNAVAILABLE','Fuentes ambientales no configuradas.');
+    return this.environment.snapshot();
+  }
   async listPredictions(token) {
     await this.authorize(token);
     if (!this.predictions) throw new ApplicationError("UNAVAILABLE", "Resultados no disponibles.");
@@ -16,6 +22,8 @@ export class AdminService extends AdminUseCases {
     return actor;
   }
   async listReadings(token) { await this.authorize(token); return this.repository.readings(); }
+  async savePmv1(token,input) { await this.authorize(token);return this.repository.savePmv1(evaluatePmv1(input)); }
+  async listPmv1(token) { await this.authorize(token);return this.repository.pmv1History(); }
   async listOperations(token) { await this.authorize(token); return this.repository.operations(); }
   async getActivity(token) { await this.authorize(token); return this.repository.activity(); }
   async updateState(token, kind, id, input) {

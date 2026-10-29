@@ -27,6 +27,8 @@ export class SupabaseIdentity extends IdentityPort {
 }
 export class SupabaseRepository extends RepositoryPort {
   constructor(client) { super(); this.client=client; }
+  async savePmv1(record) { return check(await this.client.rpc('pmv1_store',{p_record:record})); }
+  async pmv1History() { return check(await this.client.from('LecturaAmbiental').select('*,HistoricoPrediccion(*,EventoAlerta(*))').order('observed_at',{ascending:false}).limit(100)); }
   async readings() { return check(await this.client.from('smoke_readings').select('*').eq('dataset_id','smoke-detection-iot-300-v1').order('source_row').limit(300)); }
   async operations() {
     const [nodes,links,cases,maintenance]=(await Promise.all([

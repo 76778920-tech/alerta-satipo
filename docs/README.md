@@ -33,11 +33,6 @@ Alerta de Incendios/
 
 ## Stack Técnico
 
-### Hardware (Edge Layer)
-- **ESP32**: Microcontrolador LoRaWAN
-- **Sensores**: Temperatura, Humo, Humedad, Viento
-- **Energía**: Panel solar + batería LiFePO4 (autonomía 8-12 meses)
-
 ### Procesamiento (Edge AI)
 - **Raspberry Pi 4**: Gateway LoRaWAN + servidor local
 - **TinyML**: Modelos de inferencia ligeros (<50MB)
