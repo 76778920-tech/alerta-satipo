@@ -40,5 +40,16 @@ test('PMV1 PostgreSQL: RLS, transacción, unicidad y persistencia de lectura/pre
  assert.equal((await db.query('select * from public."LecturaAmbiental"')).rows.length,1);
  const normal=example();normal.id='66666666-6666-4666-8666-666666666666';normal.values={temperature_c:25,humidity_pct:70,smoke_index:10,gas_index:12,dust_ugm3:15};await write(evaluatePmv1(normal));
  assert.equal((await db.query('select * from public."LecturaAmbiental"')).rows.length,2);assert.equal((await db.query('select * from public."EventoAlerta"')).rows.length,1);
+ await db.exec(`create table public.clientes(id uuid primary key);insert into public.clientes values('${user}');`);
+ await db.exec(await readFile('supabase/migrations/202610290001_resident_feed.sql','utf8'));
+ const feed=await call('authenticated',user,'select public.resident_pmv1_feed(true) as data');
+ assert.equal(feed.rows[0].data.length,1);
+ assert.equal(feed.rows[0].data[0].HistoricoPrediccion.level,'Emergencia');
+ assert.ok(!('created_by' in feed.rows[0].data[0]));
+ assert.equal((await call('authenticated',user,'select public.resident_pmv1_feed(false) as data')).rows[0].data.length,2);
+ await assert.rejects(call('anon','','select public.resident_pmv1_feed(true)'));
+ await assert.rejects(call('authenticated',admin,'select public.resident_pmv1_feed(true)'));
+ await assert.rejects(write(record,user));
+ assert.equal((await call('authenticated',user,'select * from public."LecturaAmbiental"')).rows.length,0);
  await db.close();
 });

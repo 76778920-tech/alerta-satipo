@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'adapters/local_database.dart';
 import 'adapters/security.dart';
 import 'adapters/cloud_records.dart';
@@ -38,6 +39,8 @@ Future<SatipoApp> initialize() async {
     cloud: CloudRecords(
       config['supabaseUrl'],
       config['supabasePublishableKey'],
+      storageForOwner: (owner) =>
+          SecureSession(const FlutterSecureStorage(), 'satipo.cloud.$owner'),
     ),
   );
 }

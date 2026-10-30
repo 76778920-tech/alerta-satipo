@@ -1,4 +1,7 @@
 import 'package:supabase/supabase.dart';
+import 'dart:async';
+import 'dart:convert';
+import '../application/ports.dart';
 import '../domain/measurement.dart';
 
 Map<String, dynamic>? singleRelation(dynamic value) {
@@ -31,8 +34,42 @@ Map<String, dynamic> cloudRecord(Map<String, dynamic> raw) {
 
 class CloudRecords {
   final SupabaseClient client;
-  CloudRecords(String url, String publicKey)
-    : client = SupabaseClient(url, publicKey);
+  final SessionPort Function(String owner)? storageForOwner;
+  SessionPort? _storage;
+  StreamSubscription<AuthState>? _auth;
+  Future<void> _writes = Future.value();
+  CloudRecords(String url, String publicKey, {this.storageForOwner})
+    : client = SupabaseClient(url, publicKey) {
+    _auth = client.auth.onAuthStateChange.listen((event) {
+      final storage = _storage;
+      if (storage == null) return;
+      final session = event.session;
+      _writes = _writes.catchError((Object _) {}).then((_) async {
+        if (session == null) {
+          await storage.clear();
+        } else {
+          await storage.write(jsonEncode(session.toJson()));
+        }
+      });
+      unawaited(_writes.catchError((Object _) {}));
+    }, onError: (Object _) {});
+  }
+
+  Future<void> restoreFor(String owner) async {
+    // Never reuse one local user's remote identity for another local user.
+    _storage = null;
+    await client.auth.signOut(scope: SignOutScope.local);
+    await _writes.catchError((Object _) {});
+    _storage = storageForOwner?.call(owner);
+    final raw = await _storage?.read();
+    if (raw == null) return;
+    try {
+      await client.auth.setInitialSession(raw);
+    } catch (_) {
+      await _storage?.clear();
+    }
+  }
+
   String? get email => client.auth.currentUser?.email;
   bool get connected => client.auth.currentSession != null;
 
@@ -44,6 +81,7 @@ class CloudRecords {
         password: password,
       );
       await authorize();
+      await _writes;
     } catch (_) {
       await disconnect();
       rethrow;
@@ -51,6 +89,9 @@ class CloudRecords {
   }
 
   Future<void> authorize() async {
+    if (client.auth.currentSession?.isExpired == true) {
+      await client.auth.refreshSession();
+    }
     final user = client.auth.currentUser;
     if (user == null) throw StateError('Conecta tu cuenta de la web.');
     final admin = await client
@@ -58,47 +99,52 @@ class CloudRecords {
         .select('id')
         .eq('id', user.id)
         .maybeSingle();
-    if (admin == null) {
-      throw StateError('Esta cuenta no tiene permiso para consultar PMV1.');
+    if (admin != null) {
+      throw StateError(
+        'Las cuentas administradoras utilizan el panel web, no la aplicación móvil.',
+      );
+    }
+    final resident = await client
+        .from('clientes')
+        .select('id')
+        .eq('id', user.id)
+        .maybeSingle();
+    if (resident == null) {
+      throw StateError('Se requiere una cuenta de poblador.');
     }
   }
 
   Future<List<Map<String, dynamic>>> history() async {
     await authorize();
-    final result = await client
-        .from('LecturaAmbiental')
-        .select('*,HistoricoPrediccion(*,EventoAlerta(*))')
-        .order('observed_at', ascending: false)
-        .order('lectura_id')
-        .limit(1000);
-    return result
-        .where((r) => singleRelation(r['HistoricoPrediccion']) != null)
-        .map(cloudRecord)
+    final result = await client.rpc(
+      'resident_pmv1_feed',
+      params: {'p_alerts': false},
+    );
+    return (result as List)
+        .map((r) => cloudRecord(Map<String, dynamic>.from(r)))
         .toList();
   }
 
-  // Query actual alerts separately: a large normal-history must not hide old alerts.
   Future<List<Map<String, dynamic>>> alerts() async {
     await authorize();
-    final result = await client
-        .from('EventoAlerta')
-        .select('*,HistoricoPrediccion!inner(*,LecturaAmbiental!inner(*))')
-        .order('created_at', ascending: false)
-        .order('alerta_id')
-        .limit(200);
-    return result.map((alert) {
-      final prediction = singleRelation(alert['HistoricoPrediccion'])!;
-      final reading = singleRelation(prediction['LecturaAmbiental'])!;
-      return cloudRecord({
-        ...reading,
-        'HistoricoPrediccion': {
-          ...prediction,
-          'EventoAlerta': {'alerta_id': alert['alerta_id']},
-        },
-      });
-    }).toList();
+    final result = await client.rpc(
+      'resident_pmv1_feed',
+      params: {'p_alerts': true},
+    );
+    return (result as List)
+        .map((r) => cloudRecord(Map<String, dynamic>.from(r)))
+        .toList();
   }
 
-  Future<void> disconnect() => client.auth.signOut(scope: SignOutScope.local);
-  Future<void> dispose() => client.dispose();
+  Future<void> disconnect() async {
+    await client.auth.signOut(scope: SignOutScope.local);
+    await _writes.catchError((Object _) {});
+    await _storage?.clear();
+  }
+
+  Future<void> dispose() async {
+    await _auth?.cancel();
+    await _writes.catchError((Object _) {});
+    await client.dispose();
+  }
 }

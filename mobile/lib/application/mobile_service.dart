@@ -22,8 +22,8 @@ class MobileService {
     required this.uuid,
   });
   String get role => profile?['rol'] ?? '';
-  bool get canOperate => ['OPERADOR', 'ADMINISTRADOR'].contains(role);
-  bool get isAdmin => role == 'ADMINISTRADOR';
+  bool get canOperate => role == 'POBLADOR';
+  bool get isAdmin => false;
   Future<void> restore() async {
     try {
       final raw = await session.read();
@@ -35,7 +35,7 @@ class MobileService {
         return;
       }
       profile = await users.userById(value['id']);
-      if (profile == null) await logout();
+      if (profile == null || role != 'POBLADOR') await logout();
     } catch (_) {
       await logout();
     }
@@ -53,13 +53,12 @@ class MobileService {
         'Revisa nombre, correo y contraseña (12 a 128 caracteres).',
       );
     }
-    final initial = await users.userCount() == 0;
     await users.createUser({
       'usuario_id': uuid(),
       'nombre': name,
       'correo': email,
       'contrasena_hash': await passwords.hash(password),
-      'rol': initial ? 'ADMINISTRADOR' : 'POBLADOR',
+      'rol': 'POBLADOR',
       'fecha_creacion': now().toUtc().toIso8601String(),
     });
   }
@@ -69,6 +68,11 @@ class MobileService {
     if (user == null ||
         !await passwords.verify(password, user['contrasena_hash'])) {
       throw StateError('Credenciales incorrectas.');
+    }
+    if (user['rol'] != 'POBLADOR') {
+      throw StateError(
+        'Esta aplicación es para pobladores. La administración se realiza en la web.',
+      );
     }
     final end = now().add(const Duration(hours: 24));
     await session.write(
@@ -90,7 +94,7 @@ class MobileService {
       throw StateError('Sesión finalizada. Inicia sesión.');
     }
     profile = await users.userById(profile!['usuario_id']);
-    if (profile == null) {
+    if (profile == null || role != 'POBLADOR') {
       await logout();
       throw StateError('Cuenta no disponible.');
     }
@@ -135,6 +139,7 @@ class MobileService {
   }
 
   Future<void> simulate(String level) async {
+    await authorize(admin: true);
     final i = levels.indexOf(level);
     if (i < 0) throw const FormatException('Nivel inválido.');
     const fixtures = [
@@ -159,7 +164,7 @@ class MobileService {
     if (!['PENDIENTE', 'ATENDIDO', 'DESCARTADO'].contains(status)) {
       throw const FormatException('Estado inválido.');
     }
-    await records.attention(await authorize(operation: true), id, status);
+    await records.attention(await authorize(admin: true), id, status);
   }
 
   Future<String> export() async => jsonEncode({

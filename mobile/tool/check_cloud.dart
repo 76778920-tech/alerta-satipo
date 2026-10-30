@@ -6,7 +6,7 @@ import 'package:alerta_satipo/adapters/cloud_records.dart';
 Future<void> main(List<String> args) async {
   if (!args.contains('--live')) throw StateError('Requires --live');
   final config = jsonDecode(File('assets/supabase-public.json').readAsStringSync());
-  final credentials = jsonDecode(File('../config/admin.local.json').readAsStringSync());
+  final credentials = jsonDecode(File('../config/resident.local.json').readAsStringSync());
   final cloud = CloudRecords(config['supabaseUrl'], config['supabasePublishableKey']);
   try {
     await cloud.login(credentials['email'], credentials['password']);

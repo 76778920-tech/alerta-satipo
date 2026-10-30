@@ -1,14 +1,24 @@
 # Alerta Satipo Android
 
+## Alcance vigente: aplicativo para pobladores
+
+Desde el 29/10/2026, el registro local crea únicamente POBLADOR. Se rechazan cuentas ADMINISTRADOR/OPERADOR en el acceso móvil, incluidas las cuentas de prueba antiguas; no se convierten ni se eliminan. La gestión administrativa queda en la web. Se retiraron gestión de usuarios, importación y laboratorio de simulación de la interfaz; se conserva recepción BLE, consulta, exportación local y reportes.
+
+**Tus alertas** corresponde a los eventos locales del teléfono (compartidos por sus cuentas locales), no a una asignación personal por comunidad. **Alertas generales** consulta todos los eventos autorizados del proyecto mediante `resident_pmv1_feed`, exclusivamente de lectura y para usuarios de `clientes` que no pertenezcan a `administradores`. Las tablas administrativas mantienen sus políticas. La consulta omite la identidad de quien cargó los registros; las tarjetas no muestran números de nodo/dispositivo. La pestaña Dispositivo solo permite conexión BLE, no administración.
+
+La migración `202610290001_resident_feed.sql` habilita esta consulta. Para vincular una cuenta remota se necesita una cuenta de poblador existente en Supabase; el registro local no crea esa cuenta. La cuenta administrativa anteriormente usada para pruebas ya no sirve en el móvil. La verificación remota usa `config/resident.local.json`, ignorado por Git.
+
+Las secciones históricas siguientes describen la primera implementación y sus pruebas; cualquier referencia a roles administrativos móviles o simulación desde la interfaz queda sustituida por este alcance.
+
 ## Conexión de consulta a Supabase (29/10/2026)
 
-En Estado, Alertas o Historial, pulsar **Conectar con Supabase** e ingresar una cuenta del panel web autorizada como administrador. Las credenciales locales del emulador no otorgan permisos remotos. Las políticas RLS se mantienen y se comprueba la pertenencia a `administradores` en cada consulta.
+En **Perfil**, vincular una cuenta remota de poblador una vez. Las credenciales locales del emulador no otorgan permisos remotos. Las políticas RLS se mantienen; la consulta requiere pertenecer a `clientes` y rechaza cuentas de `administradores`. Estado, Alertas e Historial no repiten botones de conexión.
 
 La vista **Supabase** consulta hasta 1000 lecturas recientes y, por separado, los 200 eventos más recientes de `EventoAlerta`. Esto evita que lecturas normales recientes oculten alertas anteriores. El resultado conserva la predicción del servidor; no se recalcula ni se inventa latencia. El selector **Este teléfono** vuelve a los registros SQLite. La atención y exportación locales no modifican datos remotos.
 
 Se consulta al conectar, al regresar a primer plano y cada 15 segundos mientras la app está abierta; también hay un botón Actualizar. Es consulta periódica, no Supabase Realtime ni notificaciones de fondo. Si falla la conexión o autorización, se retiran los datos remotos visibles y se informa del error. Las fechas de las lecturas indican su antigüedad, independientemente de la hora de consulta.
 
-La sesión remota reside en memoria y se elimina al desconectar/cerrar sesión; al reiniciar se requiere conectar otra vez. No se guardan contraseñas web en SQLite ni en el APK. `assets/supabase-public.json` contiene solo configuración pública. No se incorporan claves administrativas.
+La sesión remota se conserva en almacenamiento seguro Android, separada por cuenta local. Después de reiniciar e ingresar a la misma cuenta local, se restaura sin pedir nuevamente las credenciales web y se consulta automáticamente. La recuperación inicial no necesita red; los tokens vencidos se renuevan al consultar. El cierre explícito de sesión o la desvinculación elimina la sesión guardada. No se guardan contraseñas web en SQLite ni en el APK. `assets/supabase-public.json` contiene solo configuración pública. No se incorporan claves administrativas.
 
 Esta integración es de **consulta**: no sube lecturas locales, no sincroniza estados de atención y no fusiona identidades locales con Supabase Auth. Los datos remotos tampoco se almacenan en SQLite. La descripción de funcionamiento offline de abajo corresponde al modo local.
 

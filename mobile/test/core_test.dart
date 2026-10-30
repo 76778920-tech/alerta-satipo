@@ -82,14 +82,22 @@ void main() {
       app.setRole(memory.accounts[1]['usuario_id'], 'ADMINISTRADOR'),
       throwsStateError,
     );
-    await app.logout();
-    await app.login('admin@test.local', 'long-password');
-    await app.setRole(memory.accounts[1]['usuario_id'], 'OPERADOR');
+    expect(memory.accounts.first['rol'], 'POBLADOR');
+    memory.accounts.first['rol'] = 'ADMINISTRADOR';
+    await expectLater(
+      app.login('admin@test.local', 'long-password'),
+      throwsStateError,
+    );
     for (var i = 0; i < 10; i++) {
-      await app.simulate('Emergencia');
+      await app.ingest([
+        reading(
+          '00000000-0000-4000-8000-${(i + 10).toString().padLeft(12, '0')}',
+        ),
+      ]);
     }
     expect((await app.history()).length, 10);
     expect(jsonDecode(await app.export())['records'].length, 10);
+    await expectLater(app.attend('any', 'ATENDIDO'), throwsStateError);
     now = now.add(const Duration(hours: 25));
     await expectLater(app.history(), throwsStateError);
     expect(app.profile, isNull);

@@ -145,14 +145,8 @@ class LocalDatabase implements RecordsPort, UsersPort {
   @override
   Future<void> createUser(Map<String, dynamic> user) async {
     await db.transaction((tx) async {
-      final count = Sqflite.firstIntValue(
-        await tx.rawQuery('SELECT COUNT(*) FROM Usuario'),
-      )!;
-      // The first account owns this local installation; later registration cannot promote itself.
-      await tx.insert('Usuario', {
-        ...user,
-        'rol': count == 0 ? 'ADMINISTRADOR' : 'POBLADOR',
-      });
+      // Mobile registration never grants administrative privileges.
+      await tx.insert('Usuario', {...user, 'rol': 'POBLADOR'});
     });
   }
 

@@ -45,12 +45,15 @@ class PasswordHasher implements PasswordPort {
 
 class SecureSession implements SessionPort {
   final FlutterSecureStorage storage;
-  SecureSession([this.storage = const FlutterSecureStorage()]);
+  final String key;
+  SecureSession([
+    this.storage = const FlutterSecureStorage(),
+    this.key = 'satipo.session',
+  ]);
   @override
-  Future<String?> read() => storage.read(key: 'satipo.session');
+  Future<String?> read() => storage.read(key: key);
   @override
-  Future<void> write(String value) =>
-      storage.write(key: 'satipo.session', value: value);
+  Future<void> write(String value) => storage.write(key: key, value: value);
   @override
-  Future<void> clear() => storage.delete(key: 'satipo.session');
+  Future<void> clear() => storage.delete(key: key);
 }
