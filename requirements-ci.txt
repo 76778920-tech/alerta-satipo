@@ -1,0 +1,10 @@
+# Entorno de la referencia publicada: no regenerar metricas en CI.
+requests==2.32.3
+pandas==2.2.3
+shapely==2.1.2
+scikit-learn==1.5.2
+numpy==2.1.3
+scipy==1.14.1
+joblib==1.5.3
+threadpoolctl==3.6.0
+playwright==1.63.0
