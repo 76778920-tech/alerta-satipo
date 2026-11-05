@@ -61,10 +61,10 @@ Resultado esperado: archivo config/public.json generado y mensaje «modo supabas
 Ruta A — Proyecto existente. Las tablas y la muestra ya están cargadas. No ejecutar migraciones, seed.sql, el importador ni scripts de creación de usuarios. Continuar con la autorización del acceso y la ejecución local. Las modificaciones realizadas desde este entorno afectan a la base compartida.
 Ruta B — Proyecto nuevo y vacío. El responsable debe preparar la base conforme al apartado 3. En SQL Editor, ejecutar el contenido completo de estos archivos, uno por uno y en este orden:
 ```text
-1. supabase/migrations/202609230001_initial.sql
-2. supabase/migrations/202609230002_private_admin_helper.sql
-3. supabase/seed.sql
-4. supabase/migrations/202609230003_demo_operations.sql
+1. database/supabase/migrations/202609230001_initial.sql
+2. database/supabase/migrations/202609230002_private_admin_helper.sql
+3. database/supabase/seed.sql
+4. database/supabase/migrations/202609230003_demo_operations.sql
 ```
 La migración 003 requiere que las 300 lecturas existan previamente. No ejecutar las tres migraciones antes del seed. Ejecutar archivos con SQL Editor no registra automáticamente versiones en el historial de la CLI; no combinar este procedimiento con db push sin reconciliar ese historial.
 Como alternativa exclusiva al paso 3, puede utilizarse npm run import:dataset con la clave privada configurada por el responsable. No hace falta ejecutar ambas opciones. El archivo versionado contiene las 300 lecturas; npm run dataset descarga y vuelve a preparar la fuente, por lo que no es un requisito de instalación.

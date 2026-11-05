@@ -58,5 +58,5 @@ Explicación: “Separamos reglas, coordinación e infraestructura. El núcleo d
 
 Si preguntan por qué usar hexagonal: permite sustituir adaptadores y probar casos de uso sin red, a cambio de mayor complejidad. Si preguntan si cambiar de base de datos es gratis: no; se reemplaza el adaptador y se migran esquema, políticas y funciones, aunque los casos de uso deberían permanecer estables. Si preguntan qué prueba la arquitectura: los contratos, la composición, las importaciones y las pruebas, no la forma del dibujo.
 
-Fuentes internas: frontend/shared/js/backend.js (identidad y guard); frontend/web/js/operations.js (estados y actualización condicional); frontend/shared/js/dataset.js (lecturas); supabase/migrations/202609230003_demo_operations.sql (relaciones y RLS); tests/database.test.mjs y tests/panel_operations.py (verificación actual). Estos archivos respaldan el punto de partida; no demuestran la implementación del diseño futuro.
+Fuentes internas: frontend/shared/js/backend.js (identidad y guard); frontend/web/js/operations.js (estados y actualización condicional); frontend/shared/js/dataset.js (lecturas); database/supabase/migrations/202609230003_demo_operations.sql (relaciones y RLS); tests/database.test.mjs y tests/panel_operations.py (verificación actual). Estos archivos respaldan el punto de partida; no demuestran la implementación del diseño futuro.
 

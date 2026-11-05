@@ -1,5 +1,18 @@
 # Alerta Satipo
 
+## Organización del proyecto
+
+- `backend/`: API, reglas de negocio, casos de uso y adaptadores.
+- `frontend/`: interfaz web y sus recursos.
+- `ci-cd/`: dependencias de pruebas y comprobación del despliegue.
+- `database/`: configuración de Supabase, migraciones SQL y datos iniciales.
+- `mobile/`: aplicativo Android desarrollado con Flutter.
+
+GitHub requiere que el archivo que inicia CI/CD esté en `.github/workflows/`.
+Ese workflow utiliza los archivos de `ci-cd/`. Para ejecutar la CLI de Supabase
+desde la raíz, utiliza `npx supabase --workdir database <comando>`.
+
+
 **Integración del informe final (23/10/2026):** nueva vista **Informe y API**
 con los 52 requisitos/historias/salidas del informe, y adquisición HTTP con
 historial local SQLite. Variante sin sensores solicitada por el usuario;
@@ -67,8 +80,8 @@ Estos accesos no son cuentas del proyecto Supabase. Un fallo de Supabase no acti
 | `backend/adapters/in/` | Adaptador HTTP que invoca los casos de uso |
 | `backend/adapters/out/` | Identidad, persistencia, resultados publicados y memoria |
 | `backend/bootstrap.mjs` | Composición e inyección de adaptadores |
-| `supabase/migrations/` | Esquema, funciones y permisos versionados |
-| `supabase/seed.sql` | Muestra idempotente de 300 filas |
+| `database/supabase/migrations/` | Esquema, funciones y permisos versionados |
+| `database/supabase/seed.sql` | Muestra idempotente de 300 filas |
 | `data/` | CSV, JSON, diccionario y trazabilidad |
 | `dataset/` | Muestreo puro, caso de uso y adaptadores HTTP/archivos |
 | `territorial/` | Núcleo de investigación, puertos y adaptadores de fuentes, archivos y entrenamiento |

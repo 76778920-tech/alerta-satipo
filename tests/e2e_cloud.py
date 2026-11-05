@@ -120,7 +120,7 @@ try:
         op.locator('#refresh-ops-btn').click()
         op.wait_for_function("document.querySelector('#incidents-table').textContent.includes('Puente QA temporal')")
         # La configuracion publica es legible; los secretos nunca se sirven.
-        for path in ['/.env','/config/admin.local.json','/supabase/seed.sql','/node_modules/package.json','/config/../.env']:
+        for path in ['/.env','/config/admin.local.json','/database/supabase/seed.sql','/node_modules/package.json','/config/../.env']:
             assert op.request.get('http://127.0.0.1:8000'+path).status == 404,path
         assert not errors,errors
         for context in contexts:context.close()

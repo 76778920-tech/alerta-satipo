@@ -132,7 +132,7 @@ Despliegue por el responsable autorizado:
 
 ```powershell
 npm run build:api
-npx supabase functions deploy admin-api --project-ref ddfmooylklgwnrmlxqzc
+npx supabase --workdir database functions deploy admin-api --project-ref ddfmooylklgwnrmlxqzc
 # .env: API desplegada HTTPS o SATIPO_API_URL vacío; nunca localhost.
 npm run build:hosting
 firebase deploy --only hosting --project alerta-satipo-76778920

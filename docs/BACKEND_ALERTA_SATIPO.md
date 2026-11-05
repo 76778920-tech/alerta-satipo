@@ -31,7 +31,7 @@ SUPABASE_SECRET_KEY=<clave_privada_solo_para_scripts>
 scripts/configure.mjs genera config/public.json con la URL y la clave pública. La clave privada se utiliza únicamente en herramientas administrativas y no se publica en el navegador ni se incluye en el repositorio.
 
 Archivos principales:
-- supabase/migrations/: definición y evolución del esquema.
+- database/supabase/migrations/: definición y evolución del esquema.
 - frontend/shared/js/backend.js: cliente Supabase, identificación, protección del acceso y cierre de sesión. Se ejecuta en el navegador.
 - frontend/shared/js/data.js: consultas de reportes, incidentes y configuración.
 - frontend/shared/js/dataset.js: consulta de lecturas históricas.

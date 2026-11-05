@@ -699,7 +699,7 @@
         page: 8,
         status: "Parcial",
         evidence: [
-          "supabase/migrations/202610260001_pmv1.sql",
+          "database/supabase/migrations/202610260001_pmv1.sql",
           "tests/pmv1.test.mjs",
           "tests/pmv1_live.mjs"
         ],
@@ -734,7 +734,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original."
       },
@@ -746,7 +746,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original."
       },
@@ -758,7 +758,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original."
       },
@@ -835,7 +835,7 @@
         page: 8,
         status: "Parcial",
         evidence: [
-          "supabase/migrations/202610260001_pmv1.sql",
+          "database/supabase/migrations/202610260001_pmv1.sql",
           "tests/pmv1.test.mjs",
           "tests/pmv1_live.mjs"
         ],
@@ -865,7 +865,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original."
       },
@@ -877,7 +877,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original."
       },
@@ -889,7 +889,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original."
       },
@@ -970,7 +970,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original.",
         pmv: "PMV3",
@@ -987,7 +987,7 @@
         evidence: [
           "frontend/src/application/use-cases/browser-service.mjs",
           "backend/application/use-cases/admin-service.mjs",
-          "supabase/migrations/202609230001_initial.sql"
+          "database/supabase/migrations/202609230001_initial.sql"
         ],
         gap: "Autenticaci\xF3n, autorizaci\xF3n y cierre implementados para el panel. Falta validar recorrido de usuarios finales Android y aceptaci\xF3n del backlog original.",
         pmv: "PMV3",
@@ -1176,7 +1176,7 @@
         page: 9,
         status: "Parcial",
         evidence: [
-          "supabase/migrations/202610260001_pmv1.sql",
+          "database/supabase/migrations/202610260001_pmv1.sql",
           "tests/pmv1.test.mjs",
           "tests/pmv1_live.mjs"
         ],

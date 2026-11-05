@@ -70,10 +70,10 @@ La membresía del equipo de Supabase permite trabajar con el proyecto según el 
 Este procedimiento se ejecuta una sola vez en una base nueva. Verificar el proyecto seleccionado antes de ejecutar SQL. Utilizar el SQL Editor de Supabase y pegar el contenido completo de cada archivo; ejecutar cada paso por separado y comprobar que termina correctamente.
 Orden obligatorio:
 ```text
-1. supabase/migrations/202609230001_initial.sql
-2. supabase/migrations/202609230002_private_admin_helper.sql
-3. supabase/seed.sql
-4. supabase/migrations/202609230003_demo_operations.sql
+1. database/supabase/migrations/202609230001_initial.sql
+2. database/supabase/migrations/202609230002_private_admin_helper.sql
+3. database/supabase/seed.sql
+4. database/supabase/migrations/202609230003_demo_operations.sql
 ```
 La migración 001 crea tablas, permisos, funciones y disparadores. La 002 mueve la comprobación administrativa al esquema privado. seed.sql incorpora las 300 lecturas originales. La 003 crea seis nodos virtuales, sus vínculos y tareas; falla si todavía no existen exactamente las 300 lecturas de la muestra.
 No ejecutar las tres migraciones seguidas antes de cargar seed.sql. Este procedimiento usa SQL Editor y no registra automáticamente versiones en el historial de migraciones de la CLI. No combinarlo después con db push sin reconciliar ese historial. No volver a ejecutar CREATE TABLE sobre un esquema existente.

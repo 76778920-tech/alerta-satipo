@@ -10,11 +10,11 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
     create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
     grant usage on schema public,auth to anon,authenticated,service_role;
     grant execute on function auth.uid() to anon,authenticated,service_role;`);
-  await db.exec(await readFile('supabase/migrations/202609230001_initial.sql','utf8'));
-  await db.exec(await readFile('supabase/migrations/202609230002_private_admin_helper.sql','utf8'));
-  const seed=await readFile('supabase/seed.sql','utf8');
+  await db.exec(await readFile('database/supabase/migrations/202609230001_initial.sql','utf8'));
+  await db.exec(await readFile('database/supabase/migrations/202609230002_private_admin_helper.sql','utf8'));
+  const seed=await readFile('database/supabase/seed.sql','utf8');
   await db.exec(seed);await db.exec(seed);
-  await db.exec(await readFile('supabase/migrations/202609230003_demo_operations.sql','utf8'));
+  await db.exec(await readFile('database/supabase/migrations/202609230003_demo_operations.sql','utf8'));
   assert.equal((await db.query('select count(*)::int as n from smoke_readings')).rows[0].n,300);
   assert.equal((await db.query('select count(*)::int as n from smoke_readings where fire_alarm')).rows[0].n,214);
   const a='11111111-1111-4111-8111-111111111111',b='22222222-2222-4222-8222-222222222222',admin='33333333-3333-4333-8333-333333333333';

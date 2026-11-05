@@ -6,7 +6,7 @@ Hosting: https://alerta-satipo-76778920.web.app
 
 Cada pull request a main ejecuta pruebas JavaScript, Python, recorrido web con Chromium,
 analisis y pruebas Flutter y compilacion del APK de prueba. Las versiones del entorno
-del modelo estan fijadas en requirements-ci.txt: la referencia fue generada con
+del modelo estan fijadas en ci-cd/requirements.txt: la referencia fue generada con
 scikit-learn 1.5.2 y no se cambia la matriz esperada para ocultar diferencias de version.
 
 Cada push a main ejecuta los mismos controles. Solo cuando ambos trabajos terminan

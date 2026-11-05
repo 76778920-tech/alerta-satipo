@@ -28,7 +28,7 @@ test('PMV1 PostgreSQL: RLS, transacción, unicidad y persistencia de lectura/pre
  create function private.is_admin() returns boolean language sql stable as $$select auth.uid()='33333333-3333-4333-8333-333333333333'::uuid$$;
  grant usage on schema public,auth,private to authenticated,anon;
  insert into auth.users values('33333333-3333-4333-8333-333333333333'),('44444444-4444-4444-8444-444444444444');`);
- await db.exec(await readFile('supabase/migrations/202610260001_pmv1.sql','utf8'));
+ await db.exec(await readFile('database/supabase/migrations/202610260001_pmv1.sql','utf8'));
  async function call(role,user,sql,params=[]){await db.exec('begin');try{await db.exec(`set local role ${role}`);await db.query("select set_config('request.jwt.claim.sub',$1,true)",[user]);const result=await db.query(sql,params);await db.exec('commit');return result;}catch(e){await db.exec('rollback');throw e;}}
  const admin='33333333-3333-4333-8333-333333333333',user='44444444-4444-4444-8444-444444444444',record=evaluatePmv1(example());
  const write=(r,id=admin)=>call('authenticated',id,'select public.pmv1_store($1::jsonb) as result',[JSON.stringify(r)]);
@@ -41,7 +41,7 @@ test('PMV1 PostgreSQL: RLS, transacción, unicidad y persistencia de lectura/pre
  const normal=example();normal.id='66666666-6666-4666-8666-666666666666';normal.values={temperature_c:25,humidity_pct:70,smoke_index:10,gas_index:12,dust_ugm3:15};await write(evaluatePmv1(normal));
  assert.equal((await db.query('select * from public."LecturaAmbiental"')).rows.length,2);assert.equal((await db.query('select * from public."EventoAlerta"')).rows.length,1);
  await db.exec(`create table public.clientes(id uuid primary key);insert into public.clientes values('${user}');`);
- await db.exec(await readFile('supabase/migrations/202610290001_resident_feed.sql','utf8'));
+ await db.exec(await readFile('database/supabase/migrations/202610290001_resident_feed.sql','utf8'));
  const feed=await call('authenticated',user,'select public.resident_pmv1_feed(true) as data');
  assert.equal(feed.rows[0].data.length,1);
  assert.equal(feed.rows[0].data[0].HistoricoPrediccion.level,'Emergencia');

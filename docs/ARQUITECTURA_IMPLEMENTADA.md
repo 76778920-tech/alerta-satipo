@@ -85,13 +85,13 @@ Abrir http://127.0.0.1:8000/shared/login.html. El servidor Node escucha en 127.0
 
 ```powershell
 npm run build:api
-npx supabase functions deploy admin-api --project-ref ddfmooylklgwnrmlxqzc
+npx supabase --workdir database functions deploy admin-api --project-ref ddfmooylklgwnrmlxqzc
 # Dejar SATIPO_API_URL vacío o con la URL HTTPS desplegada.
 npm run build:hosting
 firebase deploy --only hosting --project alerta-satipo-76778920
 ```
 
-build:api empaqueta backend/ en supabase/functions/admin-api/index.ts; no editar el archivo generado. Edge utiliza SUPABASE_URL y SUPABASE_ANON_KEY proporcionadas por Supabase. Para otro proyecto, cambiar referencia, orígenes permitidos en edge.mjs y configuración del frontend. La publicación de Firebase rechaza una API local para evitar desplegar localhost.
+build:api empaqueta backend/ en database/supabase/functions/admin-api/index.ts; no editar el archivo generado. Edge utiliza SUPABASE_URL y SUPABASE_ANON_KEY proporcionadas por Supabase. Para otro proyecto, cambiar referencia, orígenes permitidos en edge.mjs y configuración del frontend. La publicación de Firebase rechaza una API local para evitar desplegar localhost.
 
 ## Evidencia y pruebas
 

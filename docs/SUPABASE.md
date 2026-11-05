@@ -65,11 +65,11 @@ Ya están aplicadas en el proyecto creado. Para otro proyecto nuevo:
 
 ```powershell
 npx supabase login
-npx supabase link --project-ref TU_REFERENCIA
-npx supabase db push --include-seed
+npx supabase --workdir database link --project-ref TU_REFERENCIA
+npx supabase --workdir database db push --include-seed
 ```
 
-También puedes ejecutar en orden los archivos de `supabase/migrations/` desde el SQL Editor y luego `supabase/seed.sql`. No ejecutes ambos métodos para la misma migración sin sincronizar el historial.
+También puedes ejecutar en orden los archivos de `database/supabase/migrations/` desde el SQL Editor y luego `database/supabase/seed.sql`. No ejecutes ambos métodos para la misma migración sin sincronizar el historial.
 
 La importación alternativa por API usa `SUPABASE_SECRET_KEY` solamente en el entorno local:
 
