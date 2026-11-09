@@ -52,7 +52,7 @@
         "scripts/train_pmv1.py",
         "colab/pmv1/evaluation.json"
       ],
-      "gap": "Tres clases entrenadas con cinco variables sintéticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validación con incendios reales ni sensores calibrados."
+      "gap": "Tres clases entrenadas con cinco variables sintéticas; validación de 6000 y prueba separada de 3000 registros sintéticos. Sin validación con incendios reales ni sensores calibrados."
     },
     {
       "id": "RF-05",
@@ -63,7 +63,7 @@
         "scripts/train_pmv1.py",
         "colab/pmv1/evaluation.json"
       ],
-      "gap": "Tres clases entrenadas con cinco variables sintéticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validación con incendios reales ni sensores calibrados."
+      "gap": "Tres clases entrenadas con cinco variables sintéticas; validación de 6000 y prueba separada de 3000 registros sintéticos. Sin validación con incendios reales ni sensores calibrados."
     },
     {
       "id": "RF-06",
@@ -447,7 +447,7 @@
         "scripts/train_pmv1.py",
         "colab/pmv1/evaluation.json"
       ],
-      "gap": "Tres clases entrenadas con cinco variables sintéticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validación con incendios reales ni sensores calibrados.",
+      "gap": "Tres clases entrenadas con cinco variables sintéticas; validación de 6000 y prueba separada de 3000 registros sintéticos. Sin validación con incendios reales ni sensores calibrados.",
       "pmv": "PMV1",
       "requirements": [
         "RF-04"
@@ -463,7 +463,7 @@
         "scripts/train_pmv1.py",
         "colab/pmv1/evaluation.json"
       ],
-      "gap": "Tres clases entrenadas con cinco variables sintéticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validación con incendios reales ni sensores calibrados.",
+      "gap": "Tres clases entrenadas con cinco variables sintéticas; validación de 6000 y prueba separada de 3000 registros sintéticos. Sin validación con incendios reales ni sensores calibrados.",
       "pmv": "PMV1",
       "requirements": [
         "RF-05"
@@ -637,7 +637,7 @@
         "scripts/train_pmv1.py",
         "colab/pmv1/evaluation.json"
       ],
-      "gap": "Tres clases entrenadas con cinco variables sintéticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validación con incendios reales ni sensores calibrados."
+      "gap": "Tres clases entrenadas con cinco variables sintéticas; validación de 6000 y prueba separada de 3000 registros sintéticos. Sin validación con incendios reales ni sensores calibrados."
     },
     {
       "id": "RP-02",

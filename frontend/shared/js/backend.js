@@ -684,7 +684,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci\xF3n de 6000 y prueba separada de 3000 registros sint\xE9ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
       },
       {
         id: "RF-05",
@@ -695,7 +695,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci\xF3n de 6000 y prueba separada de 3000 registros sint\xE9ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
       },
       {
         id: "RF-06",
@@ -1079,7 +1079,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci\xF3n de 6000 y prueba separada de 3000 registros sint\xE9ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
         pmv: "PMV1",
         requirements: [
           "RF-04"
@@ -1095,7 +1095,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci\xF3n de 6000 y prueba separada de 3000 registros sint\xE9ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
         pmv: "PMV1",
         requirements: [
           "RF-05"
@@ -1269,7 +1269,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci\xF3n de 6000 y prueba separada de 3000 registros sint\xE9ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
       },
       {
         id: "RP-02",
