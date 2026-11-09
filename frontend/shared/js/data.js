@@ -466,7 +466,7 @@
       return this.read("shared/models/satipo_umbrales.json");
     }
     readings() {
-      return this.read("data/smoke_detection_300.json");
+      return this.read("data/smoke_detection_1011.json");
     }
     config() {
       return this.read("config/public.json");

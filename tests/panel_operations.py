@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 
 base = os.environ.get('PANEL_TEST_URL', 'http://127.0.0.1:8000')
 credentials = json.loads(Path('config/admin.local.json').read_text())
-source = json.loads(Path('data/smoke_detection_300.json').read_text())
+source = json.loads(Path('data/smoke_detection_1011.json').read_text())
 with sync_playwright() as p:
     browser = p.chromium.launch(channel='msedge', headless=True, ignore_default_args=['--hide-scrollbars'])
     page = browser.new_page(viewport={'width':1440,'height':900})
@@ -16,16 +16,16 @@ with sync_playwright() as p:
     page.wait_for_function("!document.querySelector('#submit-btn').disabled")
     page.fill('#email',credentials['email']);page.fill('#password',credentials['password'])
     page.locator('#submit-btn').click();page.wait_for_url('**/web/index.html')
-    page.wait_for_function("window.SatipoDataset && window.SatipoDataset.getSnapshot().length===300")
+    page.wait_for_function("window.SatipoDataset && window.SatipoDataset.getSnapshot().length===1011")
     page.wait_for_function("window.SatipoOperations && window.SatipoOperations.getSnapshot() !== null")
     snapshot=page.evaluate('window.SatipoOperations.getSnapshot()')
-    assert len(snapshot['nodes'])==6 and len(snapshot['links'])==300
+    assert len(snapshot['nodes'])==6 and len(snapshot['links'])==1011
     expected={r['source_row']:r for r in source}
     for link in snapshot['links']:
         row=link['smoke_readings']
         assert row['fire_alarm']==expected[link['source_row']]['fire_alarm']
         assert row['temperature_c']==expected[link['source_row']]['temperature_c']
-    assert sum(r['smoke_readings']['fire_alarm'] for r in snapshot['links'])==214
+    assert sum(r['smoke_readings']['fire_alarm'] for r in snapshot['links'])==722
     for view,table in [('incidents','demo_cases'),('maintenance','demo_maintenance')]:
         page.click(f'[data-view="{view}"]')
         control=page.locator(f'[data-operation="{table}"]').first

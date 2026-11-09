@@ -1,6 +1,6 @@
 # Nodos, casos y mantenimiento
 
-Supabase conserva seis nodos virtuales V-01 a V-06. Se ordenan las 300 filas de smoke-detection-iot-300-v1 por source_row y se asignan en lotes de 50. La tabla demo_node_readings contiene una clave foránea compuesta a smoke_readings: cada lectura pertenece a un único lote. No se alteran los datos originales.
+Supabase conserva seis nodos virtuales V-01 a V-06. Se ordenan las 1,011 filas de smoke-detection-iot-1011-v1 por source_row y se reparten con `ntile(6)`: cada nodo contiene 168 o 169 lecturas. La tabla demo_node_readings contiene una clave foránea compuesta a smoke_readings. No se alteran los datos originales.
 
 Cada lote con etiquetas Fire Alarm positivas tiene un caso de revisión (demo_cases). El total de etiquetas es 214; no son 214 incendios ni se infieren episodios continuos de una muestra dispersa. Los casos están separados de incidentes y reportes reales. Un estado Revisado no confirma un incendio.
 

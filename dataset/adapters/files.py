@@ -12,14 +12,15 @@ def sql_literal(value):
 
 
 class DatasetFiles:
-    def __init__(self, directory, seed_file):
+    def __init__(self, directory, seed_file, filename='smoke_detection_1011'):
         self.directory = Path(directory)
         self.seed_file = Path(seed_file)
+        self.filename = filename
 
     def write(self, rows, metadata):
         self.directory.mkdir(parents=True, exist_ok=True)
-        (self.directory / 'smoke_detection_300.json').write_text(json.dumps(rows, indent=2) + '\n', encoding='utf-8')
-        with (self.directory / 'smoke_detection_300.csv').open('w', newline='', encoding='utf-8') as handle:
+        (self.directory / f'{self.filename}.json').write_text(json.dumps(rows, indent=2) + '\n', encoding='utf-8')
+        with (self.directory / f'{self.filename}.csv').open('w', newline='', encoding='utf-8') as handle:
             writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
             writer.writeheader()
             writer.writerows(rows)
@@ -28,6 +29,6 @@ class DatasetFiles:
         sql = f'-- Generado por scripts/prepare_dataset.py. Exactamente {len(rows)} registros.\n'
         sql += 'begin;\ninsert into public.smoke_readings (' + ','.join(columns) + ') values\n'
         sql += ',\n'.join('(' + ','.join(sql_literal(row[c]) for c in columns) + ')' for row in rows)
-        sql += '\non conflict (dataset_id, source_row) do nothing;\ncommit;\n'
+        sql += '\non conflict (dataset_id, source_row) do nothing;\nselect public.refresh_demo_dataset();\ncommit;\n'
         self.seed_file.parent.mkdir(parents=True, exist_ok=True)
         self.seed_file.write_text(sql, encoding='utf-8')

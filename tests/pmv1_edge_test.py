@@ -19,12 +19,12 @@ class EdgePackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'dataset.zip'
             counts = module.prepare(ROOT / 'colab/pmv1', output)
-            self.assertEqual(sum(counts['training'].values()), 3000)
-            self.assertEqual(sum(counts['testing'].values()), 900)
+            self.assertEqual(sum(counts['training'].values()), 24000)
+            self.assertEqual(sum(counts['testing'].values()), 3000)
             with zipfile.ZipFile(output) as archive:
                 info = json.loads(archive.read('info.labels'))
                 manifest = json.loads(archive.read('manifest.json'))
-                self.assertEqual(len(info['files']), 3900)
+                self.assertEqual(len(info['files']), 27000)
                 self.assertFalse(manifest['edge_impulse_uploaded'])
                 for entry in info['files']:
                     content = archive.read(entry['path'])

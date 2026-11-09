@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 
 base = os.environ.get('PANEL_TEST_URL', 'http://127.0.0.1:8000')
 credentials = json.loads(Path('config/admin.local.json').read_text())
-source = json.loads(Path('data/smoke_detection_300.json').read_text())
+source = json.loads(Path('data/smoke_detection_1011.json').read_text())
 with sync_playwright() as p:
     browser = p.chromium.launch(channel='msedge', headless=True, ignore_default_args=['--hide-scrollbars'])
     page = browser.new_page(viewport={'width':1440,'height':900})
@@ -16,10 +16,10 @@ with sync_playwright() as p:
     page.wait_for_function("!document.querySelector('#submit-btn').disabled")
     page.fill('#email',credentials['email']);page.fill('#password',credentials['password'])
     page.locator('#submit-btn').click();page.wait_for_url('**/web/index.html')
-    page.wait_for_function("window.SatipoDataset && window.SatipoDataset.getSnapshot().length===300")
+    page.wait_for_function("window.SatipoDataset && window.SatipoDataset.getSnapshot().length===1011")
     actual=page.evaluate('window.SatipoDataset.getSnapshot()')
     expected={row['source_row']:row for row in source}
-    assert len(actual)==300
+    assert len(actual)==1011
     for row in actual:
         for key,value in expected[row['source_row']].items():
             if key=='recorded_at':continue  # PostgreSQL normaliza la representación de la zona UTC.
@@ -33,10 +33,10 @@ with sync_playwright() as p:
         seen.extend(page.locator('[data-reading]').evaluate_all('(els)=>els.map(e=>Number(e.dataset.reading))'))
         if page.locator('#dataset-next').is_disabled():break
         page.locator('#dataset-next').click()
-    assert len(seen)==len(set(seen))==300
+    assert len(seen)==len(set(seen))==1011
     assert set(seen)==set(expected)
-    page.select_option('#dataset-filter','1');assert '214' in page.locator('#dataset-position').inner_text()
-    page.select_option('#dataset-filter','0');assert '86' in page.locator('#dataset-position').inner_text()
+    page.select_option('#dataset-filter','1');assert '722' in page.locator('#dataset-position').inner_text()
+    page.select_option('#dataset-filter','0');assert '289' in page.locator('#dataset-position').inner_text()
     page.select_option('#dataset-filter','all');page.fill('#dataset-search','999999')
     assert '0 resultados' in page.locator('#dataset-position').inner_text()
     assert page.locator('#dataset-next').is_disabled()
@@ -45,7 +45,7 @@ with sync_playwright() as p:
     page.route('**/functions/v1/admin-api/readings*',lambda route:route.abort())
     page.locator('#dataset-retry').click()
     page.wait_for_function("document.querySelector('#dataset-connection').textContent.includes('No se pudo actualizar')")
-    assert len(page.evaluate('window.SatipoDataset.getSnapshot()'))==300
+    assert len(page.evaluate('window.SatipoDataset.getSnapshot()'))==1011
     page.unroute('**/functions/v1/admin-api/readings*')
     # Campos ausentes no se convierten en cero, porcentajes ni fechas inválidas.
     malformed=[dict(source[0],temperature_c=None,recorded_at='invalid',fire_alarm=None)]
@@ -58,13 +58,13 @@ with sync_playwright() as p:
     assert 'inválidos' in page.locator('#dataset-quality').inner_text()
     page.unroute('**/functions/v1/admin-api/readings*')
     page.locator('#dataset-retry').click()
-    page.wait_for_function('window.SatipoDataset.getSnapshot().length===300')
+    page.wait_for_function('window.SatipoDataset.getSnapshot().length===1011')
     # Fallo inicial: el resto del panel permanece accesible y el botón permite recuperarse.
     page.route('**/functions/v1/admin-api/readings*',lambda route:route.abort())
     page.reload();page.wait_for_function("document.querySelector('#dataset-connection')?.textContent.includes('No se pudieron cargar')")
     assert page.locator('[data-view=incidents]').is_visible()
     page.unroute('**/functions/v1/admin-api/readings*')
-    page.locator('#dataset-retry').click();page.wait_for_function('window.SatipoDataset.getSnapshot().length===300')
+    page.locator('#dataset-retry').click();page.wait_for_function('window.SatipoDataset.getSnapshot().length===1011')
     for width,height in [(1440,900),(1024,768),(390,844),(320,700)]:
         page.set_viewport_size({'width':width,'height':height})
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),width

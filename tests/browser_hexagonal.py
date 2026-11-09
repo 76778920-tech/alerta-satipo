@@ -8,10 +8,10 @@ from playwright.sync_api import sync_playwright
 from static_server_test import server, QuietHandler
 
 ROOT=Path(__file__).resolve().parents[1]
-readings=json.loads((ROOT/'data/smoke_detection_300.json').read_text(encoding='utf-8'))
+readings=json.loads((ROOT/'data/smoke_detection_1011.json').read_text(encoding='utf-8'))
 predictions=json.loads((ROOT/'backend/adapters/out/prediction-results.json').read_text(encoding='utf-8'))
 nodes=[{'id':f'V-0{i}','name':f'Lote {i}'} for i in range(1,7)]
-operations={'nodes':nodes,'links':[{'node_id':f'V-0{i//50+1}','source_row':row['source_row'],'smoke_readings':row} for i,row in enumerate(readings)],
+operations={'nodes':nodes,'links':[{'node_id':f'V-0{min(i*6//len(readings)+1,6)}','source_row':row['source_row'],'smoke_readings':row} for i,row in enumerate(readings)],
             'cases':[{'node_id':node['id'],'state':'Pendiente'} for node in nodes],
             'maintenance':[{'node_id':node['id'],'state':'Pendiente','task':'Revisión de prueba'} for node in nodes]}
 activity={'reports':[],'incidents':[],'settings':{'temp_critical':39,'smoke_critical':65,'humidity_dry':38,'wind_risk':18}}
@@ -82,7 +82,7 @@ try:
         assert page.evaluate('window.fixtureSignedOut') is True
         page.fill('#email','admin@example.invalid');page.fill('#password','test-password')
         page.click('#submit-btn');page.wait_for_url('**/web/index.html')
-        page.wait_for_function("document.querySelector('#dataset-summary')?.textContent.includes('300 registros')")
+        page.wait_for_function("document.querySelector('#dataset-summary')?.textContent.includes('1011 registros')")
         page.wait_for_function('window.SatipoOperations.getSnapshot() !== null')
         assert page.evaluate('window.SatipoBackend.client === undefined && window.SatipoBackend.api === undefined')
         page.click('[data-view="predictions"]')
@@ -190,7 +190,7 @@ try:
         # Sesión de poblador inyectada solo en el sustituto de pruebas.
         page.evaluate("sessionStorage.setItem('fixture-role','user')")
         page.goto(base+'/mobile/index.html')
-        page.wait_for_function("document.querySelector('#dataset-summary')?.textContent.includes('300 registros')")
+        page.wait_for_function("document.querySelector('#dataset-summary')?.textContent.includes('1011 registros')")
         page.click('.cta-stack [data-screen=report]')
         page.fill('#report-location','Escuela local');page.select_option('#report-type','smoke');page.select_option('#report-severity','high')
         page.fill('#report-description','Humo visible junto a la escuela en esta prueba local.')

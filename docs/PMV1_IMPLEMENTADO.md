@@ -26,7 +26,7 @@ Cada registro contiene UUID de lectura, UUID de nodo, origen `simulation` o `sen
 
 Los índices no son ppm y no identifican gases. PM2.5 representa partículas finas, no distingue polvo de humo. Un registro incompleto, no finito o fuera de rango se rechaza; no se sustituye un sensor ausente por cero. El validador se comparte entre navegador y servidor mediante generación de código. La importación JSON valida el lote completo y lo guarda en una transacción local; rechaza identificadores duplicados.
 
-`colab/PMV1_cinco_variables.ipynb` permite generar y entrenar en Colab. Se ejecutó el entrenador local, no una sesión de Colab del usuario. El notebook descarga CSV, evaluación, fixtures y exportaciones JavaScript/C++. `scripts/train_pmv1.py` genera 3000 ejemplos de entrenamiento y 900 de prueba con semillas distintas. Requiere NumPy y scikit-learn. Después de regenerar:
+`colab/PMV1_cinco_variables.ipynb` permite generar y entrenar en Colab. Se ejecutó el entrenador local, no una sesión de Colab del usuario. El notebook descarga CSV, evaluación, fixtures y exportaciones JavaScript/C++. `scripts/train_pmv1.py` genera 24,000 ejemplos de entrenamiento, 6,000 de validación y 3,000 de prueba con semillas separadas. La selección usa únicamente validación; la prueba no interviene en ella. Requiere NumPy y scikit-learn. Después de regenerar:
 
 ```powershell
 python scripts/train_pmv1.py
@@ -53,7 +53,7 @@ Los escenarios de entrenamiento tienen distribuciones superpuestas, incluyendo p
 - **Advertencia, amarillo:** escenario intermedio que requiere revisión.
 - **Emergencia, rojo:** escenario simulado de mayor intensidad; no confirma fuego real.
 
-Evaluación local reproducida en `colab/pmv1/evaluation.json`: exactitud **90,22 %**, F1 macro **0,9013**, **15 falsas alarmas entre 300 normales** y **23 emergencias clasificadas en otro nivel entre 305 emergencias**. La matriz de confusión está en ese archivo. Estas métricas pertenecen exclusivamente al generador sintético; no estiman desempeño en Satipo. El modelo histórico de 300 lecturas y las cifras del informe original permanecen separados.
+Evaluación local reproducida en `colab/pmv1/evaluation.json`: exactitud **92,77 %**, F1 macro **0,9283**, **45 falsas alarmas entre 990 normales** y **61 emergencias clasificadas en otro nivel entre 966 emergencias**. La matriz de confusión y la comparación de candidatos están en ese archivo. Estas métricas pertenecen exclusivamente al generador sintético; no estiman desempeño en Satipo. El modelo histórico de 1,011 lecturas y las cifras del informe original permanecen separados.
 
 ## HU15: persistencia y acceso
 

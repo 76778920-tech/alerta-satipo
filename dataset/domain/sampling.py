@@ -9,8 +9,11 @@ FIELDS = {'': 'source_row', 'UTC': 'utc_seconds', 'Temperature[C]': 'temperature
           'PM1.0': 'pm1_0', 'PM2.5': 'pm2_5', 'NC0.5': 'nc0_5', 'NC1.0': 'nc1_0',
           'NC2.5': 'nc2_5', 'CNT': 'cnt', 'Fire Alarm': 'fire_alarm'}
 INTEGERS = {'source_row', 'utc_seconds', 'tvoc_ppb', 'eco2_ppm', 'raw_h2', 'raw_ethanol', 'cnt'}
+DATASET_ID = 'smoke-detection-iot-1011-v1'
+SAMPLE_ROWS = 1011
+SAMPLE_SEED = 20261109
 
-def sample(rows, size=300, seed=20260923):
+def sample(rows, size=SAMPLE_ROWS, seed=SAMPLE_SEED):
     if not rows or any(set(row) != set(FIELDS) for row in rows):
         raise ValueError('El esquema del CSV ha cambiado o está vacío')
     if size < 1 or size > len(rows):
@@ -30,7 +33,7 @@ def sample(rows, size=300, seed=20260923):
         if any(isinstance(value, float) and not math.isfinite(value) for value in item.values()):
             raise ValueError('Medición no finita')
         item['recorded_at'] = datetime.fromtimestamp(item['utc_seconds'], timezone.utc).isoformat()
-        item['dataset_id'] = 'smoke-detection-iot-300-v1'
+        item['dataset_id'] = DATASET_ID
         result.append(item)
     if len(result) != len({r['source_row'] for r in result}):
         raise ValueError('Índices originales duplicados')

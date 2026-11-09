@@ -33,6 +33,6 @@ export class HttpAssets extends AssetsPort {
     return response.json();
   }
   model() { return this.read('shared/models/satipo_umbrales.json'); }
-  readings() { return this.read('data/smoke_detection_300.json'); }
+  readings() { return this.read('data/smoke_detection_1011.json'); }
   config() { return this.read('config/public.json'); }
 }

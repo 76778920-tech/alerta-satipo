@@ -21,7 +21,7 @@ window.createSupabaseClient = () => {
       const query = {
         select() { return this; },eq() { return this; },order() { return this; },
         async limit() {
-          return {data:table==='smoke_readings' ? await (await fetch('/data/smoke_detection_300.json')).json() : rows(),error:null};
+          return {data:table==='smoke_readings' ? await (await fetch('/data/smoke_detection_1011.json')).json() : rows(),error:null};
         },
         async maybeSingle() { return {data:table==='administradores' && role()==='admin' ? {id:'fixture-user',display_name:'Admin local'} : null,error:null}; },
         async single() { return {data:table==='app_settings' ? settings : profile(),error:null}; },

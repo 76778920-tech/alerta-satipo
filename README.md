@@ -22,7 +22,7 @@ proveedor real y modelo compatible pendientes. [Guía y revisión detallada](doc
 
 > **Acceso web vigente:** exclusivamente para administradores previamente autorizados. No hay registro ni creación de cuentas desde la web; el registro público de Supabase está desactivado. La interfaz móvil de pobladores se conserva solo como código local y no se publica en Firebase.
 
-Aplicación web con interfaz móvil para vigilancia comunitaria y panel administrativo. Integra **Supabase Auth + PostgreSQL con RLS** y una muestra histórica de **300 registros** de Smoke Detection IoT.
+Aplicación web con interfaz móvil para vigilancia comunitaria y panel administrativo. Integra **Supabase Auth + PostgreSQL con RLS** y una muestra histórica de **1,011 registros** de Smoke Detection IoT.
 
 **Sitio publicado:** https://alerta-satipo-76778920.web.app/ · [Guía de Firebase Hosting](docs/FIREBASE_HOSTING.md).
 
@@ -66,7 +66,7 @@ Estos accesos no son cuentas del proyecto Supabase. Un fallo de Supabase no acti
 - Reportes privados por usuario; creación transaccional del incidente correspondiente.
 - Revisión administrativa, historial de cambios y persistencia de preferencias y umbrales.
 - Solicitudes de apoyo registradas para revisión, sin prometer despacho de brigadas.
-- Explorador de 300 lecturas históricas conservando unidades y etiqueta original del CSV.
+- Explorador de 1,011 lecturas históricas conservando unidades y etiqueta original del CSV.
 - Wireframes de las siete pantallas en [HTML](docs/wireframes/index.html) y [PDF](docs/wireframes/Alerta-Satipo-Wireframes.pdf).
 
 ## Estructura
@@ -81,7 +81,7 @@ Estos accesos no son cuentas del proyecto Supabase. Un fallo de Supabase no acti
 | `backend/adapters/out/` | Identidad, persistencia, resultados publicados y memoria |
 | `backend/bootstrap.mjs` | Composición e inyección de adaptadores |
 | `database/supabase/migrations/` | Esquema, funciones y permisos versionados |
-| `database/supabase/seed.sql` | Muestra idempotente de 300 filas |
+| `database/supabase/seed.sql` | Muestra idempotente de 1,011 filas |
 | `data/` | CSV, JSON, diccionario y trazabilidad |
 | `dataset/` | Muestreo puro, caso de uso y adaptadores HTTP/archivos |
 | `territorial/` | Núcleo de investigación, puertos y adaptadores de fuentes, archivos y entrenamiento |
@@ -128,7 +128,7 @@ GitHub Actions ejecuta las pruebas de base de datos y comprobación de sintaxis 
 - [PMV1: cinco variables, modelo local, Supabase y firmware preparado](docs/PMV1_IMPLEMENTADO.md)
 - [Conexión, esquema y cuentas en Supabase](docs/SUPABASE.md)
 - [Revisión a fondo: cambios, pruebas y pendientes](docs/REVISION_TECNICA.md)
-- [Origen y diccionario de los 300 registros](data/README.md)
+- [Origen y diccionario de los 1,011 registros](data/README.md)
 - [Desarrollo](docs/DESARROLLO.md)
 
-El PMV1 incluye un árbol entrenado con cinco variables sintéticas y tres clases, separado del experimento histórico de 300 lecturas. Ninguno acredita validación física en Satipo. El firmware compila, pero faltan placa, sensores calibrados y la exportación real de Edge Impulse. Los documentos marcados como históricos describen versiones anteriores.
+El PMV1 incluye un árbol entrenado con cinco variables sintéticas y tres clases, separado del experimento histórico de 1,011 lecturas. Ninguno acredita validación física en Satipo. El firmware compila, pero faltan placa, sensores calibrados y la exportación real de Edge Impulse. Los documentos marcados como históricos describen versiones anteriores.

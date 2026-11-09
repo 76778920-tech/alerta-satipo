@@ -30,7 +30,7 @@ export class SupabaseProfiles extends ProfilePort {
 export class SupabaseCommunity extends CommunityPort {
   constructor(client) { super(); this.client = client; }
   async readings() {
-    return checked(await this.client.from('smoke_readings').select('*').eq('dataset_id','smoke-detection-iot-300-v1').order('source_row').limit(300));
+    return checked(await this.client.from('smoke_readings').select('*').eq('dataset_id','smoke-detection-iot-1011-v1').order('source_row').limit(1011));
   }
   async activity(id) {
     const [reports,incidents,settings] = (await Promise.all([

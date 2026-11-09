@@ -43,7 +43,7 @@ try:
         users.append({'email': email, 'password': password, 'id': user['id'], 'token': session['access_token'], 'refresh': session['refresh_token']})
     alice, bob, admin = users
     status, rows = api('/rest/v1/smoke_readings?select=source_row', token=alice['token'])
-    assert status == 200 and len(rows) == 300
+    assert status == 200 and len(rows) == 1011
     assert api('/rest/v1/reportes')[0] in [401, 403]
     assert api('/rest/v1/administradores', {'id': alice['id'], 'display_name': 'Ataque'}, 'POST', token=alice['token'])[0] == 403
     with sync_playwright() as p:
@@ -73,7 +73,7 @@ try:
             page.wait_for_selector('#dataset-summary')
             return page
         a=login(alice,True)
-        assert '300 registros' in a.locator('#dataset-summary').inner_text()
+        assert '1011 registros' in a.locator('#dataset-summary').inner_text()
         assert 'Sin sensores' in a.locator('#risk-title').inner_text()
         assert a.evaluate('document.documentElement.scrollWidth <= innerWidth')
         assert a.locator('#bottom-nav').bounding_box()['y'] < 844

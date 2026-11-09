@@ -18,7 +18,7 @@ from dataset.adapters.http_csv import HttpCsvSource
 def fixture():
     return [{name: str(i if name=='' else 1660000000+i if name=='UTC' else
                        int(i>=200) if name=='Fire Alarm' else -12.5 if name=='Temperature[C]' else 42)
-             for name in FIELDS} for i in range(600)]
+             for name in FIELDS} for i in range(2000)]
 
 
 class MemorySource:
@@ -36,8 +36,8 @@ class DatasetTests(unittest.TestCase):
         rows=fixture()
         result=sample(rows)
         self.assertEqual(result,sample(rows))
-        self.assertEqual(len(result),300)
-        self.assertEqual(sum(r['fire_alarm'] for r in result),200)
+        self.assertEqual(len(result),1011)
+        self.assertEqual(sum(r['fire_alarm'] for r in result),910)
         self.assertEqual([r['source_row'] for r in result],sorted(r['source_row'] for r in result))
         self.assertTrue(all(r['temperature_c']==-12.5 for r in result))
         self.assertTrue(all(r['recorded_at'].endswith('+00:00') for r in result))
@@ -55,23 +55,23 @@ class DatasetTests(unittest.TestCase):
         writer=MemoryWriter()
         metadata=PrepareDataset(MemorySource(fixture()),writer).execute()
         self.assertEqual(metadata['source_sha256'],'fixture')
-        self.assertEqual(metadata['source_rows'],600)
-        self.assertEqual(metadata['labels'],{'0':100,'1':200})
+        self.assertEqual(metadata['source_rows'],2000)
+        self.assertEqual(metadata['labels'],{'0':101,'1':910})
         self.assertEqual(writer.calls[0][1],metadata)
 
-    def test_file_adapter_preserves_existing_300_rows(self):
-        expected=json.loads((ROOT/'data/smoke_detection_300.json').read_text(encoding='utf-8'))
+    def test_file_adapter_preserves_existing_1011_rows(self):
+        expected=json.loads((ROOT/'data/smoke_detection_1011.json').read_text(encoding='utf-8'))
         raw=[{source:str(int(row[target])) if source=='Fire Alarm' else str(row[target])
               for source,target in FIELDS.items()} for row in expected]
         with tempfile.TemporaryDirectory() as directory:
             dest=Path(directory)
             PrepareDataset(MemorySource(raw),DatasetFiles(dest/'data',dest/'seed.sql')).execute()
-            self.assertEqual(json.loads((dest/'data/smoke_detection_300.json').read_text()),expected)
-            with (dest/'data/smoke_detection_300.csv').open(newline='') as handle:
-                self.assertEqual(len(list(csv.DictReader(handle))),300)
+            self.assertEqual(json.loads((dest/'data/smoke_detection_1011.json').read_text()),expected)
+            with (dest/'data/smoke_detection_1011.csv').open(newline='') as handle:
+                self.assertEqual(len(list(csv.DictReader(handle))),1011)
             sql=(dest/'seed.sql').read_text()
             self.assertIn('on conflict (dataset_id, source_row) do nothing',sql)
-            self.assertEqual(sql.count('smoke-detection-iot-300-v1'),300)
+            self.assertEqual(sql.count('smoke-detection-iot-1011-v1'),1011)
 
     def test_http_adapter_hashes_exact_bytes_without_network(self):
         buffer=io.StringIO()

@@ -1,5 +1,5 @@
 from dataset.application.ports import DatasetSource, DatasetWriter
-from dataset.domain.sampling import sample, describe
+from dataset.domain.sampling import sample, describe, SAMPLE_ROWS, SAMPLE_SEED
 
 
 class PrepareDataset:
@@ -7,7 +7,7 @@ class PrepareDataset:
         self.source = source
         self.writer = writer
 
-    def execute(self, size=300, seed=20260923):
+    def execute(self, size=SAMPLE_ROWS, seed=SAMPLE_SEED):
         original, provenance = self.source.read()
         selected = sample(original, size, seed)
         metadata = {**provenance, **describe(original, selected, seed)}

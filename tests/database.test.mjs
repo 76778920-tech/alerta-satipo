@@ -12,11 +12,13 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
     grant execute on function auth.uid() to anon,authenticated,service_role;`);
   await db.exec(await readFile('database/supabase/migrations/202609230001_initial.sql','utf8'));
   await db.exec(await readFile('database/supabase/migrations/202609230002_private_admin_helper.sql','utf8'));
+  await db.exec(await readFile('database/supabase/migrations/202609230003_demo_operations.sql','utf8'));
+  await db.exec(await readFile('database/supabase/migrations/202611090001_refresh_demo_1011.sql','utf8'));
+  await db.exec(await readFile('database/supabase/migrations/202611090002_refresh_demo_1011_safe_delete.sql','utf8'));
   const seed=await readFile('database/supabase/seed.sql','utf8');
   await db.exec(seed);await db.exec(seed);
-  await db.exec(await readFile('database/supabase/migrations/202609230003_demo_operations.sql','utf8'));
-  assert.equal((await db.query('select count(*)::int as n from smoke_readings')).rows[0].n,300);
-  assert.equal((await db.query('select count(*)::int as n from smoke_readings where fire_alarm')).rows[0].n,214);
+  assert.equal((await db.query('select count(*)::int as n from smoke_readings')).rows[0].n,1011);
+  assert.equal((await db.query('select count(*)::int as n from smoke_readings where fire_alarm')).rows[0].n,722);
   const a='11111111-1111-4111-8111-111111111111',b='22222222-2222-4222-8222-222222222222',admin='33333333-3333-4333-8333-333333333333';
   await db.query(`insert into auth.users(id,raw_user_meta_data) values($1,'{"full_name":"Ana","role":"admin"}'),($2,'{}'),($3,'{}')`,[a,b,admin]);
   await db.query('insert into administradores(id,display_name) values($1,$2)',[admin,'Operador']);
@@ -40,7 +42,7 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
     assert.equal((await as('authenticated',a,`select * from ${table}`)).rows.length,0);
     assert.ok((await as('authenticated',admin,`select * from ${table}`)).rows.length>0);
   }
-  assert.equal((await as('authenticated',admin,'select * from demo_node_readings')).rows.length,300);
+  assert.equal((await as('authenticated',admin,'select * from demo_node_readings')).rows.length,1011);
   assert.equal((await as('authenticated',a,"update demo_maintenance set state='Completada' returning node_id")).rows.length,0);
   await assert.rejects(as('authenticated',admin,"update demo_maintenance set task='Cambiar fuente'"));
   await as('authenticated',admin,"update demo_maintenance set state='En progreso' where node_id='V-01'");
@@ -74,8 +76,8 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
 });
 
 test('La muestra conserva filas únicas, fechas y unidades originales', async()=>{
-  const rows=JSON.parse(await readFile('data/smoke_detection_300.json','utf8'));
-  assert.equal(rows.length,300);assert.equal(new Set(rows.map(r=>r.source_row)).size,300);
+  const rows=JSON.parse(await readFile('data/smoke_detection_1011.json','utf8'));
+  assert.equal(rows.length,1011);assert.equal(new Set(rows.map(r=>r.source_row)).size,1011);
   for(const row of rows) {
     assert.equal(Date.parse(row.recorded_at),row.utc_seconds*1000);
     assert.equal(typeof row.fire_alarm,'boolean');

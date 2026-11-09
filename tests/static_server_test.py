@@ -45,7 +45,7 @@ class PublicRoutesTest(unittest.TestCase):
                 self.assertEqual(response.read(), (ROOT / 'frontend' / source).read_bytes())
 
     def test_data_and_documentation_keep_their_urls(self):
-        for route in ['/data/smoke_detection_300.json', '/docs/wireframes/index.html']:
+        for route in ['/data/smoke_detection_1011.json', '/docs/wireframes/index.html']:
             with self.subTest(route=route), urlopen(self.base + route) as response:
                 self.assertEqual(response.read(), (ROOT / route.lstrip('/')).read_bytes())
 

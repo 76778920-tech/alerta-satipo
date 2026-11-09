@@ -21,8 +21,8 @@ window.SatipoDataset = (() => {
       ['Sin alarma',negative,'Etiqueta original: Fire Alarm = 0'],
       ['Temperatura media',fmt(average,' °C'),`Calculada sobre ${temps.length} lecturas válidas`]
     ].map(([label,value,note])=>`<article class="reading-kpi"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join('');
-    q('#dataset-quality').textContent = invalid ? `${invalid} registros tienen campos incompletos o inválidos. No se sustituyen por cero.` : readings.length !== 300 ? `Se esperaban 300 registros; hay ${readings.length} disponibles. Revisa la importación.` : '300 registros disponibles · campos principales verificados';
-    q('#dataset-quality').classList.toggle('quality-warning',invalid>0||readings.length!==300);
+    q('#dataset-quality').textContent = invalid ? `${invalid} registros tienen campos incompletos o inválidos. No se sustituyen por cero.` : readings.length !== 1011 ? `Se esperaban 1,011 registros; hay ${readings.length} disponibles. Revisa la importación.` : '1,011 registros disponibles · campos principales verificados';
+    q('#dataset-quality').classList.toggle('quality-warning',invalid>0||readings.length!==1011);
     const filtered = readings.filter(r=>(filter==='all'||(filter==='1'?r.fire_alarm===true:r.fire_alarm===false)) && String(r.source_row??'').includes(query));
     const pages = Math.max(1,Math.ceil(filtered.length/size)); page = Math.min(page,pages-1);
     const rows = filtered.slice(page*size,(page+1)*size);
