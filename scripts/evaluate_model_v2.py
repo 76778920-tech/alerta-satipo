@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'colab'))
 from model_selection import run_experiment
 from supabase_dataset import canonical_payload
-rows=json.loads((ROOT/'data/smoke_detection_300.json').read_text(encoding='utf-8'))
+rows=json.loads((ROOT/'data/smoke_detection_1011.json').read_text(encoding='utf-8'))
 canonical_payload(rows)
 model,report,predictions=run_experiment(rows)
 output=ROOT/'colab/resultados_v2';output.mkdir(exist_ok=True)

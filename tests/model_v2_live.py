@@ -11,7 +11,7 @@ scope={}
 with contextlib.redirect_stdout(io.StringIO()):
     for i,cell in enumerate(nb['cells']):
         if cell['cell_type']=='code':exec(compile(''.join(cell['source']),f'cell-{i}','exec'),scope)
-assert len(scope['candidate_predictions'])==60
+assert len(scope['candidate_predictions'])==203
 assert scope['candidate_report']['promotion']=='NOT_APPROVED_REQUIRES_NEW_INDEPENDENT_DATA'
 def fail(*args,**kwargs):raise RuntimeError('Red no disponible')
 scope['load_supabase_dataset']=fail

@@ -2,37 +2,31 @@
 
 ## Resultado y decisión
 
-Se implementó selección temporal reproducible de modelos y umbrales. No se logró demostrar una mejora predictiva con estas 300 observaciones. El modelo publicado y sus métricas se conservan; el candidato no se despliega ni se sustituye automáticamente. No se promete ausencia de errores de clasificación.
+Se actualizó la selección temporal reproducible a 1011 observaciones. El candidato no superó la referencia fija; no se despliega ni se sustituye automáticamente. No se promete ausencia de errores de clasificación.
 
-| Evaluación sobre las 60 filas finales | Modelo publicado | Candidato seleccionado internamente |
-| --- | ---: | ---: |
-| Algoritmo | Random Forest | Extra Trees |
-| Umbral de alarma | 0.5 | 0.3 |
-| Exactitud | 90 % | 61.67 % |
-| Falsos negativos | 5 | 5 |
-| Falsos positivos | 1 | 18 |
+Sobre las mismas 203 filas finales, la referencia Random Forest con umbral 0.5 obtuvo 93.60 % (190 aciertos), 13 falsos negativos y 0 falsos positivos. El candidato seleccionado, Random Forest con umbral 0.3, obtuvo 74.38 % (151 aciertos), 13 falsos negativos y 39 falsos positivos.
 
-El candidato logró 97.5 % en la validación interna, pero esa cifra no representa su rendimiento en datos posteriores. Los bloques internos contienen 151 etiquetas positivas y solo nueve negativas. El cambio de distribución y la escasez de negativos limitan la selección. No se siguieron probando combinaciones para optimizar las 60 filas ya observadas.
+El candidato logró 97.92 % en validación interna sobre 480 observaciones (434 positivas y 46 negativas). Esa cifra no representa su rendimiento en datos posteriores. El cambio de distribución limita la selección. No se siguieron probando combinaciones para optimizar las 203 filas finales.
 
 ## Protocolo implementado
 
-- Desarrollo: primeras 240 filas en orden cronológico; las 60 restantes quedan fuera de la selección.
-- Cuatro validaciones consecutivas de 40 filas, con entrenamiento expansivo y cinco filas de separación. Esta separación es por filas, no tiempo fijo. No garantiza independencia de experimentos porque no existen identificadores de sesión fiables en la muestra.
+- Desarrollo: primeras 808 filas en orden cronológico; las 203 restantes quedan fuera de la selección.
+- Cuatro validaciones consecutivas de 120 filas, con entrenamiento expansivo y cinco filas de separación. Esta separación es por filas, no tiempo fijo. No garantiza independencia de experimentos porque no existen identificadores de sesión fiables en la muestra.
 - Tres familias fijadas: Random Forest, Extra Trees y regresión logística. Umbrales 0.3, 0.5 y 0.7.
 - Imputación y escalado, cuando procede, ajustados exclusivamente al entrenamiento de cada bloque.
 - Criterio exploratorio: minimizar 2 × falsos negativos + falsos positivos. Esta ponderación es una decisión experimental, no un costo operativo validado.
-- El modelo elegido se ajusta con 240 filas y se compara una vez sobre las 60 finales. Como esas filas ya se inspeccionaron en el proyecto, la comparación se denomina regresión y no prueba independiente inédita.
-- La promoción está bloqueada hasta contar con datos nuevos independientes y criterios de aceptación acordados. Incluso un candidato mejor en estas 60 filas necesitaría esa validación.
+- El modelo elegido se ajusta con 808 filas y se compara una vez sobre las 203 finales. La fuente ampliada se solapa con datos ya examinados; no se afirma una prueba independiente inédita.
+- La promoción está bloqueada hasta contar con datos nuevos independientes y criterios de aceptación acordados. Incluso un candidato mejor necesitaría esa validación.
 
 No se usan tiempo, identificadores, contador o etiqueta como características predictoras. No se sustituyen datos ni se inventan ubicaciones. Las métricas agregadas de los bloques no estiman desempeño operativo ni equivalen a validación anidada.
 
 ## Archivos y reproducción
 
 - `colab/model_selection.py`: selección sobre desarrollo, evaluación y trazabilidad de versiones.
-- `scripts/evaluate_model_v2.py`: reproduce el experimento desde las 300 filas versionadas, sin red ni escrituras remotas.
+- `scripts/evaluate_model_v2.py`: reproduce el experimento desde las 1011 filas versionadas, sin red ni escrituras remotas.
 - `colab/Alerta_Satipo_validacion_v2.ipynb`: consulta Supabase con los cuatro secretos habituales y ejecuta el mismo experimento. No modifica el notebook original ni publica resultados al panel.
 - `scripts/build_model_v2_notebook.py`: regeneración del notebook v2.
-- `colab/resultados_v2/`: reporte completo y clasificación de las 60 filas de regresión.
+- `colab/resultados_v2/`: reporte completo y clasificación de las 203 filas finales.
 - `python tests/model_v2_test.py`: cuatro pruebas, incluyendo independencia de la selección respecto a las etiquetas finales, separación temporal, rechazo de datos inválidos y ausencia de promoción automática.
 - `python tests/model_v2_live.py`: ejecución completa contra Supabase con credenciales locales existentes, sin modificar tablas; también verifica invalidación de estado si una nueva consulta falla.
 

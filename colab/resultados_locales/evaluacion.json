@@ -1,7 +1,7 @@
 {
-  "dataset_sha256": "805fc268e338964e489b2e76f39206c4a7b90140d2e9838faafd27c513168a23",
-  "train_rows": 240,
-  "test_rows": 60,
+  "dataset_sha256": "dcfbb19e3f8e7ba7ab0d7f0d44c9227d3c70b17dd06ab02c1938fac95d3922da",
+  "train_rows": 808,
+  "test_rows": 203,
   "split": "chronological_80_20",
   "features": [
     "temperature_c",
@@ -18,28 +18,28 @@
     "nc2_5"
   ],
   "random_forest": {
-    "accuracy": 0.9,
-    "balanced_accuracy": 0.9057239057239057,
-    "precision_alarm": 0.9655172413793104,
-    "recall_alarm": 0.8484848484848485,
-    "f1_alarm": 0.9032258064516129
+    "accuracy": 0.9359605911330049,
+    "balanced_accuracy": 0.9386792452830188,
+    "precision_alarm": 1.0,
+    "recall_alarm": 0.8773584905660378,
+    "f1_alarm": 0.9346733668341709
   },
   "baseline": {
-    "accuracy": 0.55,
+    "accuracy": 0.5221674876847291,
     "balanced_accuracy": 0.5,
-    "precision_alarm": 0.55,
+    "precision_alarm": 0.5221674876847291,
     "recall_alarm": 1.0,
-    "f1_alarm": 0.7096774193548387
+    "f1_alarm": 0.686084142394822
   },
-  "roc_auc": 0.8754208754208753,
+  "roc_auc": 0.8915580626337289,
   "confusion_matrix": [
     [
-      26,
-      1
+      97,
+      0
     ],
     [
-      5,
-      28
+      13,
+      93
     ]
   ],
   "sklearn_version": "1.5.2",

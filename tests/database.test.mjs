@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
 
-test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y auditoría', async () => {
+test('PostgreSQL: 1011 lecturas, importación idempotente, aislamiento y auditoría', async () => {
   const db=new PGlite();
   await db.exec(`create role anon; create role authenticated; create role service_role bypassrls;
     create schema auth; create table auth.users(id uuid primary key,raw_user_meta_data jsonb default '{}');
@@ -15,6 +15,7 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
   await db.exec(await readFile('database/supabase/migrations/202609230003_demo_operations.sql','utf8'));
   await db.exec(await readFile('database/supabase/migrations/202611090001_refresh_demo_1011.sql','utf8'));
   await db.exec(await readFile('database/supabase/migrations/202611090002_refresh_demo_1011_safe_delete.sql','utf8'));
+  await db.exec(await readFile('database/supabase/migrations/202611090003_preserve_demo_states.sql','utf8'));
   const seed=await readFile('database/supabase/seed.sql','utf8');
   await db.exec(seed);await db.exec(seed);
   assert.equal((await db.query('select count(*)::int as n from smoke_readings')).rows[0].n,1011);
@@ -46,6 +47,15 @@ test('PostgreSQL: muestra de 300, aislamiento entre clientes, privilegios y audi
   assert.equal((await as('authenticated',a,"update demo_maintenance set state='Completada' returning node_id")).rows.length,0);
   await assert.rejects(as('authenticated',admin,"update demo_maintenance set task='Cambiar fuente'"));
   await as('authenticated',admin,"update demo_maintenance set state='En progreso' where node_id='V-01'");
+  await as('authenticated',admin,"update demo_cases set state='En revisión' where node_id='V-01'");
+  for(const [role,id] of [['anon',null],['authenticated',a],['authenticated',admin],['authenticated',null]]) {
+    await assert.rejects(as(role,id,'select refresh_demo_dataset()'));
+  }
+  await as('service_role',null,'select refresh_demo_dataset()');
+  await db.exec(seed);
+  assert.equal((await db.query("select state from demo_cases where node_id='V-01'")).rows[0].state,'En revisión');
+  assert.equal((await db.query("select state from demo_maintenance where node_id='V-01'")).rows[0].state,'En progreso');
+  assert.equal((await db.query('select count(*)::int n from demo_node_readings')).rows[0].n,1011);
   await assert.rejects(as('authenticated',admin,"update demo_cases set state='Incendio confirmado'"));
   const params=['Escuela de San Francisco','smoke','high','Humo visible detrás de la escuela, lejos de las viviendas.'];
   const report=(await as('authenticated',a,'insert into reportes(location,observation,severity,description) values($1,$2,$3,$4) returning id',params)).rows[0];

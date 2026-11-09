@@ -8,13 +8,13 @@ import urllib.request
 import urllib.error
 from datetime import datetime, timezone
 
-DATASET = 'smoke-detection-iot-300-v1'
+DATASET = 'smoke-detection-iot-1011-v1'
 NUMERIC = ['source_row','utc_seconds','temperature_c','humidity_pct','tvoc_ppb','eco2_ppm',
            'raw_h2','raw_ethanol','pressure_hpa','pm1_0','pm2_5','nc0_5','nc1_0','nc2_5','cnt']
 
 def canonical_payload(rows):
-    if not isinstance(rows,list) or len(rows)!=300:
-        raise ValueError('Se requieren exactamente 300 lecturas; no se entrenará con una respuesta parcial.')
+    if not isinstance(rows,list) or len(rows)!=1011:
+        raise ValueError('Se requieren exactamente 1011 lecturas; no se entrenará con una respuesta parcial.')
     result=[]
     for row in rows:
         if not isinstance(row,dict) or set(row)!=set(NUMERIC+['dataset_id','recorded_at','fire_alarm']):
@@ -37,10 +37,10 @@ def canonical_payload(rows):
             raise ValueError('Fecha inconsistente con UTC.')
         item.update(dataset_id=DATASET,recorded_at=stamp.astimezone(timezone.utc).isoformat(),fire_alarm=row['fire_alarm'])
         result.append(item)
-    if len({r['source_row'] for r in result})!=300:
+    if len({r['source_row'] for r in result})!=1011:
         raise ValueError('Se detectaron identificadores duplicados.')
-    if sum(r['fire_alarm'] for r in result)!=214:
-        raise ValueError('La distribución no coincide con las 214 etiquetas positivas esperadas.')
+    if sum(r['fire_alarm'] for r in result)!=722:
+        raise ValueError('La distribución no coincide con las 722 etiquetas positivas esperadas.')
     return json.dumps(sorted(result,key=lambda r:r['source_row']),sort_keys=True,separators=(',',':'),ensure_ascii=False)
 
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -82,10 +82,17 @@ def load_supabase_dataset(url, public_key, email, password, expected_sha256):
     session,_=_request(url+'/auth/v1/token?grant_type=password',{'apikey':public_key,'Content-Type':'application/json'}, {'email':email,'password':password})
     token=session.get('access_token') if isinstance(session,dict) else None
     if not isinstance(token,str) or not token:raise RuntimeError('No se obtuvo una sesión válida.')
-    rows,content_range=_request(url+'/rest/v1/smoke_readings?select=*&dataset_id=eq.'+DATASET+'&order=source_row.asc&limit=301',
-        {'apikey':public_key,'Authorization':'Bearer '+token,'Prefer':'count=exact','Accept':'application/json'})
-    if content_range.rsplit('/',1)[-1]!='300':
-        raise ValueError('Supabase no confirma un total exacto de 300 filas visibles.')
+    rows=[]
+    while len(rows)<1011:
+        offset=len(rows)
+        page,content_range=_request(url+'/rest/v1/smoke_readings?select=*&dataset_id=eq.'+DATASET+
+            '&order=source_row.asc&limit=500&offset='+str(offset),
+            {'apikey':public_key,'Authorization':'Bearer '+token,'Prefer':'count=exact','Accept':'application/json'})
+        if not isinstance(page,list) or not page or len(page)>500 or offset+len(page)>1011:
+            raise ValueError('Página de lecturas incompleta o inválida.')
+        if content_range!=f'{offset}-{offset+len(page)-1}/1011':
+            raise ValueError('Supabase no confirma el rango y total exacto de 1011 filas visibles.')
+        rows.extend(page)
     payload=canonical_payload(rows)
     if hashlib.sha256(payload.encode()).hexdigest()!=expected_sha256:
         raise ValueError('Las lecturas cambiaron respecto de la muestra aprobada. Revisa los datos antes de entrenar.')

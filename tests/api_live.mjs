@@ -13,6 +13,9 @@ try {
     const get=async path=>{const response=await fetch(base+path,{headers});assert.equal(response.status,200,`${path}: ${response.status}`);return response.json();};
     const readings=await get('/readings');assert.equal(readings.length,1011);assert.equal(readings.filter(r=>r.fire_alarm).length,722);
     const ops=await get('/operations');assert.equal(ops.nodes.length,6);assert.equal(ops.links.length,1011);
+    const predictions=await get('/predictions');
+    const published=JSON.parse(await readFile('backend/adapters/out/prediction-results.json','utf8'));
+    assert.deepEqual(predictions,published,'La evaluación remota difiere del artefacto comprobado');
     assert.ok((await get('/activity')).settings);
     assert.equal((await fetch(base+'/readings',{headers:{apikey:process.env.SUPABASE_PUBLISHABLE_KEY}})).status,401);
     assert.equal((await fetch(base+'/readings',{headers:{...headers,authorization:'Bearer invalid-token'}})).status,401);

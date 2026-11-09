@@ -8,18 +8,18 @@ from supabase_dataset import canonical_payload
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'colab';OUT.mkdir(exist_ok=True)
-rows=json.loads((ROOT/'data/smoke_detection_300.json').read_text(encoding='utf-8'))
+rows=json.loads((ROOT/'data/smoke_detection_1011.json').read_text(encoding='utf-8'))
 payload=canonical_payload(rows)
 digest=hashlib.sha256(payload.encode()).hexdigest()
 cells=[]
 def md(s):cells.append({'cell_type':'markdown','metadata':{},'source':s.splitlines(True)})
 def code(s):cells.append({'cell_type':'code','metadata':{},'execution_count':None,'outputs':[],'source':s.splitlines(True)})
-md('''# Alerta Satipo — modelo experimental con 300 lecturas
-Ejecuta **Entorno de ejecución → Ejecutar todas**. CPU es suficiente. Los 300 registros se consultan directamente en Supabase. Antes de ejecutar, configura los cuatro secretos indicados abajo. No se incluye una copia de respaldo ni se reemplazan datos si falla la conexión.
+md('''# Alerta Satipo — modelo experimental con 1011 lecturas
+Ejecuta **Entorno de ejecución → Ejecutar todas**. CPU es suficiente. Los 1011 registros se consultan directamente en Supabase. Antes de ejecutar, configura los cuatro secretos indicados abajo. No se incluye una copia de respaldo ni se reemplazan datos si falla la conexión.
 
 Objetivo: clasificar `fire_alarm` a partir de mediciones contemporáneas. **No es pronóstico de un incendio futuro ni un sistema validado de alertas.** Los datos son históricos externos, no mediciones de campo en Satipo.
 
-Protocolo fijado antes de evaluar: 240 filas más antiguas para entrenamiento y 60 más recientes para prueba; un Random Forest de configuración fija y un clasificador mayoritario de referencia. No ajustar parámetros tras mirar el resultado de prueba. La ausencia de identificadores de sesión impide garantizar independencia entre ensayos; las métricas solo describen esta partición pequeña.
+Protocolo fijado antes de evaluar: 808 filas más antiguas para entrenamiento y 203 más recientes para prueba; un Random Forest de configuración fija y un clasificador mayoritario de referencia. No ajustar parámetros tras mirar el resultado de prueba. La ausencia de identificadores de sesión impide garantizar independencia entre ensayos; las métricas solo describen esta partición pequeña.
 ''')
 code('''import json, hashlib, platform, zipfile
 from pathlib import Path
@@ -40,7 +40,7 @@ except ImportError:
 OUT = Path('salida_satipo'); OUT.mkdir(exist_ok=True)
 print('Python:', platform.python_version(), '| scikit-learn:', sklearn.__version__)
 ''')
-md("""## 1. Conectar Supabase y verificar las 300 filas
+md("""## 1. Conectar Supabase y verificar las 1011 filas
 En el panel **Secretos** de Colab (icono de llave), agrega y habilita acceso para este notebook:
 - `SUPABASE_URL`: URL HTTPS de tu proyecto, sin barra final.
 - `SUPABASE_PUBLISHABLE_KEY`: clave pública publishable o anon, nunca secret/service_role.
@@ -48,7 +48,7 @@ En el panel **Secretos** de Colab (icono de llave), agrega y habilita acceso par
 - `SATIPO_PASSWORD`: contraseña de esa cuenta; no es la contraseña de PostgreSQL.
 
 La consulta utiliza autenticación de usuario y RLS. No crea cuentas ni escribe lecturas. Los secretos no se imprimen ni se exportan. En ejecución local se leen las mismas variables de entorno.
-Se comprueban total remoto, 300 IDs únicos, esquema, fechas, etiquetas y hash normalizado de contenido. Si los datos cambiaron, se detiene el entrenamiento para revisar la nueva versión; no actualizar el hash a ciegas.
+Se comprueban total remoto, 1011 IDs únicos, esquema, fechas, etiquetas y hash normalizado de contenido. Si los datos cambiaron, se detiene el entrenamiento para revisar la nueva versión; no actualizar el hash a ciegas.
 """)
 code((ROOT/'colab/supabase_dataset.py').read_text(encoding='utf-8'))
 code("""def read_secret(name):
@@ -75,8 +75,8 @@ rows, payload = load_supabase_dataset(
     read_secret('SATIPO_EMAIL'), read_secret('SATIPO_PASSWORD'),
     expected_sha256='{digest}')
 df = pd.DataFrame(rows)
-df.to_csv(OUT/'lecturas_300.csv', index=False)
-print('Supabase: 300 lecturas verificadas; 214 con alarma y 86 sin alarma.')
+df.to_csv(OUT/'lecturas_1011.csv', index=False)
+print('Supabase: 1011 lecturas verificadas; 722 con alarma y 289 sin alarma.')
 print('Hash de la instantánea:', hashlib.sha256(payload.encode()).hexdigest())
 display(df.head())
 """)
@@ -91,7 +91,7 @@ df = df.sort_values(['utc_seconds','source_row']).reset_index(drop=True)
 X = df[FEATURES].apply(pd.to_numeric, errors='raise')
 assert np.isfinite(X.to_numpy()).all(), 'La muestra original contiene valores no finitos'
 y = df['fire_alarm'].astype(int)
-train_ids, test_ids = np.arange(240), np.arange(240,300)
+train_ids, test_ids = np.arange(808), np.arange(808,1011)
 X_train, X_test = X.iloc[train_ids], X.iloc[test_ids]
 y_train, y_test = y.iloc[train_ids], y.iloc[test_ids]
 assert df.iloc[train_ids]['utc_seconds'].max() < df.iloc[test_ids]['utc_seconds'].min()
@@ -117,7 +117,7 @@ def metrics(actual,predicted):
             'recall_alarm':float(recall_score(actual,predicted,zero_division=0)),
             'f1_alarm':float(f1_score(actual,predicted,zero_division=0))}
 report = {'dataset_sha256':hashlib.sha256(payload.encode()).hexdigest(),
-          'train_rows':240,'test_rows':60,'split':'chronological_80_20',
+          'train_rows':808,'test_rows':203,'split':'chronological_80_20',
           'features':FEATURES,'random_forest':metrics(y_test,pred),
           'baseline':metrics(y_test,baseline.predict(X_test)),
           'roc_auc':float(roc_auc_score(y_test,score)),
@@ -126,20 +126,20 @@ report = {'dataset_sha256':hashlib.sha256(payload.encode()).hexdigest(),
           'notice':'Experimental historical classification; not calibrated wildfire probability.'}
 display(pd.DataFrame({'Random Forest':report['random_forest'],'Referencia mayoritaria':report['baseline']}))
 print('ROC AUC:',report['roc_auc'])
-print('No se han reajustado parámetros ni entrenado sobre las 60 filas de prueba.')
+print('No se han reajustado parámetros ni entrenado sobre las 203 filas de prueba.')
 ''')
 md('''## 4. Evaluar errores y conservar las predicciones de prueba
 Filas de la matriz: etiqueta real. Columnas: predicción. Un falso negativo es una lectura con etiqueta positiva clasificada como negativa. No interpretar la exactitud aislada como garantía de seguridad.
 El score es la salida no calibrada del clasificador; no es la probabilidad comprobada de incendio en Satipo.
 ''')
 code('''ConfusionMatrixDisplay.from_predictions(y_test,pred,labels=[0,1],display_labels=['Sin alarma','Con alarma'],cmap='Greens')
-plt.title('Prueba temporal: 60 lecturas no usadas al entrenar')
+plt.title('Prueba temporal: 203 lecturas no usadas al entrenar')
 plt.tight_layout();plt.savefig(OUT/'matriz_confusion.png',dpi=180);plt.show()
 predictions = df.iloc[test_ids][['dataset_id','source_row','recorded_at','fire_alarm']].copy()
 predictions['predicted_fire_alarm'] = pred.astype(bool)
 predictions['model_score_alarm_uncalibrated'] = score
 predictions['correct'] = predictions.fire_alarm == predictions.predicted_fire_alarm
-predictions.to_csv(OUT/'predicciones_prueba_60.csv',index=False)
+predictions.to_csv(OUT/'predicciones_prueba_203.csv',index=False)
 (OUT/'evaluacion.json').write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding='utf-8')
 display(predictions.head(10))
 print('Errores en prueba:',int((~predictions.correct).sum()))
@@ -170,18 +170,18 @@ except ValueError:
     print('Validación de entrada comprobada.')
 ''')
 md('''## 6. Exportar el modelo y resultados
-Se exporta el modelo evaluado, entrenado únicamente con 240 filas. No se reentrena automáticamente con las 300: eso eliminaría el conjunto reservado para comprobar este artefacto.
+Se exporta el modelo evaluado, entrenado únicamente con 808 filas. No se reentrena automáticamente con las 1011: eso eliminaría el conjunto reservado para comprobar este artefacto.
 El archivo joblib requiere versiones compatibles de Python/scikit-learn y solo debe cargarse desde una fuente confiable. No es un archivo ejecutable por el navegador ni sustituye los umbrales JSON del panel. Integrarlo al backend requiere un adaptador de inferencia y validación adicional.
 ''')
 code('''artifact = {'model':model,'features':FEATURES,'evaluation':report,
             'training_min':X_train.min().to_dict(),'training_max':X_train.max().to_dict()}
 joblib.dump(artifact,OUT/'modelo_fire_alarm_experimental.joblib')
-(OUT/'README.txt').write_text('Modelo experimental. 240 filas de entrenamiento, 60 de prueba.\\n'
+(OUT/'README.txt').write_text('Modelo experimental. 808 filas de entrenamiento, 203 de prueba.\\n'
     'No usar como alarma operacional. Las probabilidades no están calibradas.\\n'
     'Ver evaluacion.json y versiones antes de reproducir.\\n',encoding='utf-8')
 archive = Path('alerta_satipo_modelo_experimental.zip')
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
-    for filename in ('lecturas_300.csv','matriz_confusion.png','predicciones_prueba_60.csv',
+    for filename in ('lecturas_1011.csv','matriz_confusion.png','predicciones_prueba_203.csv',
                      'evaluacion.json','modelo_fire_alarm_experimental.joblib','README.txt'):
         z.write(OUT/filename,arcname=filename)
 print('Exportado:',archive.resolve())
@@ -197,9 +197,9 @@ md('''## Fuentes y limitaciones
 - Prevención de fuga de datos: https://scikit-learn.org/1.8/common_pitfalls.html
 - Uso de notebooks en Colab: https://research.google.com/colaboratory/faq.html?hl=es
 
-La separación temporal reduce la mezcla de pasado y futuro, pero no elimina toda dependencia entre mediciones. Solo hay 60 filas de prueba y no se conoce aquí la sesión física de cada lectura. Antes de emplear el modelo para alertas: datos independientes de campo, evaluación por sesión/sensor, control de falsas alarmas, calibración y seguimiento de cambios de distribución.
+La separación temporal reduce la mezcla de pasado y futuro, pero no elimina toda dependencia entre mediciones. Solo hay 203 filas de prueba y no se conoce aquí la sesión física de cada lectura. Antes de emplear el modelo para alertas: datos independientes de campo, evaluación por sesión/sensor, control de falsas alarmas, calibración y seguimiento de cambios de distribución.
 ''')
-notebook={'nbformat':4,'nbformat_minor':5,'metadata':{'colab':{'name':'Alerta_Satipo_300_predicciones.ipynb'},'kernelspec':{'name':'python3','display_name':'Python 3'},'language_info':{'name':'python'}},'cells':cells}
+notebook={'nbformat':4,'nbformat_minor':5,'metadata':{'colab':{'name':'Alerta_Satipo_1011_predicciones.ipynb'},'kernelspec':{'name':'python3','display_name':'Python 3'},'language_info':{'name':'python'}},'cells':cells}
 for i,c in enumerate(cells):c['id']=f'satipo-{i:02d}'
-(OUT/'Alerta_Satipo_300_predicciones.ipynb').write_text(json.dumps(notebook,ensure_ascii=False,indent=1),encoding='utf-8')
+(OUT/'Alerta_Satipo_1011_predicciones.ipynb').write_text(json.dumps(notebook,ensure_ascii=False,indent=1),encoding='utf-8')
 print('Notebook conectado generado. Hash esperado:',digest)

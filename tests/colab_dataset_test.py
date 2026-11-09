@@ -11,8 +11,11 @@ import supabase_dataset as loader
 
 class DatasetTest(unittest.TestCase):
     def setUp(self):
-        self.rows=json.loads((ROOT/'data/smoke_detection_300.json').read_text())
+        self.rows=json.loads((ROOT/'data/smoke_detection_1011.json').read_text())
         self.sha=hashlib.sha256(loader.canonical_payload(self.rows).encode()).hexdigest()
+    def responses(self, rows=None):
+        rows=self.rows if rows is None else rows
+        return [({'access_token':'fake'},'')]+[(rows[i:i+500],f'{i}-{min(i+499,len(rows)-1)}/1011') for i in range(0,len(rows),500)]
     def test_normalization(self):
         changed=copy.deepcopy(self.rows)
         for row in changed:
@@ -31,16 +34,21 @@ class DatasetTest(unittest.TestCase):
             request.assert_not_called()
     def test_modified_content_and_remote_count_fail(self):
         changed=copy.deepcopy(self.rows);changed[0]['temperature_c']+=1
-        for rows,count in [(changed,'0-299/300'),(self.rows,'0-299/301')]:
-            with patch.object(loader,'_request',side_effect=[({'access_token':'fake'},''),(rows,count)]):
+        bad_count=self.responses();bad_count[1]=(self.rows[:500],'0-499/1012')
+        empty=self.responses();empty[2]=([],'*/1011')
+        duplicate=copy.deepcopy(self.rows);duplicate[500]=duplicate[0]
+        for responses in [self.responses(changed),bad_count,empty,self.responses(duplicate)]:
+            with patch.object(loader,'_request',side_effect=responses):
                 with self.assertRaises(ValueError):loader.load_supabase_dataset('https://example.supabase.co','sb_publishable_test','email','password',self.sha)
     def test_only_auth_and_dataset_requests(self):
-        with patch.object(loader,'_request',side_effect=[({'access_token':'fake'},''),(self.rows,'0-299/300')]) as request:
+        with patch.object(loader,'_request',side_effect=self.responses()) as request:
             rows,_=loader.load_supabase_dataset('https://example.supabase.co','sb_publishable_test','email','password',self.sha)
-            self.assertEqual(len(rows),300)
+            self.assertEqual(len(rows),1011)
             self.assertIn('/auth/v1/token?',request.call_args_list[0].args[0])
             self.assertIn('/rest/v1/smoke_readings?',request.call_args_list[1].args[0])
             self.assertEqual(len(request.call_args_list[1].args),2) # GET, sin cuerpo de escritura.
+            self.assertEqual(request.call_count,4)
+            self.assertIn('offset=1000',request.call_args_list[-1].args[0])
     def test_invalid_secrets(self):
         for value in [None,42,'   ']:
             with self.assertRaises(ValueError):loader.load_supabase_dataset(value,'sb_publishable_test','email','password',self.sha)
@@ -50,7 +58,7 @@ class DatasetTest(unittest.TestCase):
         with patch.object(loader,'_request',return_value=([],'')):
             with self.assertRaisesRegex(RuntimeError,'sesión'):loader.load_supabase_dataset('https://example.supabase.co','sb_publishable_test','email','password',self.sha)
     def test_url_whitespace_is_normalized(self):
-        with patch.object(loader,'_request',side_effect=[({'access_token':'fake'},''),(self.rows,'0-299/300')]) as request:
+        with patch.object(loader,'_request',side_effect=self.responses()) as request:
             loader.load_supabase_dataset(' https://example.supabase.co/ ','sb_publishable_test','email','password',self.sha)
             self.assertTrue(request.call_args_list[0].args[0].startswith('https://example.supabase.co/auth/'))
     def test_non_json_is_clear_and_redirection_is_blocked(self):

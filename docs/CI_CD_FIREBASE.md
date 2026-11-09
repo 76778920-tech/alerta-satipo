@@ -20,8 +20,10 @@ Tambien se puede iniciar desde Actions > CI/CD Firebase > Run workflow en main.
 - Variables SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY y SATIPO_API_URL: configuracion publica.
 - Proyecto Firebase: alerta-satipo-76778920. No usa Vercel ni el repositorio de migracion.
 
-El despliegue publica exclusivamente Hosting. No ejecuta migraciones SQL ni despliega
-la API de Supabase. La API se compila y prueba, pero su despliegue sigue siendo separado.
+El despliegue publica primero la API `admin-api` en Supabase y verifica la huella del
+código compilado y el rechazo de peticiones sin sesión. Solo después publica Hosting.
+Requiere también el secreto `SUPABASE_ACCESS_TOKEN`. Las migraciones SQL se revisan
+y aplican por separado; el workflow no importa ni borra datos.
 El APK generado es debug, para pruebas; no es una publicacion en Play Store.
 Los tests SQL usan una base temporal y el recorrido web usa adaptadores de prueba.
 No acreditan funcionamiento con sensores fisicos ni disponibilidad de todas las rutas reales.

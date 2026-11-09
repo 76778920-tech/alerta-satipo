@@ -1,4 +1,4 @@
-"""Selección temporal dentro de 240 filas; las 60 publicadas son regresión, no prueba inédita."""
+"""Selección temporal dentro de 808 filas; las 203 reservadas son regresión, no prueba inédita."""
 import hashlib
 import json
 import numpy as np
@@ -30,12 +30,12 @@ def metrics(y,p):
             'confusion_matrix':[[int(tn),int(fp)],[int(fn),int(tp)]]}
 
 def select_model(development):
-    """Recibe SOLO desarrollo. Nunca consulta etiquetas de las 60 filas reservadas."""
-    if len(development)!=240:raise ValueError('Se requieren 240 filas de desarrollo')
+    """Recibe SOLO desarrollo. Nunca consulta etiquetas de las 203 filas reservadas."""
+    if len(development)!=808:raise ValueError('Se requieren 808 filas de desarrollo')
     development=development.sort_values(['utc_seconds','source_row']).reset_index(drop=True)
     X=development[FEATURES].astype(float);y=development.fire_alarm.astype(int)
     if not np.isfinite(X.to_numpy()).all() or y.nunique()!=2:raise ValueError('Datos de desarrollo inválidos')
-    folds=[(0,start-5,start,start+40) for start in (80,120,160,200)]
+    folds=[(0,start-5,start,start+120) for start in (328,448,568,688)]
     candidates=[]
     for name in NAMES:
         actual=[];scores=[]
@@ -49,27 +49,27 @@ def select_model(development):
     # Criterio fijado: FN cuesta 2, FP cuesta 1; desempate reproducible.
     selected=min(candidates,key=lambda r:(r['cost'],r['false_negatives'],r['name'],r['threshold']))
     model=estimator(selected['name']).fit(X,y)
-    return model,selected,{'folds':folds,'gap_rows':5,'validation_rows':160,'validation_alarm_rows':int(development.iloc[80:].fire_alarm.sum()),'validation_no_alarm_rows':int((~development.iloc[80:].fire_alarm).sum()),'candidates':candidates,
+    return model,selected,{'folds':folds,'gap_rows':5,'validation_rows':480,'validation_alarm_rows':int(development.iloc[328:].fire_alarm.sum()),'validation_no_alarm_rows':int((~development.iloc[328:].fire_alarm).sum()),'candidates':candidates,
         'criterion':'minimize 2*FN+FP; exploratory engineering weight, not a validated operational cost'}
 
 def run_experiment(rows):
     df=pd.DataFrame(rows).sort_values(['utc_seconds','source_row']).reset_index(drop=True)
-    if len(df)!=300 or df.source_row.nunique()!=300:raise ValueError('Se requieren las 300 filas únicas')
+    if len(df)!=1011 or df.source_row.nunique()!=1011:raise ValueError('Se requieren las 1011 filas únicas')
     if not np.isfinite(df[FEATURES].astype(float).to_numpy()).all():raise ValueError('Mediciones no finitas')
     if not all(type(value) is bool for value in df.fire_alarm.tolist()):raise ValueError('Etiquetas inválidas')
-    if df.iloc[239].utc_seconds>=df.iloc[240].utc_seconds:raise ValueError('Solapamiento temporal')
-    model,selected,validation=select_model(df.iloc[:240].copy())
-    X=df.iloc[240:][FEATURES];y=df.iloc[240:].fire_alarm.astype(int)
+    if df.iloc[807].utc_seconds>=df.iloc[808].utc_seconds:raise ValueError('Solapamiento temporal')
+    model,selected,validation=select_model(df.iloc[:808].copy())
+    X=df.iloc[808:][FEATURES];y=df.iloc[808:].fire_alarm.astype(int)
     score=model.predict_proba(X)[:,list(model.classes_).index(1)]
     prediction=score>=selected['threshold']
-    old=estimator('random_forest').fit(df.iloc[:240][FEATURES],df.iloc[:240].fire_alarm.astype(int))
+    old=estimator('random_forest').fit(df.iloc[:808][FEATURES],df.iloc[:808].fire_alarm.astype(int))
     reference=metrics(y,old.predict(X));candidate=metrics(y,prediction)
-    result={'python_version':platform.python_version(),'sklearn_version':sklearn.__version__,'version':'temporal-selection-v2','selected':selected,'validation':validation,
+    result={'python_version':platform.python_version(),'sklearn_version':sklearn.__version__,'version':'temporal-selection-1011-v3','selected':selected,'validation':validation,
         'published_baseline_regression':reference,'candidate_regression':candidate,
         'promotion':'NOT_APPROVED_REQUIRES_NEW_INDEPENDENT_DATA',
-        'limitation':'The 60 rows were previously inspected. Regression results are not an independent generalization estimate. No district or future-fire prediction.',
+        'limitation':'The expanded source overlaps previously inspected data; physical session IDs are unknown. Regression results are not an independent generalization estimate. No district or future-fire prediction.',
         'dataset_sha256':hashlib.sha256(json.dumps(rows,sort_keys=True).encode()).hexdigest()}
-    output=df.iloc[240:][['source_row','recorded_at','fire_alarm']].copy()
+    output=df.iloc[808:][['source_row','recorded_at','fire_alarm']].copy()
     output['predicted_fire_alarm']=prediction;output['model_score_alarm_uncalibrated']=score
     output['threshold']=selected['threshold']
     return model,result,output

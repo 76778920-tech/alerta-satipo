@@ -1,6 +1,10 @@
 import { build } from 'esbuild';
 import { mkdir, writeFile } from 'node:fs/promises';
-const result=await build({entryPoints:['backend/edge.mjs'],bundle:true,format:'esm',platform:'neutral',external:['@supabase/supabase-js'],write:false});
+import { createHash } from 'node:crypto';
+const result=await build({entryPoints:['backend/edge.mjs'],bundle:true,format:'esm',platform:'neutral',external:['@supabase/supabase-js'],define:{SATIPO_BACKEND_BUILD:JSON.stringify('__SATIPO_BUILD_ID__')},write:false});
+const buildId=createHash('sha256').update(result.outputFiles[0].text).digest('hex');
 await mkdir('database/supabase/functions/admin-api',{recursive:true});
-await writeFile('database/supabase/functions/admin-api/index.ts','// Generado por npm run build:api. Editar backend/, no este archivo.\n'+result.outputFiles[0].text.replaceAll('"@supabase/supabase-js"','"npm:@supabase/supabase-js@2.117.1"'));
+await writeFile('database/supabase/functions/admin-api/index.ts','// Generado por npm run build:api. Editar backend/, no este archivo.\n'+result.outputFiles[0].text.replaceAll('__SATIPO_BUILD_ID__',buildId).replaceAll('"@supabase/supabase-js"','"npm:@supabase/supabase-js@2.117.1"'));
+await mkdir('database/supabase/.temp',{recursive:true});
+await writeFile('database/supabase/.temp/admin-api-build.json',JSON.stringify({build:buildId}));
 console.log('Adaptador Edge generado con el mismo núcleo que Node.js.');

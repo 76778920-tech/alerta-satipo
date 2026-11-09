@@ -1,5 +1,5 @@
 export function validatePredictions(value) {
-  if(!value || !Array.isArray(value.rows) || value.rows.length!==60 || value.evaluation?.train_rows!==240 || value.evaluation?.test_rows!==60 || typeof value.version!=='string') throw new Error('Resultados incompletos.');
+  if(!value || !Array.isArray(value.rows) || value.rows.length!==203 || value.evaluation?.train_rows!==808 || value.evaluation?.test_rows!==203 || typeof value.version!=='string') throw new Error('Resultados incompletos.');
   const ids=new Set();
   for(const row of value.rows) {
     if(!Number.isInteger(row.source_row) || ids.has(row.source_row) || typeof row.actual!=='boolean' || typeof row.predicted!=='boolean' || !Number.isFinite(row.score) || row.score<0 || row.score>1 || !Number.isFinite(Date.parse(row.recorded_at))) throw new Error('Resultados invalidos.');

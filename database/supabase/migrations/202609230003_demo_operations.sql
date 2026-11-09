@@ -12,7 +12,7 @@ create table public.demo_node_readings (
 );
 create table public.demo_cases (
  node_id text primary key references public.demo_nodes(id),
- state text not null default 'Pendiente' check(state in ('Pendiente','En revision','Revisado'))
+ state text not null default 'Pendiente' check(state in ('Pendiente','En revisión','Revisado'))
 );
 create table public.demo_maintenance (
  node_id text primary key references public.demo_nodes(id),

@@ -1,8 +1,8 @@
 # Resultados del modelo en el panel administrativo
 
-En el menú **Predicciones** se muestran los 60 resultados reservados para prueba: etiqueta real, clasificación del modelo, puntaje no calibrado, fecha histórica y fila original. Las 240 lecturas restantes fueron utilizadas para entrenar. No se muestran como predicciones de prueba.
+En el menú **Predicciones** se muestran los 203 resultados reservados para evaluación: etiqueta real, clasificación del modelo, puntaje no calibrado, fecha histórica y fila original. Las 808 lecturas restantes fueron utilizadas para entrenar. La sección de lecturas contiene el total de 1011 observaciones.
 
-La versión `rf-20260926-eval-v1` reproduce los archivos versionados `colab/resultados_locales/evaluacion.json` y `predicciones_prueba_60.csv`: 54 aciertos, 5 falsos negativos y 1 falso positivo. El entrenamiento/evaluación fue ejecutado localmente con el notebook conectado a Supabase. No se afirma que se ejecutó en la cuenta Google del usuario.
+La versión `rf-20261109-1011-eval-v2` reproduce `colab/resultados_locales/evaluacion.json` y `predicciones_prueba_203.csv`: 190 aciertos, 13 falsos negativos y 0 falsos positivos. Se ejecutó localmente con el notebook conectado a Supabase, no en la cuenta Google del usuario. La partición difiere de la anterior de 60 filas; sus porcentajes no constituyen una comparación controlada de mejora. Los datos carecen de identificadores de sesión física.
 
 ## Flujo y arquitectura
 
@@ -19,5 +19,5 @@ El panel ofrece filtros, paginación de 15 filas, tabla con desplazamiento horiz
 ## Verificación
 
 - `npm test`: incluye permisos, correspondencia exacta de resultados con CSV, etiquetas y matriz de confusión; además de las pruebas existentes.
-- `python tests/panel_predictions.py`: usa una cuenta administrativa local existente y verifica el sitio publicado, 60 filas sin duplicados, filtros, métricas, ancho móvil, fallos de red, respuestas inválidas y recuperación. No modifica tablas.
+- `python tests/panel_predictions.py`: verifica el sitio publicado, 203 filas sin duplicados, filtros, métricas, ancho móvil, fallos de red y recuperación con una cuenta existente. No modifica tablas.
 - `npm run build:api` y `npm run build:hosting`: generan los entregables de despliegue.

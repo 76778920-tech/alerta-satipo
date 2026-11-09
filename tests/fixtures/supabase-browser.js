@@ -20,6 +20,10 @@ window.createSupabaseClient = () => {
       const rows = () => table==='reportes' ? JSON.parse(sessionStorage.getItem('fixture-reports') || '[]') : [];
       const query = {
         select() { return this; },eq() { return this; },order() { return this; },
+        async range(start,end) {
+          const data=await (await fetch('/data/smoke_detection_1011.json')).json();
+          return {data:data.slice(start,end+1),count:data.length,error:null};
+        },
         async limit() {
           return {data:table==='smoke_readings' ? await (await fetch('/data/smoke_detection_1011.json')).json() : rows(),error:null};
         },

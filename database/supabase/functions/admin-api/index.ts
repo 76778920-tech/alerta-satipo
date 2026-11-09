@@ -8,12 +8,12 @@ var PredictionResultsPort = class {
 
 // backend/adapters/out/prediction-results.json
 var prediction_results_default = {
-  version: "rf-20260926-eval-v1",
-  dataset_id: "smoke-detection-iot-300-v1",
+  version: "rf-20261109-1011-eval-v2",
+  dataset_id: "smoke-detection-iot-1011-v1",
   evaluation: {
-    dataset_sha256: "805fc268e338964e489b2e76f39206c4a7b90140d2e9838faafd27c513168a23",
-    train_rows: 240,
-    test_rows: 60,
+    dataset_sha256: "dcfbb19e3f8e7ba7ab0d7f0d44c9227d3c70b17dd06ab02c1938fac95d3922da",
+    train_rows: 808,
+    test_rows: 203,
     split: "chronological_80_20",
     features: [
       "temperature_c",
@@ -30,28 +30,28 @@ var prediction_results_default = {
       "nc2_5"
     ],
     random_forest: {
-      accuracy: 0.9,
-      balanced_accuracy: 0.9057239057239057,
-      precision_alarm: 0.9655172413793104,
-      recall_alarm: 0.8484848484848485,
-      f1_alarm: 0.9032258064516129
+      accuracy: 0.9359605911330049,
+      balanced_accuracy: 0.9386792452830188,
+      precision_alarm: 1,
+      recall_alarm: 0.8773584905660378,
+      f1_alarm: 0.9346733668341709
     },
     baseline: {
-      accuracy: 0.55,
+      accuracy: 0.5221674876847291,
       balanced_accuracy: 0.5,
-      precision_alarm: 0.55,
+      precision_alarm: 0.5221674876847291,
       recall_alarm: 1,
-      f1_alarm: 0.7096774193548387
+      f1_alarm: 0.686084142394822
     },
-    roc_auc: 0.8754208754208753,
+    roc_auc: 0.8915580626337289,
     confusion_matrix: [
       [
-        26,
-        1
+        97,
+        0
       ],
       [
-        5,
-        28
+        13,
+        93
       ]
     ],
     sklearn_version: "1.5.2",
@@ -59,424 +59,1425 @@ var prediction_results_default = {
   },
   rows: [
     {
-      source_row: 43422,
-      recorded_at: "2022-06-09T13:02:51+00:00",
-      actual: true,
-      predicted: true,
-      score: 0.9812062384952048
-    },
-    {
-      source_row: 43460,
-      recorded_at: "2022-06-09T13:03:29+00:00",
+      source_row: 43293,
+      recorded_at: "2022-06-09T13:00:42+00:00",
       actual: true,
       predicted: true,
       score: 1
     },
     {
-      source_row: 43496,
-      recorded_at: "2022-06-09T13:04:05+00:00",
+      source_row: 43468,
+      recorded_at: "2022-06-09T13:03:37+00:00",
       actual: true,
       predicted: true,
-      score: 0.9707134335450868
+      score: 1
     },
     {
-      source_row: 44621,
-      recorded_at: "2022-06-09T13:22:50+00:00",
+      source_row: 43526,
+      recorded_at: "2022-06-09T13:04:35+00:00",
       actual: true,
       predicted: true,
-      score: 0.9840724301024892
+      score: 1
     },
     {
-      source_row: 44643,
-      recorded_at: "2022-06-09T13:23:12+00:00",
+      source_row: 43626,
+      recorded_at: "2022-06-09T13:06:15+00:00",
       actual: true,
       predicted: true,
-      score: 0.95291108274321
+      score: 0.9913655559104299
     },
     {
-      source_row: 44657,
-      recorded_at: "2022-06-09T13:23:26+00:00",
+      source_row: 43678,
+      recorded_at: "2022-06-09T13:07:07+00:00",
       actual: true,
       predicted: true,
-      score: 0.9872666100274802
+      score: 0.9988386123680241
     },
     {
-      source_row: 45174,
-      recorded_at: "2022-06-09T13:32:03+00:00",
+      source_row: 43754,
+      recorded_at: "2022-06-09T13:08:23+00:00",
       actual: true,
       predicted: true,
-      score: 0.8657885997385036
+      score: 0.9971161048689138
     },
     {
-      source_row: 45220,
-      recorded_at: "2022-06-09T13:32:49+00:00",
+      source_row: 43762,
+      recorded_at: "2022-06-09T13:08:31+00:00",
       actual: true,
       predicted: true,
-      score: 0.987244617961904
+      score: 1
     },
     {
-      source_row: 45260,
-      recorded_at: "2022-06-09T13:33:29+00:00",
+      source_row: 43783,
+      recorded_at: "2022-06-09T13:08:52+00:00",
       actual: true,
       predicted: true,
-      score: 0.9940405598383305
+      score: 0.9960787557371998
     },
     {
-      source_row: 45731,
-      recorded_at: "2022-06-09T13:41:20+00:00",
+      source_row: 43902,
+      recorded_at: "2022-06-09T13:10:51+00:00",
       actual: true,
       predicted: true,
-      score: 0.9921349405425492
+      score: 1
     },
     {
-      source_row: 45824,
-      recorded_at: "2022-06-09T13:42:53+00:00",
+      source_row: 43957,
+      recorded_at: "2022-06-09T13:11:46+00:00",
       actual: true,
       predicted: true,
-      score: 0.9631093269249467
+      score: 0.9911415633375418
     },
     {
-      source_row: 45858,
-      recorded_at: "2022-06-09T13:43:27+00:00",
+      source_row: 43972,
+      recorded_at: "2022-06-09T13:12:01+00:00",
       actual: true,
       predicted: true,
-      score: 0.9968678688334248
+      score: 0.9960787557371998
     },
     {
-      source_row: 46318,
-      recorded_at: "2022-06-09T13:51:07+00:00",
+      source_row: 44139,
+      recorded_at: "2022-06-09T13:14:48+00:00",
       actual: true,
       predicted: true,
-      score: 0.9804148821947704
+      score: 0.9979466666666668
     },
     {
-      source_row: 46658,
-      recorded_at: "2022-06-09T13:56:47+00:00",
+      source_row: 44154,
+      recorded_at: "2022-06-09T13:15:03+00:00",
       actual: true,
       predicted: true,
-      score: 0.9748280782565732
+      score: 0.9960787557371998
     },
     {
-      source_row: 46681,
-      recorded_at: "2022-06-09T13:57:10+00:00",
+      source_row: 44221,
+      recorded_at: "2022-06-09T13:16:10+00:00",
       actual: true,
       predicted: true,
-      score: 0.9587039303301053
+      score: 0.9940254224038665
     },
     {
-      source_row: 46836,
-      recorded_at: "2022-06-09T13:59:45+00:00",
+      source_row: 44258,
+      recorded_at: "2022-06-09T13:16:47+00:00",
       actual: true,
       predicted: true,
-      score: 0.9776658122795417
+      score: 0.9911415633375418
     },
     {
-      source_row: 47053,
-      recorded_at: "2022-06-09T14:03:22+00:00",
+      source_row: 44299,
+      recorded_at: "2022-06-09T13:17:28+00:00",
       actual: true,
       predicted: true,
-      score: 0.9911968742665545
+      score: 1
     },
     {
-      source_row: 47924,
-      recorded_at: "2022-06-09T14:17:53+00:00",
+      source_row: 44383,
+      recorded_at: "2022-06-09T13:18:52+00:00",
       actual: true,
       predicted: true,
-      score: 0.9795581938024676
+      score: 0.9943561606589
     },
     {
-      source_row: 48015,
-      recorded_at: "2022-06-09T14:19:24+00:00",
+      source_row: 44443,
+      recorded_at: "2022-06-09T13:19:52+00:00",
       actual: true,
       predicted: true,
-      score: 0.9938911473784149
+      score: 0.9720802072048893
     },
     {
-      source_row: 48038,
-      recorded_at: "2022-06-09T14:19:47+00:00",
+      source_row: 44607,
+      recorded_at: "2022-06-09T13:22:36+00:00",
       actual: true,
       predicted: true,
-      score: 0.9813717818363473
+      score: 1
     },
     {
-      source_row: 48084,
-      recorded_at: "2022-06-09T14:20:33+00:00",
+      source_row: 44646,
+      recorded_at: "2022-06-09T13:23:15+00:00",
       actual: true,
       predicted: true,
-      score: 0.9955764360190108
+      score: 0.9499545007119483
     },
     {
-      source_row: 48271,
-      recorded_at: "2022-06-09T14:23:40+00:00",
+      source_row: 44757,
+      recorded_at: "2022-06-09T13:25:06+00:00",
       actual: true,
       predicted: true,
-      score: 0.9838244670141414
+      score: 0.9712178414361352
     },
     {
-      source_row: 48574,
-      recorded_at: "2022-06-09T14:28:43+00:00",
+      source_row: 44781,
+      recorded_at: "2022-06-09T13:25:30+00:00",
       actual: true,
       predicted: true,
-      score: 0.9938911473784149
+      score: 1
     },
     {
-      source_row: 48611,
-      recorded_at: "2022-06-09T14:29:20+00:00",
+      source_row: 44791,
+      recorded_at: "2022-06-09T13:25:40+00:00",
       actual: true,
       predicted: true,
-      score: 0.9896209482293143
+      score: 1
     },
     {
-      source_row: 49022,
-      recorded_at: "2022-06-09T14:36:11+00:00",
+      source_row: 45036,
+      recorded_at: "2022-06-09T13:29:45+00:00",
       actual: true,
       predicted: true,
-      score: 0.961790452592575
+      score: 0.8696720371522187
     },
     {
-      source_row: 49265,
-      recorded_at: "2022-06-09T14:40:14+00:00",
+      source_row: 45110,
+      recorded_at: "2022-06-09T13:30:59+00:00",
       actual: true,
       predicted: true,
-      score: 0.9729478502513519
+      score: 0.9918149065334876
     },
     {
-      source_row: 49385,
-      recorded_at: "2022-06-09T14:42:14+00:00",
+      source_row: 45118,
+      recorded_at: "2022-06-09T13:31:07+00:00",
       actual: true,
       predicted: true,
-      score: 0.9571533193488068
+      score: 0.9943561606589
     },
     {
-      source_row: 49633,
-      recorded_at: "2022-06-09T14:46:22+00:00",
+      source_row: 45216,
+      recorded_at: "2022-06-09T13:32:45+00:00",
       actual: true,
       predicted: true,
-      score: 0.9954682738758827
+      score: 0.9933333333333333
     },
     {
-      source_row: 50414,
-      recorded_at: "2022-06-10T23:23:51+00:00",
+      source_row: 45279,
+      recorded_at: "2022-06-09T13:33:48+00:00",
       actual: true,
-      predicted: false,
-      score: 0.2560169630556559
-    },
-    {
-      source_row: 50420,
-      recorded_at: "2022-06-10T23:23:57+00:00",
-      actual: true,
-      predicted: false,
-      score: 0.2560169630556559
-    },
-    {
-      source_row: 50750,
-      recorded_at: "2022-06-10T23:29:27+00:00",
-      actual: true,
-      predicted: false,
-      score: 0.02103587976325579
-    },
-    {
-      source_row: 51080,
-      recorded_at: "2022-06-10T23:34:57+00:00",
-      actual: true,
-      predicted: false,
-      score: 0.036012211365626316
-    },
-    {
-      source_row: 51135,
-      recorded_at: "2022-06-10T23:35:52+00:00",
-      actual: true,
-      predicted: false,
-      score: 0.016970562654996413
-    },
-    {
-      source_row: 57318,
-      recorded_at: "2022-06-13T12:52:20+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.11653170675995468
-    },
-    {
-      source_row: 58013,
-      recorded_at: "2022-06-13T13:03:55+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.2568063992759007
-    },
-    {
-      source_row: 58048,
-      recorded_at: "2022-06-13T13:04:30+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.3441057841825618
-    },
-    {
-      source_row: 58260,
-      recorded_at: "2022-06-13T13:08:02+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.2479727318305627
-    },
-    {
-      source_row: 58420,
-      recorded_at: "2022-06-13T13:10:42+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.32196990251590357
-    },
-    {
-      source_row: 58563,
-      recorded_at: "2022-06-13T13:13:05+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.25553230730881993
-    },
-    {
-      source_row: 58650,
-      recorded_at: "2022-06-13T13:14:32+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.2652478225836364
-    },
-    {
-      source_row: 58882,
-      recorded_at: "2022-06-13T13:18:24+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.35633043900510813
-    },
-    {
-      source_row: 59162,
-      recorded_at: "2022-06-13T13:23:04+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.26025640208900425
-    },
-    {
-      source_row: 59435,
-      recorded_at: "2022-06-13T13:27:37+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.17943396836435158
-    },
-    {
-      source_row: 59517,
-      recorded_at: "2022-06-13T13:28:59+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.23668453704176712
-    },
-    {
-      source_row: 59930,
-      recorded_at: "2022-06-13T13:35:52+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.20147814275228143
-    },
-    {
-      source_row: 59937,
-      recorded_at: "2022-06-13T13:35:59+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.17698759730223437
-    },
-    {
-      source_row: 60261,
-      recorded_at: "2022-06-13T13:41:23+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.4344520735711266
-    },
-    {
-      source_row: 60652,
-      recorded_at: "2022-06-13T13:47:54+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.21260730771678002
-    },
-    {
-      source_row: 60931,
-      recorded_at: "2022-06-13T13:52:33+00:00",
-      actual: false,
       predicted: true,
-      score: 0.510556580484293
+      score: 0.9906920890705332
     },
     {
-      source_row: 61394,
-      recorded_at: "2022-06-13T14:00:16+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.24340421770202905
+      source_row: 45302,
+      recorded_at: "2022-06-09T13:34:11+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9927454224038664
     },
     {
-      source_row: 61397,
-      recorded_at: "2022-06-13T14:00:19+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.24966020019466637
+      source_row: 45329,
+      recorded_at: "2022-06-09T13:34:38+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
     },
     {
-      source_row: 61487,
-      recorded_at: "2022-06-13T14:01:49+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.24398207722803078
+      source_row: 45336,
+      recorded_at: "2022-06-09T13:34:45+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.99128
     },
     {
-      source_row: 61658,
-      recorded_at: "2022-06-13T14:04:40+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.12879314384072915
+      source_row: 45455,
+      recorded_at: "2022-06-09T13:36:44+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9966666666666667
     },
     {
-      source_row: 61721,
-      recorded_at: "2022-06-13T14:05:43+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.37326754776413656
+      source_row: 45557,
+      recorded_at: "2022-06-09T13:38:26+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
     },
     {
-      source_row: 61748,
-      recorded_at: "2022-06-13T14:06:10+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.32162605199184974
+      source_row: 45600,
+      recorded_at: "2022-06-09T13:39:09+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9082821442995392
     },
     {
-      source_row: 61755,
-      recorded_at: "2022-06-13T14:06:17+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.32162605199184974
+      source_row: 45822,
+      recorded_at: "2022-06-09T13:42:51+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9841900314573642
     },
     {
-      source_row: 61935,
-      recorded_at: "2022-06-13T14:09:17+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.32162605199184974
+      source_row: 45880,
+      recorded_at: "2022-06-09T13:43:49+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9862433647906976
     },
     {
-      source_row: 62133,
-      recorded_at: "2022-06-13T14:12:35+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.32162605199184974
+      source_row: 45969,
+      recorded_at: "2022-06-09T13:45:18+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9927913851049022
     },
     {
-      source_row: 62263,
-      recorded_at: "2022-06-13T14:14:45+00:00",
-      actual: false,
-      predicted: false,
-      score: 0.4009477343020645
+      source_row: 46025,
+      recorded_at: "2022-06-09T13:46:14+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.983034035973188
     },
     {
-      source_row: 62500,
-      recorded_at: "2022-06-13T14:18:42+00:00",
+      source_row: 46119,
+      recorded_at: "2022-06-09T13:47:48+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9873587557371999
+    },
+    {
+      source_row: 46160,
+      recorded_at: "2022-06-09T13:48:29+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9673380918626416
+    },
+    {
+      source_row: 46164,
+      recorded_at: "2022-06-09T13:48:33+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9965548098434005
+    },
+    {
+      source_row: 46294,
+      recorded_at: "2022-06-09T13:50:43+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 46410,
+      recorded_at: "2022-06-09T13:52:39+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 46435,
+      recorded_at: "2022-06-09T13:53:04+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 46504,
+      recorded_at: "2022-06-09T13:54:13+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 46512,
+      recorded_at: "2022-06-09T13:54:21+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9971161048689138
+    },
+    {
+      source_row: 46523,
+      recorded_at: "2022-06-09T13:54:32+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 46570,
+      recorded_at: "2022-06-09T13:55:19+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9971161048689138
+    },
+    {
+      source_row: 46576,
+      recorded_at: "2022-06-09T13:55:25+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 46584,
+      recorded_at: "2022-06-09T13:55:33+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 46633,
+      recorded_at: "2022-06-09T13:56:22+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9971161048689138
+    },
+    {
+      source_row: 46721,
+      recorded_at: "2022-06-09T13:57:50+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9862433647906976
+    },
+    {
+      source_row: 46806,
+      recorded_at: "2022-06-09T13:59:15+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9833648618074111
+    },
+    {
+      source_row: 46897,
+      recorded_at: "2022-06-09T14:00:46+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9873587557371999
+    },
+    {
+      source_row: 47022,
+      recorded_at: "2022-06-09T14:02:51+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 47084,
+      recorded_at: "2022-06-09T14:03:53+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 47136,
+      recorded_at: "2022-06-09T14:04:45+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9860787557371998
+    },
+    {
+      source_row: 47223,
+      recorded_at: "2022-06-09T14:06:12+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9873587557371999
+    },
+    {
+      source_row: 47229,
+      recorded_at: "2022-06-09T14:06:18+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9923029149047562
+    },
+    {
+      source_row: 47297,
+      recorded_at: "2022-06-09T14:07:26+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 47821,
+      recorded_at: "2022-06-09T14:16:10+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 47824,
+      recorded_at: "2022-06-09T14:16:13+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9862433647906976
+    },
+    {
+      source_row: 47826,
+      recorded_at: "2022-06-09T14:16:15+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9834889003076728
+    },
+    {
+      source_row: 47828,
+      recorded_at: "2022-06-09T14:16:17+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9889695815714229
+    },
+    {
+      source_row: 48082,
+      recorded_at: "2022-06-09T14:20:31+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 48099,
+      recorded_at: "2022-06-09T14:20:48+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9871407026398548
+    },
+    {
+      source_row: 48163,
+      recorded_at: "2022-06-09T14:21:52+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 48398,
+      recorded_at: "2022-06-09T14:25:47+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9856361606589
+    },
+    {
+      source_row: 48428,
+      recorded_at: "2022-06-09T14:26:17+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9866981951407443
+    },
+    {
+      source_row: 48466,
+      recorded_at: "2022-06-09T14:26:55+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 48500,
+      recorded_at: "2022-06-09T14:27:29+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9979466666666668
+    },
+    {
+      source_row: 48512,
+      recorded_at: "2022-06-09T14:27:41+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9979466666666668
+    },
+    {
+      source_row: 48522,
+      recorded_at: "2022-06-09T14:27:51+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 48603,
+      recorded_at: "2022-06-09T14:29:12+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 48703,
+      recorded_at: "2022-06-09T14:30:52+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 48746,
+      recorded_at: "2022-06-09T14:31:35+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 48753,
+      recorded_at: "2022-06-09T14:31:42+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9731175563366031
+    },
+    {
+      source_row: 48781,
+      recorded_at: "2022-06-09T14:32:10+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 48854,
+      recorded_at: "2022-06-09T14:33:23+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9951868100358424
+    },
+    {
+      source_row: 48925,
+      recorded_at: "2022-06-09T14:34:34+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 49063,
+      recorded_at: "2022-06-09T14:36:52+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9955052790346908
+    },
+    {
+      source_row: 49146,
+      recorded_at: "2022-06-09T14:38:15+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9905734767025091
+    },
+    {
+      source_row: 49281,
+      recorded_at: "2022-06-09T14:40:30+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 49303,
+      recorded_at: "2022-06-09T14:40:52+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 49354,
+      recorded_at: "2022-06-09T14:41:43+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 49428,
+      recorded_at: "2022-06-09T14:42:57+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 49431,
+      recorded_at: "2022-06-09T14:43:00+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.9894120890705331
+    },
+    {
+      source_row: 49594,
+      recorded_at: "2022-06-09T14:45:43+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 49643,
+      recorded_at: "2022-06-09T14:46:32+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 49748,
+      recorded_at: "2022-06-09T14:48:17+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 49811,
+      recorded_at: "2022-06-09T14:49:20+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 49929,
+      recorded_at: "2022-06-09T14:51:18+00:00",
+      actual: true,
+      predicted: true,
+      score: 1
+    },
+    {
+      source_row: 50002,
+      recorded_at: "2022-06-10T23:16:59+00:00",
       actual: false,
       predicted: false,
-      score: 0.41088944262567273
+      score: 0.23061737167805169
+    },
+    {
+      source_row: 50003,
+      recorded_at: "2022-06-10T23:17:00+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.26440482936198
+    },
+    {
+      source_row: 50100,
+      recorded_at: "2022-06-10T23:18:37+00:00",
+      actual: true,
+      predicted: true,
+      score: 0.55650108397054
+    },
+    {
+      source_row: 50165,
+      recorded_at: "2022-06-10T23:19:42+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.2980817094865499
+    },
+    {
+      source_row: 50194,
+      recorded_at: "2022-06-10T23:20:11+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.1705290683406747
+    },
+    {
+      source_row: 50222,
+      recorded_at: "2022-06-10T23:20:39+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.2010492907554095
+    },
+    {
+      source_row: 50367,
+      recorded_at: "2022-06-10T23:23:04+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.1609427123134699
+    },
+    {
+      source_row: 50391,
+      recorded_at: "2022-06-10T23:23:28+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.18233563636698583
+    },
+    {
+      source_row: 50601,
+      recorded_at: "2022-06-10T23:26:58+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.03051958005197149
+    },
+    {
+      source_row: 50801,
+      recorded_at: "2022-06-10T23:30:18+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.0369108633343284
+    },
+    {
+      source_row: 50824,
+      recorded_at: "2022-06-10T23:30:41+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.051867377930660145
+    },
+    {
+      source_row: 50845,
+      recorded_at: "2022-06-10T23:31:02+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.027972667617364954
+    },
+    {
+      source_row: 50869,
+      recorded_at: "2022-06-10T23:31:26+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.03143100095069828
+    },
+    {
+      source_row: 51051,
+      recorded_at: "2022-06-10T23:34:28+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.02393070181564589
+    },
+    {
+      source_row: 51083,
+      recorded_at: "2022-06-10T23:35:00+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.05639999487574132
+    },
+    {
+      source_row: 51124,
+      recorded_at: "2022-06-10T23:35:41+00:00",
+      actual: true,
+      predicted: false,
+      score: 0.04131476306202186
+    },
+    {
+      source_row: 56899,
+      recorded_at: "2022-06-13T12:45:21+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.18710209607891118
+    },
+    {
+      source_row: 56915,
+      recorded_at: "2022-06-13T12:45:37+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.1468061660077844
+    },
+    {
+      source_row: 56925,
+      recorded_at: "2022-06-13T12:45:47+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.13329340254963779
+    },
+    {
+      source_row: 56971,
+      recorded_at: "2022-06-13T12:46:33+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.09320939224970416
+    },
+    {
+      source_row: 56986,
+      recorded_at: "2022-06-13T12:46:48+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.13379679367430208
+    },
+    {
+      source_row: 57035,
+      recorded_at: "2022-06-13T12:47:37+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.016702127599232296
+    },
+    {
+      source_row: 57040,
+      recorded_at: "2022-06-13T12:47:42+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.0790789233274306
+    },
+    {
+      source_row: 57271,
+      recorded_at: "2022-06-13T12:51:33+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.08315059095208656
+    },
+    {
+      source_row: 57355,
+      recorded_at: "2022-06-13T12:52:57+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.14127163878063853
+    },
+    {
+      source_row: 57417,
+      recorded_at: "2022-06-13T12:53:59+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.15224295836300705
+    },
+    {
+      source_row: 57440,
+      recorded_at: "2022-06-13T12:54:22+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.1536690937059612
+    },
+    {
+      source_row: 57495,
+      recorded_at: "2022-06-13T12:55:17+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.14828242703929453
+    },
+    {
+      source_row: 57516,
+      recorded_at: "2022-06-13T12:55:38+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.1672289999845476
+    },
+    {
+      source_row: 57535,
+      recorded_at: "2022-06-13T12:55:57+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.14595046902192868
+    },
+    {
+      source_row: 57554,
+      recorded_at: "2022-06-13T12:56:16+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.17793796604240014
+    },
+    {
+      source_row: 57577,
+      recorded_at: "2022-06-13T12:56:39+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2343413353721154
+    },
+    {
+      source_row: 57629,
+      recorded_at: "2022-06-13T12:57:31+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.274253308742363
+    },
+    {
+      source_row: 57738,
+      recorded_at: "2022-06-13T12:59:20+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.31610336165969566
+    },
+    {
+      source_row: 57761,
+      recorded_at: "2022-06-13T12:59:43+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.295085138470475
+    },
+    {
+      source_row: 57832,
+      recorded_at: "2022-06-13T13:00:54+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3197912895598405
+    },
+    {
+      source_row: 57863,
+      recorded_at: "2022-06-13T13:01:25+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.36643065586500806
+    },
+    {
+      source_row: 57923,
+      recorded_at: "2022-06-13T13:02:25+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.37217427164157224
+    },
+    {
+      source_row: 57960,
+      recorded_at: "2022-06-13T13:03:02+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.29628092274839807
+    },
+    {
+      source_row: 57978,
+      recorded_at: "2022-06-13T13:03:20+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3429182888458085
+    },
+    {
+      source_row: 58042,
+      recorded_at: "2022-06-13T13:04:24+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3781989815753915
+    },
+    {
+      source_row: 58252,
+      recorded_at: "2022-06-13T13:07:54+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3197912895598405
+    },
+    {
+      source_row: 58354,
+      recorded_at: "2022-06-13T13:09:36+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3165587118940134
+    },
+    {
+      source_row: 58407,
+      recorded_at: "2022-06-13T13:10:29+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3699467430063558
+    },
+    {
+      source_row: 58414,
+      recorded_at: "2022-06-13T13:10:36+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3165587118940134
+    },
+    {
+      source_row: 58493,
+      recorded_at: "2022-06-13T13:11:55+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.31645795622650713
+    },
+    {
+      source_row: 58519,
+      recorded_at: "2022-06-13T13:12:21+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3655175192620636
+    },
+    {
+      source_row: 58521,
+      recorded_at: "2022-06-13T13:12:23+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3688508525953969
+    },
+    {
+      source_row: 58634,
+      recorded_at: "2022-06-13T13:14:16+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.36963301751615973
+    },
+    {
+      source_row: 58642,
+      recorded_at: "2022-06-13T13:14:24+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3688508525953969
+    },
+    {
+      source_row: 58655,
+      recorded_at: "2022-06-13T13:14:37+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3197912895598405
+    },
+    {
+      source_row: 58687,
+      recorded_at: "2022-06-13T13:15:09+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3204282756156888
+    },
+    {
+      source_row: 58696,
+      recorded_at: "2022-06-13T13:15:18+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3809799691519299
+    },
+    {
+      source_row: 58721,
+      recorded_at: "2022-06-13T13:15:43+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3124067195135673
+    },
+    {
+      source_row: 58788,
+      recorded_at: "2022-06-13T13:16:50+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.31299495480768497
+    },
+    {
+      source_row: 58923,
+      recorded_at: "2022-06-13T13:19:05+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3237616089490221
+    },
+    {
+      source_row: 58951,
+      recorded_at: "2022-06-13T13:19:33+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.31414243541635095
+    },
+    {
+      source_row: 58986,
+      recorded_at: "2022-06-13T13:20:08+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3171469471881311
+    },
+    {
+      source_row: 59062,
+      recorded_at: "2022-06-13T13:21:24+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.39707100858670435
+    },
+    {
+      source_row: 59096,
+      recorded_at: "2022-06-13T13:21:58+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.31299495480768497
+    },
+    {
+      source_row: 59209,
+      recorded_at: "2022-06-13T13:23:51+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3304282756156888
+    },
+    {
+      source_row: 59264,
+      recorded_at: "2022-06-13T13:24:46+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3201072000376113
+    },
+    {
+      source_row: 59313,
+      recorded_at: "2022-06-13T13:25:35+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3204282756156888
+    },
+    {
+      source_row: 59387,
+      recorded_at: "2022-06-13T13:26:49+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.28688372911705884
+    },
+    {
+      source_row: 59486,
+      recorded_at: "2022-06-13T13:28:28+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2953932437801355
+    },
+    {
+      source_row: 59487,
+      recorded_at: "2022-06-13T13:28:29+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3049149321057881
+    },
+    {
+      source_row: 59513,
+      recorded_at: "2022-06-13T13:28:55+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.16030937859802977
+    },
+    {
+      source_row: 59638,
+      recorded_at: "2022-06-13T13:31:00+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.15424265576973606
+    },
+    {
+      source_row: 59667,
+      recorded_at: "2022-06-13T13:31:29+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.30453287567691056
+    },
+    {
+      source_row: 59743,
+      recorded_at: "2022-06-13T13:32:45+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.15379321756748884
+    },
+    {
+      source_row: 59864,
+      recorded_at: "2022-06-13T13:34:46+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.15705869678716655
+    },
+    {
+      source_row: 60007,
+      recorded_at: "2022-06-13T13:37:09+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.23846066290736345
+    },
+    {
+      source_row: 60018,
+      recorded_at: "2022-06-13T13:37:20+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.35321247445146914
+    },
+    {
+      source_row: 60175,
+      recorded_at: "2022-06-13T13:39:57+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.17412079073993217
+    },
+    {
+      source_row: 60192,
+      recorded_at: "2022-06-13T13:40:14+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2913822354439552
+    },
+    {
+      source_row: 60292,
+      recorded_at: "2022-06-13T13:41:54+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.15258260912893337
+    },
+    {
+      source_row: 60421,
+      recorded_at: "2022-06-13T13:44:03+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.20623703882155023
+    },
+    {
+      source_row: 60437,
+      recorded_at: "2022-06-13T13:44:19+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.22905419399179985
+    },
+    {
+      source_row: 60537,
+      recorded_at: "2022-06-13T13:45:59+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.23154850552666104
+    },
+    {
+      source_row: 60539,
+      recorded_at: "2022-06-13T13:46:01+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.22534399043000017
+    },
+    {
+      source_row: 60546,
+      recorded_at: "2022-06-13T13:46:08+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.1868183151448162
+    },
+    {
+      source_row: 60610,
+      recorded_at: "2022-06-13T13:47:12+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2381471146121608
+    },
+    {
+      source_row: 60620,
+      recorded_at: "2022-06-13T13:47:22+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.23280453266942042
+    },
+    {
+      source_row: 60757,
+      recorded_at: "2022-06-13T13:49:39+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2334847086782464
+    },
+    {
+      source_row: 60768,
+      recorded_at: "2022-06-13T13:49:50+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.26383254167561565
+    },
+    {
+      source_row: 60807,
+      recorded_at: "2022-06-13T13:50:29+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.44576190565649587
+    },
+    {
+      source_row: 60847,
+      recorded_at: "2022-06-13T13:51:09+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.309182392206988
+    },
+    {
+      source_row: 60867,
+      recorded_at: "2022-06-13T13:51:29+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2675897636022515
+    },
+    {
+      source_row: 60898,
+      recorded_at: "2022-06-13T13:52:00+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.37291081712548696
+    },
+    {
+      source_row: 60901,
+      recorded_at: "2022-06-13T13:52:03+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3279365317358459
+    },
+    {
+      source_row: 60915,
+      recorded_at: "2022-06-13T13:52:17+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.25587107102293033
+    },
+    {
+      source_row: 60998,
+      recorded_at: "2022-06-13T13:53:40+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.26034914959983835
+    },
+    {
+      source_row: 61027,
+      recorded_at: "2022-06-13T13:54:09+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.39950919187454614
+    },
+    {
+      source_row: 61097,
+      recorded_at: "2022-06-13T13:55:19+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2545061058663221
+    },
+    {
+      source_row: 61191,
+      recorded_at: "2022-06-13T13:56:53+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2353411689136066
+    },
+    {
+      source_row: 61213,
+      recorded_at: "2022-06-13T13:57:15+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2761690863394347
+    },
+    {
+      source_row: 61258,
+      recorded_at: "2022-06-13T13:58:00+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.22152397676443064
+    },
+    {
+      source_row: 61418,
+      recorded_at: "2022-06-13T14:00:40+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.25758924607951855
+    },
+    {
+      source_row: 61465,
+      recorded_at: "2022-06-13T14:01:27+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2006170329927581
+    },
+    {
+      source_row: 61471,
+      recorded_at: "2022-06-13T14:01:33+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2006170329927581
+    },
+    {
+      source_row: 61473,
+      recorded_at: "2022-06-13T14:01:35+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2006170329927581
+    },
+    {
+      source_row: 61523,
+      recorded_at: "2022-06-13T14:02:25+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.21306799596523654
+    },
+    {
+      source_row: 61561,
+      recorded_at: "2022-06-13T14:03:03+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.20195566589207586
+    },
+    {
+      source_row: 61899,
+      recorded_at: "2022-06-13T14:08:41+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.24023131175094614
+    },
+    {
+      source_row: 61902,
+      recorded_at: "2022-06-13T14:08:44+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.24023131175094614
+    },
+    {
+      source_row: 62082,
+      recorded_at: "2022-06-13T14:11:44+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.24023131175094614
+    },
+    {
+      source_row: 62181,
+      recorded_at: "2022-06-13T14:13:23+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.24689797841761285
+    },
+    {
+      source_row: 62242,
+      recorded_at: "2022-06-13T14:14:24+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.2880165773913851
+    },
+    {
+      source_row: 62333,
+      recorded_at: "2022-06-13T14:15:55+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3622670685551837
+    },
+    {
+      source_row: 62437,
+      recorded_at: "2022-06-13T14:17:39+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.36640191040665177
+    },
+    {
+      source_row: 62459,
+      recorded_at: "2022-06-13T14:18:01+00:00",
+      actual: false,
+      predicted: false,
+      score: 0.3464226977138018
     }
   ]
 };
@@ -702,6 +1703,25 @@ var RepositoryPort = class {
   }
 };
 
+// backend/adapters/out/read-pages.mjs
+async function readPages(query, check2) {
+  const rows = [], ids = /* @__PURE__ */ new Set();
+  let total;
+  do {
+    const result = await query().range(rows.length, rows.length + 499);
+    const page = check2(result);
+    if (!Number.isInteger(result.count) || result.count < 0 || result.count > 1e5 || total !== void 0 && total !== result.count || !Array.isArray(page)) throw new Error("Conteo de lecturas inconsistente.");
+    total = result.count;
+    for (const row of page) {
+      if (!Number.isInteger(row.source_row) || ids.has(row.source_row)) throw new Error("Lecturas duplicadas o inv\xE1lidas.");
+      ids.add(row.source_row);
+    }
+    rows.push(...page);
+    if (rows.length > total || !page.length && rows.length < total) throw new Error("Consulta de lecturas incompleta.");
+  } while (rows.length < total);
+  return rows;
+}
+
 // backend/adapters/out/supabase.mjs
 var tables = { maintenance: ["demo_maintenance", "node_id"], cases: ["demo_cases", "node_id"], incidents: ["incidentes", "id"] };
 function check(result) {
@@ -742,12 +1762,12 @@ var SupabaseRepository = class extends RepositoryPort {
     return check(await this.client.from("LecturaAmbiental").select("*,HistoricoPrediccion(*,EventoAlerta(*))").order("observed_at", { ascending: false }).limit(100));
   }
   async readings() {
-    return check(await this.client.from("smoke_readings").select("*").eq("dataset_id", "smoke-detection-iot-1011-v1").order("source_row").limit(1011));
+    return readPages(() => this.client.from("smoke_readings").select("*", { count: "exact" }).eq("dataset_id", "smoke-detection-iot-1011-v1").order("source_row"), check);
   }
   async operations() {
     const [nodes, links, cases, maintenance] = (await Promise.all([
       this.client.from("demo_nodes").select("*").order("id"),
-      this.client.from("demo_node_readings").select("node_id,source_row,smoke_readings(*)").order("source_row").limit(1011),
+      readPages(() => this.client.from("demo_node_readings").select("node_id,source_row,smoke_readings(*)", { count: "exact" }).eq("dataset_id", "smoke-detection-iot-1011-v1").order("source_row"), check).then((data) => ({ data })),
       this.client.from("demo_cases").select("*").order("node_id"),
       this.client.from("demo_maintenance").select("*").order("node_id")
     ])).map(check);
@@ -818,7 +1838,7 @@ function createHandler({ serviceFactory, allowedOrigins }) {
     const prefix = /^(?:\/functions\/v1\/admin-api|\/admin-api|\/api)(?=\/|$)/.exec(pathname);
     if (!prefix) return respond({ error: "Ruta no disponible." }, 404);
     const path = pathname.slice(prefix[0].length);
-    if (path === "/health" && request.method === "GET") return respond({ status: "ok", architecture: "ports-and-adapters" });
+    if (path === "/health" && request.method === "GET") return respond({ status: "ok", architecture: "ports-and-adapters", build: true ? "b14ade651aa47486223bd3befa091eee5ba79deb0fbced5c1a413797463d633c" : "development" });
     const token = /^Bearer (\S+)$/i.exec(request.headers.get("authorization") || "")?.[1];
     if (!token) return respond({ error: "Inicia sesi\xF3n nuevamente.", code: "UNAUTHENTICATED" }, 401);
     try {

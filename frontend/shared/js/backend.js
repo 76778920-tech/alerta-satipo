@@ -81,7 +81,7 @@
 
   // frontend/src/domain/historical.mjs
   function validatePredictions(value) {
-    if (!value || !Array.isArray(value.rows) || value.rows.length !== 60 || value.evaluation?.train_rows !== 240 || value.evaluation?.test_rows !== 60 || typeof value.version !== "string") throw new Error("Resultados incompletos.");
+    if (!value || !Array.isArray(value.rows) || value.rows.length !== 203 || value.evaluation?.train_rows !== 808 || value.evaluation?.test_rows !== 203 || typeof value.version !== "string") throw new Error("Resultados incompletos.");
     const ids = /* @__PURE__ */ new Set();
     for (const row of value.rows) {
       if (!Number.isInteger(row.source_row) || ids.has(row.source_row) || typeof row.actual !== "boolean" || typeof row.predicted !== "boolean" || !Number.isFinite(row.score) || row.score < 0 || row.score > 1 || !Number.isFinite(Date.parse(row.recorded_at))) throw new Error("Resultados invalidos.");
@@ -347,6 +347,25 @@
     }
   };
 
+  // frontend/src/adapters/out/read-pages.mjs
+  async function readPages(query, check) {
+    const rows = [], ids = /* @__PURE__ */ new Set();
+    let total;
+    do {
+      const result = await query().range(rows.length, rows.length + 499);
+      const page = check(result);
+      if (!Number.isInteger(result.count) || result.count < 0 || result.count > 1e5 || total !== void 0 && total !== result.count || !Array.isArray(page)) throw new Error("Conteo de lecturas inconsistente.");
+      total = result.count;
+      for (const row of page) {
+        if (!Number.isInteger(row.source_row) || ids.has(row.source_row)) throw new Error("Lecturas duplicadas o inv\xE1lidas.");
+        ids.add(row.source_row);
+      }
+      rows.push(...page);
+      if (rows.length > total || !page.length && rows.length < total) throw new Error("Consulta de lecturas incompleta.");
+    } while (rows.length < total);
+    return rows;
+  }
+
   // frontend/src/adapters/out/supabase.mjs
   var checked = (result) => {
     if (result.error) throw result.error;
@@ -405,7 +424,7 @@
       this.client = client;
     }
     async readings() {
-      return checked(await this.client.from("smoke_readings").select("*").eq("dataset_id", "smoke-detection-iot-1011-v1").order("source_row").limit(1011));
+      return readPages(() => this.client.from("smoke_readings").select("*", { count: "exact" }).eq("dataset_id", "smoke-detection-iot-1011-v1").order("source_row"), checked);
     }
     async activity(id) {
       const [reports, incidents, settings] = (await Promise.all([
@@ -665,7 +684,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; test independiente de 900 registros. Sin validaci\xF3n con incendios reales ni sensores calibrados."
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
       },
       {
         id: "RF-05",
@@ -676,7 +695,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; test independiente de 900 registros. Sin validaci\xF3n con incendios reales ni sensores calibrados."
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
       },
       {
         id: "RF-06",
@@ -784,10 +803,10 @@
         page: 8,
         status: "Parcial",
         evidence: [
-          "colab/Alerta_Satipo_300_predicciones.ipynb",
+          "colab/Alerta_Satipo_1011_predicciones.ipynb",
           "backend/adapters/out/prediction-results.json"
         ],
-        gap: "Existe evaluaci\xF3n de 300 lecturas. La PoC de 62 630 est\xE1 reportada en el PDF; faltan notebook y artefactos originales para reproducirla."
+        gap: "Existe evaluaci\xF3n de 1011 lecturas. La PoC de 62 630 est\xE1 reportada en el PDF; faltan notebook y artefactos originales para reproducirla."
       },
       {
         id: "RNF-01",
@@ -1060,7 +1079,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; test independiente de 900 registros. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
         pmv: "PMV1",
         requirements: [
           "RF-04"
@@ -1076,7 +1095,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; test independiente de 900 registros. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados.",
         pmv: "PMV1",
         requirements: [
           "RF-05"
@@ -1231,10 +1250,10 @@
         page: 9,
         status: "Parcial",
         evidence: [
-          "colab/Alerta_Satipo_300_predicciones.ipynb",
+          "colab/Alerta_Satipo_1011_predicciones.ipynb",
           "backend/adapters/out/prediction-results.json"
         ],
-        gap: "Existe evaluaci\xF3n de 300 lecturas. La PoC de 62 630 est\xE1 reportada en el PDF; faltan notebook y artefactos originales para reproducirla.",
+        gap: "Existe evaluaci\xF3n de 1011 lecturas. La PoC de 62 630 est\xE1 reportada en el PDF; faltan notebook y artefactos originales para reproducirla.",
         pmv: "PMV3",
         requirements: [
           "RF-15"
@@ -1250,7 +1269,7 @@
           "scripts/train_pmv1.py",
           "colab/pmv1/evaluation.json"
         ],
-        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; test independiente de 900 registros. Sin validaci\xF3n con incendios reales ni sensores calibrados."
+        gap: "Tres clases entrenadas con cinco variables sint\xE9ticas; validaci?n de 6000 y prueba separada de 3000 registros sint?ticos. Sin validaci\xF3n con incendios reales ni sensores calibrados."
       },
       {
         id: "RP-02",
@@ -1258,7 +1277,7 @@
         page: 8,
         status: "Parcial",
         evidence: [
-          "colab/Alerta_Satipo_300_predicciones.ipynb"
+          "colab/Alerta_Satipo_1011_predicciones.ipynb"
         ],
         gap: "Clasificaci\xF3n experimental externa; no validaci\xF3n territorial ni inferencia API operativa."
       },
@@ -1325,12 +1344,12 @@
         colab_latency_ms: 45.965
       },
       repository: {
-        rows: 300,
-        train: 240,
-        test: 60,
-        correct: 54,
-        false_negatives: 5,
-        false_positives: 1,
+        rows: 1011,
+        train: 808,
+        test: 203,
+        correct: 190,
+        false_negatives: 13,
+        false_positives: 0,
         artifact: "backend/adapters/out/prediction-results.json"
       }
     },

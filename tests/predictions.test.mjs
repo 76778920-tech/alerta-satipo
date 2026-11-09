@@ -13,9 +13,9 @@ test('Predicciones: autenticación y autorización antes de consultar resultados
 });
 test('Predicciones publicadas: coinciden con datos, CSV y métricas de evaluación',async()=>{
   const result=await new PublishedPredictionResults().results();
-  const source=JSON.parse(await readFile('data/smoke_detection_300.json','utf8'));
-  const lines=(await readFile('colab/resultados_locales/predicciones_prueba_60.csv','utf8')).trim().split(/\r?\n/).slice(1);
-  assert.equal(result.rows.length,60);assert.equal(new Set(result.rows.map(r=>r.source_row)).size,60);
+  const source=JSON.parse(await readFile('data/smoke_detection_1011.json','utf8'));
+  const lines=(await readFile('colab/resultados_locales/predicciones_prueba_203.csv','utf8')).trim().split(/\r?\n/).slice(1);
+  assert.equal(result.rows.length,203);assert.equal(new Set(result.rows.map(r=>r.source_row)).size,203);
   const matrix=[[0,0],[0,0]];
   result.rows.forEach((row,i)=>{
     const csv=lines[i].split(',');
@@ -28,5 +28,5 @@ test('Predicciones publicadas: coinciden con datos, CSV y métricas de evaluaci�
   assert.equal((await handler(new Request('https://test/api/predictions'))).status,401);
   assert.equal((await handler(new Request('https://test/api/predictions',{headers:{Authorization:'Bearer user'}}))).status,403);
   const response=await handler(new Request('https://test/api/predictions',{headers:{Authorization:'Bearer admin'}}));
-  assert.equal(response.status,200);assert.equal((await response.json()).rows.length,60);
+  assert.equal(response.status,200);assert.equal((await response.json()).rows.length,203);
 });

@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 credentials=json.loads(Path('config/admin.local.json').read_text())
+published=json.loads(Path('backend/adapters/out/prediction-results.json').read_text())
+matrix=published['evaluation']['confusion_matrix']
 base=os.environ.get('PANEL_TEST_URL','https://alerta-satipo-76778920.web.app')
 with sync_playwright() as p:
     browser=p.chromium.launch(channel='msedge',headless=True)
@@ -17,17 +19,21 @@ with sync_playwright() as p:
     page.wait_for_selector('#prediction-status',state='attached')
     page.click('[data-view="predictions"]')
     page.wait_for_selector('#prediction-results:visible')
-    assert '90.0 %' in page.inner_text('#prediction-summary')
+    assert f"{published['evaluation']['random_forest']['accuracy']*100:.1f} %" in page.inner_text('#prediction-summary')
     seen=[]
     while True:
         seen.extend(page.locator('#prediction-rows tr td:first-child').all_text_contents())
         if page.is_disabled('#prediction-next'):break
         page.click('#prediction-next')
-    assert len(seen)==len(set(seen))==60
+    assert len(seen)==len(set(seen))==203
     page.select_option('#prediction-filter','errors')
-    assert page.locator('#prediction-rows tr').count()==6
-    assert page.inner_text('#prediction-rows').count('Falso negativo')==5
-    assert page.inner_text('#prediction-rows').count('Falso positivo')==1
+    error_text=''
+    while True:
+        error_text+=page.inner_text('#prediction-rows')
+        if page.is_disabled('#prediction-next'):break
+        page.click('#prediction-next')
+    assert error_text.count('Falso negativo')==matrix[1][0]
+    assert error_text.count('Falso positivo')==matrix[0][1]
     page.set_viewport_size({'width':390,'height':844})
     assert page.locator('#prediction-refresh').is_visible()
     assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
@@ -48,4 +54,4 @@ with sync_playwright() as p:
     page.click('#prediction-refresh');page.wait_for_selector('#prediction-results:visible')
     assert not errors,errors
     browser.close()
-print('PASS: 60 resultados, filtros, métricas, móvil, fallo de red, respuesta inválida y recuperación; sin errores JavaScript.')
+print('PASS: 203 resultados, filtros, métricas, móvil, fallo de red, respuesta inválida y recuperación; sin errores JavaScript.')

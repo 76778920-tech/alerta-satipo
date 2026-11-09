@@ -1,6 +1,7 @@
 import { IdentityPort } from '../../application/ports/out/identity.mjs';
 import { RepositoryPort } from '../../application/ports/out/repository.mjs';
 import { ApplicationError } from '../../domain/errors.mjs';
+import { readPages } from './read-pages.mjs';
 const tables={maintenance:['demo_maintenance','node_id'], cases:['demo_cases','node_id'], incidents:['incidentes','id']};
 function check(result) {
   if(result.error) {
@@ -29,11 +30,11 @@ export class SupabaseRepository extends RepositoryPort {
   constructor(client) { super(); this.client=client; }
   async savePmv1(record) { return check(await this.client.rpc('pmv1_store',{p_record:record})); }
   async pmv1History() { return check(await this.client.from('LecturaAmbiental').select('*,HistoricoPrediccion(*,EventoAlerta(*))').order('observed_at',{ascending:false}).limit(100)); }
-  async readings() { return check(await this.client.from('smoke_readings').select('*').eq('dataset_id','smoke-detection-iot-1011-v1').order('source_row').limit(1011)); }
+  async readings() { return readPages(()=>this.client.from('smoke_readings').select('*',{count:'exact'}).eq('dataset_id','smoke-detection-iot-1011-v1').order('source_row'),check); }
   async operations() {
     const [nodes,links,cases,maintenance]=(await Promise.all([
       this.client.from('demo_nodes').select('*').order('id'),
-      this.client.from('demo_node_readings').select('node_id,source_row,smoke_readings(*)').order('source_row').limit(1011),
+      readPages(()=>this.client.from('demo_node_readings').select('node_id,source_row,smoke_readings(*)',{count:'exact'}).eq('dataset_id','smoke-detection-iot-1011-v1').order('source_row'),check).then(data=>({data})),
       this.client.from('demo_cases').select('*').order('node_id'),
       this.client.from('demo_maintenance').select('*').order('node_id')
     ])).map(check);

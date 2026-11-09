@@ -9,7 +9,7 @@ test('Informe: conserva IDs originales, PMV y procedencia de las dos evaluacione
   for(const [type,count] of [['RF',15],['RNF',16],['HU',18],['RP',3]]) assert.equal(catalog.requirements.filter(r=>r.id.startsWith(type+'-')).length,count);
   assert.equal(new Set(catalog.requirements.map(r=>r.id)).size,52);
   assert.equal(catalog.requirements.find(r=>r.id==='HU-001').pmv,'PMV3');
-  assert.equal(catalog.experiments.report.rows,62630);assert.equal(catalog.experiments.repository.rows,300);
+  assert.equal(catalog.experiments.report.rows,62630);assert.equal(catalog.experiments.repository.rows,1011);
   assert.equal(catalog.management.physical_acceptance,false);
   assert.ok(catalog.requirements.every(r=>r.status!=='Completado'));
 });

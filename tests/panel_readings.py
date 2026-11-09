@@ -76,4 +76,4 @@ with sync_playwright() as p:
     assert page.locator('#demo-nodes .operation-card').count()==6
     assert not errors,errors
     browser.close()
-print('PASS: 300 registros comparados con la fuente; paginación completa, filtros, scroll en 4 tamaños, fallos/reintento, campos inválidos y vistas vacías. Sin escrituras ni cuentas nuevas.')
+print('PASS: 1011 registros comparados con la fuente; paginación completa, filtros, scroll en 4 tamaños, fallos/reintento, campos inválidos y vistas vacías. Sin escrituras ni cuentas nuevas.')

@@ -1,24 +1,24 @@
 {
   "python_version": "3.12.10",
   "sklearn_version": "1.5.2",
-  "version": "temporal-selection-v2",
+  "version": "temporal-selection-1011-v3",
   "selected": {
-    "name": "extra_trees",
+    "name": "random_forest",
     "threshold": 0.3,
-    "accuracy": 0.975,
-    "recall_alarm": 0.9867549668874173,
-    "precision_alarm": 0.9867549668874173,
-    "false_negatives": 2,
+    "accuracy": 0.9791666666666666,
+    "recall_alarm": 0.9815668202764977,
+    "precision_alarm": 0.9953271028037384,
+    "false_negatives": 8,
     "false_positives": 2,
-    "cost": 6,
+    "cost": 18,
     "confusion_matrix": [
       [
-        7,
+        44,
         2
       ],
       [
-        2,
-        149
+        8,
+        426
       ]
     ]
   },
@@ -26,211 +26,211 @@
     "folds": [
       [
         0,
-        75,
-        80,
-        120
+        323,
+        328,
+        448
       ],
       [
         0,
-        115,
-        120,
-        160
+        443,
+        448,
+        568
       ],
       [
         0,
-        155,
-        160,
-        200
+        563,
+        568,
+        688
       ],
       [
         0,
-        195,
-        200,
-        240
+        683,
+        688,
+        808
       ]
     ],
     "gap_rows": 5,
-    "validation_rows": 160,
-    "validation_alarm_rows": 151,
-    "validation_no_alarm_rows": 9,
+    "validation_rows": 480,
+    "validation_alarm_rows": 434,
+    "validation_no_alarm_rows": 46,
     "candidates": [
       {
         "name": "random_forest",
         "threshold": 0.3,
-        "accuracy": 0.775,
-        "recall_alarm": 0.7814569536423841,
-        "precision_alarm": 0.9752066115702479,
-        "false_negatives": 33,
-        "false_positives": 3,
-        "cost": 69,
-        "confusion_matrix": [
-          [
-            6,
-            3
-          ],
-          [
-            33,
-            118
-          ]
-        ]
-      },
-      {
-        "name": "random_forest",
-        "threshold": 0.5,
-        "accuracy": 0.74375,
-        "recall_alarm": 0.7284768211920529,
-        "precision_alarm": 1.0,
-        "false_negatives": 41,
-        "false_positives": 0,
-        "cost": 82,
-        "confusion_matrix": [
-          [
-            9,
-            0
-          ],
-          [
-            41,
-            110
-          ]
-        ]
-      },
-      {
-        "name": "random_forest",
-        "threshold": 0.7,
-        "accuracy": 0.36875,
-        "recall_alarm": 0.33112582781456956,
-        "precision_alarm": 1.0,
-        "false_negatives": 101,
-        "false_positives": 0,
-        "cost": 202,
-        "confusion_matrix": [
-          [
-            9,
-            0
-          ],
-          [
-            101,
-            50
-          ]
-        ]
-      },
-      {
-        "name": "extra_trees",
-        "threshold": 0.3,
-        "accuracy": 0.975,
-        "recall_alarm": 0.9867549668874173,
-        "precision_alarm": 0.9867549668874173,
-        "false_negatives": 2,
+        "accuracy": 0.9791666666666666,
+        "recall_alarm": 0.9815668202764977,
+        "precision_alarm": 0.9953271028037384,
+        "false_negatives": 8,
         "false_positives": 2,
-        "cost": 6,
+        "cost": 18,
         "confusion_matrix": [
           [
-            7,
+            44,
             2
           ],
-          [
-            2,
-            149
-          ]
-        ]
-      },
-      {
-        "name": "extra_trees",
-        "threshold": 0.5,
-        "accuracy": 0.75,
-        "recall_alarm": 0.7350993377483444,
-        "precision_alarm": 1.0,
-        "false_negatives": 40,
-        "false_positives": 0,
-        "cost": 80,
-        "confusion_matrix": [
-          [
-            9,
-            0
-          ],
-          [
-            40,
-            111
-          ]
-        ]
-      },
-      {
-        "name": "extra_trees",
-        "threshold": 0.7,
-        "accuracy": 0.49375,
-        "recall_alarm": 0.46357615894039733,
-        "precision_alarm": 1.0,
-        "false_negatives": 81,
-        "false_positives": 0,
-        "cost": 162,
-        "confusion_matrix": [
-          [
-            9,
-            0
-          ],
-          [
-            81,
-            70
-          ]
-        ]
-      },
-      {
-        "name": "logistic",
-        "threshold": 0.3,
-        "accuracy": 0.6375,
-        "recall_alarm": 0.6357615894039735,
-        "precision_alarm": 0.9696969696969697,
-        "false_negatives": 55,
-        "false_positives": 3,
-        "cost": 113,
-        "confusion_matrix": [
-          [
-            6,
-            3
-          ],
-          [
-            55,
-            96
-          ]
-        ]
-      },
-      {
-        "name": "logistic",
-        "threshold": 0.5,
-        "accuracy": 0.60625,
-        "recall_alarm": 0.5960264900662252,
-        "precision_alarm": 0.9782608695652174,
-        "false_negatives": 61,
-        "false_positives": 2,
-        "cost": 124,
-        "confusion_matrix": [
-          [
-            7,
-            2
-          ],
-          [
-            61,
-            90
-          ]
-        ]
-      },
-      {
-        "name": "logistic",
-        "threshold": 0.7,
-        "accuracy": 0.46875,
-        "recall_alarm": 0.44370860927152317,
-        "precision_alarm": 0.9852941176470589,
-        "false_negatives": 84,
-        "false_positives": 1,
-        "cost": 169,
-        "confusion_matrix": [
           [
             8,
+            426
+          ]
+        ]
+      },
+      {
+        "name": "random_forest",
+        "threshold": 0.5,
+        "accuracy": 0.9479166666666666,
+        "recall_alarm": 0.9447004608294931,
+        "precision_alarm": 0.9975669099756691,
+        "false_negatives": 24,
+        "false_positives": 1,
+        "cost": 49,
+        "confusion_matrix": [
+          [
+            45,
             1
           ],
           [
-            84,
-            67
+            24,
+            410
+          ]
+        ]
+      },
+      {
+        "name": "random_forest",
+        "threshold": 0.7,
+        "accuracy": 0.6833333333333333,
+        "recall_alarm": 0.6497695852534562,
+        "precision_alarm": 1.0,
+        "false_negatives": 152,
+        "false_positives": 0,
+        "cost": 304,
+        "confusion_matrix": [
+          [
+            46,
+            0
+          ],
+          [
+            152,
+            282
+          ]
+        ]
+      },
+      {
+        "name": "extra_trees",
+        "threshold": 0.3,
+        "accuracy": 0.9041666666666667,
+        "recall_alarm": 0.9769585253456221,
+        "precision_alarm": 0.9217391304347826,
+        "false_negatives": 10,
+        "false_positives": 36,
+        "cost": 56,
+        "confusion_matrix": [
+          [
+            10,
+            36
+          ],
+          [
+            10,
+            424
+          ]
+        ]
+      },
+      {
+        "name": "extra_trees",
+        "threshold": 0.5,
+        "accuracy": 0.8125,
+        "recall_alarm": 0.7926267281105991,
+        "precision_alarm": 1.0,
+        "false_negatives": 90,
+        "false_positives": 0,
+        "cost": 180,
+        "confusion_matrix": [
+          [
+            46,
+            0
+          ],
+          [
+            90,
+            344
+          ]
+        ]
+      },
+      {
+        "name": "extra_trees",
+        "threshold": 0.7,
+        "accuracy": 0.6791666666666667,
+        "recall_alarm": 0.6451612903225806,
+        "precision_alarm": 1.0,
+        "false_negatives": 154,
+        "false_positives": 0,
+        "cost": 308,
+        "confusion_matrix": [
+          [
+            46,
+            0
+          ],
+          [
+            154,
+            280
+          ]
+        ]
+      },
+      {
+        "name": "logistic",
+        "threshold": 0.3,
+        "accuracy": 0.75,
+        "recall_alarm": 0.7488479262672811,
+        "precision_alarm": 0.9672619047619048,
+        "false_negatives": 109,
+        "false_positives": 11,
+        "cost": 229,
+        "confusion_matrix": [
+          [
+            35,
+            11
+          ],
+          [
+            109,
+            325
+          ]
+        ]
+      },
+      {
+        "name": "logistic",
+        "threshold": 0.5,
+        "accuracy": 0.7208333333333333,
+        "recall_alarm": 0.7050691244239631,
+        "precision_alarm": 0.9807692307692307,
+        "false_negatives": 128,
+        "false_positives": 6,
+        "cost": 262,
+        "confusion_matrix": [
+          [
+            40,
+            6
+          ],
+          [
+            128,
+            306
+          ]
+        ]
+      },
+      {
+        "name": "logistic",
+        "threshold": 0.7,
+        "accuracy": 0.5541666666666667,
+        "recall_alarm": 0.5138248847926268,
+        "precision_alarm": 0.9867256637168141,
+        "false_negatives": 211,
+        "false_positives": 3,
+        "cost": 425,
+        "confusion_matrix": [
+          [
+            43,
+            3
+          ],
+          [
+            211,
+            223
           ]
         ]
       }
@@ -238,42 +238,42 @@
     "criterion": "minimize 2*FN+FP; exploratory engineering weight, not a validated operational cost"
   },
   "published_baseline_regression": {
-    "accuracy": 0.9,
-    "recall_alarm": 0.8484848484848485,
-    "precision_alarm": 0.9655172413793104,
-    "false_negatives": 5,
-    "false_positives": 1,
-    "cost": 11,
+    "accuracy": 0.9359605911330049,
+    "recall_alarm": 0.8773584905660378,
+    "precision_alarm": 1.0,
+    "false_negatives": 13,
+    "false_positives": 0,
+    "cost": 26,
     "confusion_matrix": [
       [
-        26,
-        1
+        97,
+        0
       ],
       [
-        5,
-        28
+        13,
+        93
       ]
     ]
   },
   "candidate_regression": {
-    "accuracy": 0.6166666666666667,
-    "recall_alarm": 0.8484848484848485,
-    "precision_alarm": 0.6086956521739131,
-    "false_negatives": 5,
-    "false_positives": 18,
-    "cost": 28,
+    "accuracy": 0.7438423645320197,
+    "recall_alarm": 0.8773584905660378,
+    "precision_alarm": 0.7045454545454546,
+    "false_negatives": 13,
+    "false_positives": 39,
+    "cost": 65,
     "confusion_matrix": [
       [
-        9,
-        18
+        58,
+        39
       ],
       [
-        5,
-        28
+        13,
+        93
       ]
     ]
   },
   "promotion": "NOT_APPROVED_REQUIRES_NEW_INDEPENDENT_DATA",
-  "limitation": "The 60 rows were previously inspected. Regression results are not an independent generalization estimate. No district or future-fire prediction.",
-  "dataset_sha256": "034f9ef9d796828d6ebcfe4f61ab882a285fdaf925c7883c565d733c2ab0b41f"
+  "limitation": "The expanded source overlaps previously inspected data; physical session IDs are unknown. Regression results are not an independent generalization estimate. No district or future-fire prediction.",
+  "dataset_sha256": "a04ff685b8c95778f163b121efa68c5bdd22290cccd8469b2a120f5e10d5d136"
 }

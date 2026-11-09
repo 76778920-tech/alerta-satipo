@@ -58,4 +58,4 @@ with sync_playwright() as p:
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,view)
     assert not errors,errors
     browser.close()
-print('PASS: 6 nodos, 300 relaciones, 214 etiquetas; estados persistentes restaurados, recuperación de red y 3 anchos.')
+print('PASS: 6 nodos, 1011 relaciones, 722 etiquetas; estados persistentes restaurados, recuperación de red y 3 anchos.')

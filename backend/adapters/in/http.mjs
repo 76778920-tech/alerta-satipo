@@ -29,7 +29,7 @@ export function createHandler({ serviceFactory, allowedOrigins }) {
     const prefix=/^(?:\/functions\/v1\/admin-api|\/admin-api|\/api)(?=\/|$)/.exec(pathname);
     if(!prefix)return respond({error:'Ruta no disponible.'},404);
     const path=pathname.slice(prefix[0].length);
-    if(path==='/health' && request.method==='GET')return respond({status:'ok',architecture:'ports-and-adapters'});
+    if(path==='/health' && request.method==='GET')return respond({status:'ok',architecture:'ports-and-adapters',build:typeof SATIPO_BACKEND_BUILD==='string'?SATIPO_BACKEND_BUILD:'development'});
     const token=/^Bearer (\S+)$/i.exec(request.headers.get('authorization')||'')?.[1];
     if(!token)return respond({error:'Inicia sesión nuevamente.',code:'UNAUTHENTICATED'},401);
     try {

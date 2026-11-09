@@ -1,15 +1,15 @@
 from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]
-original=json.loads((ROOT/'colab/Alerta_Satipo_300_predicciones.ipynb').read_text(encoding='utf-8'))
+original=json.loads((ROOT/'colab/Alerta_Satipo_1011_predicciones.ipynb').read_text(encoding='utf-8'))
 cells=[]
 def cell(kind,text):return {'cell_type':kind,'metadata':{},'source':text.splitlines(True),**({'execution_count':None,'outputs':[]} if kind=='code' else {})}
 cells.append(cell('markdown',"""# Evaluación temporal de candidatos — versión 2
-Este notebook mejora el proceso de evaluación; no promete mejores predicciones. Usa las mismas 300 lecturas verificadas en Supabase y los mismos cuatro secretos del notebook original. No publica ni reemplaza automáticamente el modelo web.
+Este notebook mejora el proceso de evaluación; no promete mejores predicciones. Usa las mismas 1011 lecturas verificadas en Supabase y los mismos cuatro secretos del notebook original. No publica ni reemplaza automáticamente el modelo web.
 
-Compara Random Forest, Extra Trees y regresión logística con umbrales 0.3, 0.5 y 0.7, solo dentro de las 240 filas de desarrollo. Cuatro bloques ordenados, separados por cinco filas, evalúan 160 observaciones. El intervalo de cinco filas no representa una duración constante ni garantiza independencia entre ensayos. La ponderación exploratoria de dos por falso negativo y uno por falso positivo requiere validación operativa.
+Compara Random Forest, Extra Trees y regresión logística con umbrales 0.3, 0.5 y 0.7, solo dentro de las 808 filas de desarrollo. Cuatro bloques ordenados, separados por cinco filas, evalúan 480 observaciones. El intervalo de cinco filas no representa una duración constante ni garantiza independencia entre ensayos. La ponderación exploratoria de dos por falso negativo y uno por falso positivo requiere validación operativa.
 
-Las 60 filas finales ya se inspeccionaron anteriormente: sirven para regresión, no como una prueba independiente inédita. Se requieren datos nuevos para aprobar un modelo. No hay datos geográficos para pronosticar incendios por distrito.
+La muestra ampliada se solapa con datos ya examinados y no identifica sesiones físicas. Las 203 filas finales sirven para evaluación temporal, sin garantizar independencia entre ensayos. Se requieren datos nuevos para aprobar un modelo. No hay datos geográficos para pronosticar incendios por distrito.
 """))
 # Reuse exact verified Supabase connection and stale-state invalidation cells.
 for source in original['cells']:

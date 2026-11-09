@@ -125,7 +125,7 @@ try:
         assert not errors,errors
         for context in contexts:context.close()
         browser.close()
-    print('PASS: Supabase real, 300 filas, login móvil/admin, reporte, XSS, aislamiento A/B, rechazo de escalada, auditoría, preferencias, apoyo y secretos HTTP.')
+    print('PASS: Supabase real, 1011 filas, login móvil/admin, reporte, XSS, aislamiento A/B, rechazo de escalada, auditoría, preferencias, apoyo y secretos HTTP.')
 finally:
     for user_id in reversed(created):
         status,_=api('/auth/v1/admin/users/'+user_id,method='DELETE',admin=True)

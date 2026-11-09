@@ -1,4 +1,5 @@
 import { IdentityPort, ProfilePort, CommunityPort } from '../../application/ports/out/gateways.mjs';
+import { readPages } from './read-pages.mjs';
 const checked = result => { if (result.error) throw result.error; return result.data; };
 
 export class SupabaseIdentity extends IdentityPort {
@@ -30,7 +31,7 @@ export class SupabaseProfiles extends ProfilePort {
 export class SupabaseCommunity extends CommunityPort {
   constructor(client) { super(); this.client = client; }
   async readings() {
-    return checked(await this.client.from('smoke_readings').select('*').eq('dataset_id','smoke-detection-iot-1011-v1').order('source_row').limit(1011));
+    return readPages(()=>this.client.from('smoke_readings').select('*',{count:'exact'}).eq('dataset_id','smoke-detection-iot-1011-v1').order('source_row'),checked);
   }
   async activity(id) {
     const [reports,incidents,settings] = (await Promise.all([

@@ -1,54 +1,35 @@
-# Colab conectado a Supabase
+# Evaluación histórica con 1011 lecturas
 
-[Abrir notebook en Colab](https://colab.research.google.com/github/76778920-tech/alerta-satipo/blob/main/colab/Alerta_Satipo_300_predicciones.ipynb)
+[Abrir notebook en Colab](https://colab.research.google.com/github/76778920-tech/alerta-satipo/blob/main/colab/Alerta_Satipo_1011_predicciones.ipynb)
 
-El notebook ahora consulta Supabase directamente. No incluye una copia embebida de las lecturas, no escribe en las tablas y no utiliza claves administrativas. El inicio de sesión crea una sesión de Auth para una cuenta existente; sus permisos efectivos siguen siendo los de esa cuenta. El código solo solicita lecturas del conjunto smoke-detection-iot-300-v1.
+El notebook consulta `smoke-detection-iot-1011-v1` en Supabase mediante una cuenta existente. Descarga páginas de hasta 500 filas y verifica 1011 identificadores únicos, 722 etiquetas positivas, 289 negativas, fechas, campos numéricos y hash del contenido. Una respuesta parcial o modificada detiene el entrenamiento.
 
-## Configuración en Colab
+## Configuración
 
-1. Abrir el enlace y autorizar acceso al repositorio privado de GitHub. Alternativa: descargar el archivo ipynb y subirlo desde Archivo → Subir notebook.
-2. En Secretos (icono de llave) crear estas entradas y habilitar acceso al notebook:
-   - SUPABASE_URL: https://ddfmooylklgwnrmlxqzc.supabase.co
-   - SUPABASE_PUBLISHABLE_KEY: clave pública publishable o anon del mismo proyecto.
-   - SATIPO_EMAIL: correo de una cuenta existente del aplicativo.
-   - SATIPO_PASSWORD: contraseña de esa cuenta, no de GitHub ni PostgreSQL.
-3. Conectar a CPU y ejecutar todas las celdas. No pegar secretos en las celdas ni sus resultados.
-4. Revisar métricas y descargar el ZIP generado con modelo, instantánea de datos y resultados.
+En Secretos de Colab, habilita `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SATIPO_EMAIL` y `SATIPO_PASSWORD`. Usa la clave pública y una cuenta autorizada del aplicativo; no una clave administrativa. Ejecuta todas las celdas con CPU. Si guardaste una copia anterior en Drive, abre el notebook nuevo.
 
-No se configuraron secretos ni se inició una sesión en la cuenta Google del usuario desde el asistente. Esa autorización se realiza en su Colab. Si ya tenías una copia guardada en Drive, vuelve a abrir esta versión actualizada.
+La ejecución local utiliza las mismas variables de entorno. No se imprimen credenciales ni se escriben lecturas en la base. La autenticación crea una sesión de usuario. Los resultados se exportan a `salida_satipo` y al ZIP indicado en el notebook.
 
-## Validaciones y errores
+## Evaluación vigente
 
-La consulta filtra el conjunto aprobado, pide total exacto y hasta 301 filas para detectar exceso. Valida esquema, 300 IDs únicos, fechas/UTC, valores finitos, 214 etiquetas positivas y un hash normalizado contra la muestra aprobada. Diferencias de formato numérico o de representación de zona horaria no cambian el hash.
+Las primeras 808 lecturas cronológicas entrenan un Random Forest de configuración fija y las 203 siguientes lo evalúan. Las 12 características excluyen etiqueta, tiempo, IDs y contador. La muestra ampliada se solapa con datos examinados anteriormente y no identifica sesiones físicas: la separación temporal no demuestra independencia entre ensayos.
 
-Si hay fallo de autenticación, red, filas faltantes, duplicadas o contenido cambiado, el entrenamiento se detiene. No existe fallback a datos de ejemplo. No se debe sustituir el hash sin revisar y versionar la nueva muestra.
+La ejecución local contra Supabase, con scikit-learn 1.5.2, produjo **190/203 aciertos (93.60 %), 13 falsos negativos y 0 falsos positivos**. Matriz: `[[97,0],[13,93]]` (filas reales, columnas predichas, orden sin/con alarma). No comparar directamente con el anterior 90 % sobre 60 filas: las particiones son distintas.
 
-Se conserva una instantánea CSV para reproducibilidad dentro de salida_satipo y del ZIP. Que Supabase sea la fuente central no elimina la necesidad de documentar los datos exactos usados al entrenar. Ejecutar nuevamente consulta la base; no hay entrenamiento continuo en segundo plano.
+Estos resultados clasifican etiquetas históricas externas; no pronostican incendios futuros ni acreditan desempeño forestal en Satipo. El modelo sintético PMV1 de cinco variables es otro experimento: sus archivos están en `pmv1/` y sus métricas no proceden de estas 1011 lecturas.
 
-## Evaluación
+## Reproducción y publicación
 
-Protocolo fijo: 240 filas cronológicamente anteriores para entrenamiento y 60 posteriores para prueba; se excluyen IDs, contador, tiempo y etiqueta de las 12 características. Validación local conectada a Supabase: Python 3.12.10 y scikit-learn 1.5.2, 54/60 aciertos, 5 falsos negativos y 1 falso positivo. Los resultados locales están en resultados_locales; no se presentan como ejecución en Colab.
+1. `python scripts/build_prediction_notebook.py`: genera el notebook y su hash desde la muestra versionada.
+2. `python tests/colab_live.py`: ejecuta todas sus celdas contra Supabase con las credenciales locales privadas de `config/`; comprueba errores de entrada, exportación y descarte de resultados tras un fallo de red.
+3. `python scripts/publish-prediction-results.py`: valida CSV y matriz y actualiza el artefacto del backend desde la salida comprobada.
+4. `python scripts/integrate-report-catalog.py` y `npm run build`: actualizan el catálogo y el navegador.
+5. Pruebas y despliegue de backend y web mediante CI/CD.
 
-El modelo clasifica Fire Alarm histórico; no pronostica incendios futuros en Satipo. Su score no está calibrado. No escribe predicciones en Supabase. Los 60 resultados de esta evaluación están publicados en la sección Predicciones del panel mediante una API administrativa; la inferencia de nuevas lecturas requiere un servicio adicional. Ver [Predicciones web](../docs/PREDICCIONES_WEB.md). No reemplaza el JSON histórico de umbrales.
+Los resultados actuales están en `resultados_locales/`; los anteriores de 300 registros, en `archivo_300/`. El panel muestra las 203 predicciones de evaluación; la sección de lecturas contiene las 1011 observaciones. Consultar el panel no reentrena ni genera nuevas predicciones. Ver [Predicciones web](../docs/PREDICCIONES_WEB.md).
 
-## Archivos y pruebas
+## Selección de candidatos
 
-- supabase_dataset.py: consulta, autenticación y validación. Su código se incorpora al notebook para que no dependa de descargar archivos auxiliares privados.
-- scripts/build_prediction_notebook.py: regenera el notebook y hash esperado desde la muestra versionada.
-- python tests/colab_dataset_test.py: nueve pruebas que cubren formato equivalente, datos inválidos, claves privadas, cambios de contenido, operaciones permitidas, configuración, respuestas inesperadas y redirecciones HTTP.
+[Alerta_Satipo_validacion_v2.ipynb](Alerta_Satipo_validacion_v2.ipynb) compara tres familias y tres umbrales solo dentro de las 808 filas de desarrollo, con 480 observaciones de validación temporal y separaciones de cinco filas. El candidato seleccionado obtuvo 74.38 % sobre las 203 finales y **no se publicó**. El panel conserva la referencia fija de 93.60 %. Ver [protocolo y limitaciones](../docs/MEJORA_MODELO.md).
 
-Ejecución local: las mismas cuatro variables se leen del entorno. No se imprimen ni se exportan credenciales. El conjunto consultado en Supabase está sujeto a las políticas RLS actuales. La cuenta usada conserva sus propios permisos; este notebook no crea un rol nuevo de base de datos.
-
-### Revisión del 26 de septiembre de 2026
-
-Se corrigieron respuestas de autenticación inesperadas, fechas inválidas y respuestas que no contienen JSON para generar errores comprensibles. Se bloquean redirecciones HTTP para evitar enviar credenciales a otra dirección. Al repetir la consulta se eliminan los datos y el modelo anteriores de la memoria antes de descargar; si falla, el entrenamiento se detiene. La inferencia rechaza entradas que no sean un diccionario y valores booleanos como mediciones.
-
-El ZIP exporta únicamente los seis archivos previstos; no incorpora archivos ajenos de la carpeta. Los archivos exportados en ejecuciones anteriores no se borran automáticamente: siguen siendo resultados de aquella ejecución.
-
-Prueba de integración: `python tests/colab_live.py`. Requiere las dependencias del notebook, `config/public.json` y las credenciales locales existentes en `config/admin.local.json` (archivo privado, nunca versionarlo). Ejecuta todas las celdas, comprueba 300 lecturas y 60 filas de prueba, entradas inválidas, contenido del ZIP y una consulta fallida después del entrenamiento. Escribe resultados locales en `test-results/colab-audit`; no modifica las tablas remotas. El inicio de sesión sí crea una sesión de Auth.
-
-Resultado de la revisión: nueve pruebas unitarias y la integración completa contra Supabase aprobadas. Esta verificación se realizó localmente; el acceso a Secretos y la ejecución dentro de la cuenta Google Colab deben verificarse allí. La inferencia continua sigue pendiente; la consulta de los 60 resultados publicados ya está disponible en el panel.
-
-## Comparación temporal de modelos (v2)
-
-Nuevo notebook: [Alerta_Satipo_validacion_v2.ipynb](Alerta_Satipo_validacion_v2.ipynb). Compara tres familias y tres umbrales solo sobre desarrollo, y evalúa el candidato en las 60 filas previamente utilizadas como prueba. El candidato empeoró (61.67 % frente a 90 %), por lo que no reemplaza la versión publicada. Ver [protocolo, resultados y datos pendientes para distritos](../docs/MEJORA_MODELO.md). No se ha demostrado aún una mejora predictiva.
+`python tests/model_v2_live.py` verifica este notebook contra Supabase; `python tests/colab_dataset_test.py` verifica paginación y errores. Estas ejecuciones se realizaron localmente, no en la cuenta Google del usuario.
