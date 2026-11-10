@@ -1,0 +1,54 @@
+test_bad_units_nonfinite_and_naive_date (acquisition_test.AcquisitionTests.test_bad_units_nonfinite_and_naive_date) ... ok
+test_conflicting_duplicate_rolls_back_whole_batch (acquisition_test.AcquisitionTests.test_conflicting_duplicate_rolls_back_whole_batch) ... ok
+test_environment_weather_and_satellite_history_are_separate (acquisition_test.AcquisitionTests.test_environment_weather_and_satellite_history_are_separate) ... ok
+test_invalid_batch_is_atomic (acquisition_test.AcquisitionTests.test_invalid_batch_is_atomic) ... ok
+test_offline_reopen_deduplication_and_timestamp (acquisition_test.AcquisitionTests.test_offline_reopen_deduplication_and_timestamp) ... ok
+test_prediction_requires_features_and_is_not_three_class (acquisition_test.AcquisitionTests.test_prediction_requires_features_and_is_not_three_class) ... ok
+test_real_http_local_api_to_sqlite (acquisition_test.AcquisitionTests.test_real_http_local_api_to_sqlite) ... ok
+test_retry_after_failure_and_acknowledgement (acquisition_test.AcquisitionTests.test_retry_after_failure_and_acknowledgement) ... ok
+test_transport_rejects_insecure_and_embedded_secrets (acquisition_test.AcquisitionTests.test_transport_rejects_insecure_and_embedded_secrets) ... ok
+test_weather_never_sent_to_smoke_model (acquisition_test.AcquisitionTests.test_weather_never_sent_to_smoke_model) ... ok
+test_invalid_date_and_session (colab_dataset_test.DatasetTest.test_invalid_date_and_session) ... ok
+test_invalid_secrets (colab_dataset_test.DatasetTest.test_invalid_secrets) ... ok
+test_modified_content_and_remote_count_fail (colab_dataset_test.DatasetTest.test_modified_content_and_remote_count_fail) ... ok
+test_non_json_is_clear_and_redirection_is_blocked (colab_dataset_test.DatasetTest.test_non_json_is_clear_and_redirection_is_blocked) ... ok
+test_normalization (colab_dataset_test.DatasetTest.test_normalization) ... ok
+test_only_auth_and_dataset_requests (colab_dataset_test.DatasetTest.test_only_auth_and_dataset_requests) ... ok
+test_private_key_rejected_before_network (colab_dataset_test.DatasetTest.test_private_key_rejected_before_network) ... ok
+test_reject_partial_duplicate_invalid (colab_dataset_test.DatasetTest.test_reject_partial_duplicate_invalid) ... ok
+test_url_whitespace_is_normalized (colab_dataset_test.DatasetTest.test_url_whitespace_is_normalized) ... ok
+test_file_adapter_preserves_existing_1011_rows (dataset_hexagonal_test.DatasetTests.test_file_adapter_preserves_existing_1011_rows) ... ok
+test_http_adapter_hashes_exact_bytes_without_network (dataset_hexagonal_test.DatasetTests.test_http_adapter_hashes_exact_bytes_without_network) ... ok
+test_invalid_source_never_reaches_writer (dataset_hexagonal_test.DatasetTests.test_invalid_source_never_reaches_writer) ... ok
+test_stratification_reproducibility_original_units_and_no_mutation (dataset_hexagonal_test.DatasetTests.test_stratification_reproducibility_original_units_and_no_mutation) ... ok
+test_use_case_with_memory_ports_and_traceability (dataset_hexagonal_test.DatasetTests.test_use_case_with_memory_ports_and_traceability) ... ok
+test_no_automatic_promotion (model_v2_test.ModelSelectionTests.test_no_automatic_promotion) ... ok
+test_rejects_partial_duplicate_and_invalid_values (model_v2_test.ModelSelectionTests.test_rejects_partial_duplicate_and_invalid_values) ... ok
+test_selection_never_depends_on_final_labels (model_v2_test.ModelSelectionTests.test_selection_never_depends_on_final_labels) ... ok
+test_temporal_folds_and_gap (model_v2_test.ModelSelectionTests.test_temporal_folds_and_gap) ... ok
+test_real_dataset_integrity_and_split (pmv1_edge_test.EdgePackageTests.test_real_dataset_integrity_and_split) ... ok
+test_reject_invalid_or_leaking_data_before_writing (pmv1_edge_test.EdgePackageTests.test_reject_invalid_or_leaking_data_before_writing) ... ok
+test_core_imports_and_io_boundaries (python_architecture_test.ArchitectureTests.test_core_imports_and_io_boundaries) ... ok
+test_data_and_documentation_keep_their_urls (static_server_test.PublicRoutesTest.test_data_and_documentation_keep_their_urls) ... ok
+test_directory_entry_points (static_server_test.PublicRoutesTest.test_directory_entry_points) ... ok
+test_frontend_files_keep_their_public_urls (static_server_test.PublicRoutesTest.test_frontend_files_keep_their_public_urls) ... ok
+test_private_paths_and_traversal_are_not_served (static_server_test.PublicRoutesTest.test_private_paths_and_traversal_are_not_served) ... ok
+test_failed_source_leaves_run_incomplete (territorial_hexagonal_test.TerritorialPortsTests.test_failed_source_leaves_run_incomplete) ... ok
+test_prepare_runs_with_injected_sources_and_memory_writer (territorial_hexagonal_test.TerritorialPortsTests.test_prepare_runs_with_injected_sources_and_memory_writer) ... ok
+test_training_writes_readiness_but_does_not_train_without_evidence (territorial_hexagonal_test.TerritorialPortsTests.test_training_writes_readiness_but_does_not_train_without_evidence) ... ok
+test_evidence_required_and_missing_days_stay_unknown (territorial_test.TerritorialTests.test_evidence_required_and_missing_days_stay_unknown) ... ok
+test_firms_deduplicates_and_never_confirms_fires (territorial_test.TerritorialTests.test_firms_deduplicates_and_never_confirms_fires) ... ok
+test_manifest_hashes (territorial_test.TerritorialTests.test_manifest_hashes) ... ok
+test_no_future_weather_in_rolling_features (territorial_test.TerritorialTests.test_no_future_weather_in_rolling_features) ... ok
+test_partial_invalid_units_rejected (territorial_test.TerritorialTests.test_partial_invalid_units_rejected) ... ok
+test_real_coverage_and_no_invented_labels (territorial_test.TerritorialTests.test_real_coverage_and_no_invented_labels) ... ok
+test_current_dataset_is_blocked (territorial_training_test.TrainingTests.test_current_dataset_is_blocked) ... ok
+test_end_to_end_synthetic_without_operational_approval (territorial_training_test.TrainingTests.test_end_to_end_synthetic_without_operational_approval) ... ok
+test_invalid_labels_and_duplicates_rejected (territorial_training_test.TrainingTests.test_invalid_labels_and_duplicates_rejected) ... ok
+test_split_all_districts_and_label_horizon (territorial_training_test.TrainingTests.test_split_all_districts_and_label_horizon) ... ok
+test_too_few_dates_or_single_class_rejected (territorial_training_test.TrainingTests.test_too_few_dates_or_single_class_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 49 tests in 7.697s
+
+OK

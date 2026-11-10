@@ -12,3 +12,4 @@
 *.md whitespace=-blank-at-eol
 shared/vendor/*.js -whitespace
 data/territorial/** -text
+docs/evidencias/pmv_pruebas_20261110/** -text -whitespace

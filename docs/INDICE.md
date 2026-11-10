@@ -1,5 +1,6 @@
 # Documentación vigente
 
+- [Pruebas detalladas de PMV1 y PMV2 con ML](PRUEBAS_DETALLADAS_PMV1_PMV2_ML.md)
 - [Guía de uso del panel](GUIA_USO_ACTUAL.md)
 - [Pruebas de aceptación y pendientes](ACEPTACION_ACTUAL.md)
 - [Datos y entrenamiento territorial experimental](DATOS_TERRITORIALES.md)

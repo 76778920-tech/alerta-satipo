@@ -1,0 +1,60 @@
+
+> alerta-satipo@0.2.0 test
+> node --test tests/*.test.mjs
+
+✔ Auditoría: los puertos de entrada rechazan nulos y arreglos sin depender de HTTP (1.0113ms)
+✔ Auditoría: repositorio en memoria conserva configuración y separa casos de tareas (0.3742ms)
+✔ Auditoría: HTTP limita bytes antes de decodificar y acepta JSON sin distinguir mayúsculas (13.0122ms)
+✔ Auditoría: composición rechaza claves administrativas antes de crear clientes (0.3018ms)
+✔ Auditoría: grafo transitivo del núcleo no alcanza infraestructura ni paquetes externos (16.8835ms)
+✔ PostgreSQL: 1011 lecturas, importación idempotente, aislamiento y auditoría (1103.1648ms)
+✔ La muestra conserva filas únicas, fechas y unidades originales (3.6898ms)
+✔ Open-Meteo: nueve puntos, unidades, UTC y valores nulos explícitos (1.1719ms)
+✔ FIRMS: UTC HHMM, confianza, deduplicación exacta y filtro del rectángulo (1.0455ms)
+✔ Falta de MAP_KEY no consulta NASA; caché y solicitudes concurrentes (14.041ms)
+✔ FIRMS parcial conserva fuente disponible sin revelar clave ni errores upstream (0.6292ms)
+✔ Fallo después de caducar caché no devuelve clima antiguo como actual (0.9793ms)
+✔ API ambiental autoriza antes de contactar proveedores (1.5153ms)
+✔ Navegador: login administrativo, rechazo de poblador y limpieza de sesión sin DOM (1.0635ms)
+✔ Navegador: pérdida de identidad elimina el perfil y un error remoto no activa demo (0.1576ms)
+✔ Navegador: preferencias permiten solo campos conocidos y conservan valor ante fallos (0.401ms)
+✔ Navegador: consultas comunitarias usan su puerto y no la API exclusiva de administradores (0.1464ms)
+✔ Navegador: reportes y apoyo validan antes de persistir; conserva regla de dos condiciones (0.221ms)
+✔ HTTP de salida: token de usuario, ruta escapada y errores sin activar otro origen (12.1879ms)
+✔ Supabase de salida: mapea preferencias, reporte y RPC sin filtrar SDK al núcleo (0.2912ms)
+✔ Riesgo: reglas y casos de uso sin almacenamiento real, red o reloj global (1.5184ms)
+✔ Simulación: determinismo, historial por usuario, límite y ausencia de almacenamiento (1.2305ms)
+✔ Arquitectura: todos los módulos de los núcleos JS respetan su dirección de dependencias (77.4604ms)
+✔ Arquitectura: las pantallas consumen casos de uso sin SDK, HTTP ni almacenamiento (3.0596ms)
+✔ Dominio: estados válidos y reapertura; rechaza tipos y valores incorrectos (0.838ms)
+✔ Aplicación: autenticación y autorización antes de persistencia (0.2169ms)
+✔ Aplicación: actualiza sin navegador ni base, detecta conflicto y ausencia (0.1668ms)
+✔ Aplicación: concurrencia con mismo estado esperado solo confirma una escritura (0.1351ms)
+✔ Aplicación: consulta y validación de configuración (0.1984ms)
+✔ Adaptador HTTP: códigos, CORS, token obligatorio, JSON y error seguro (17.5789ms)
+✔ Adaptador Supabase: mapea filas, filtra estado previo y propaga indisponibilidad (0.5017ms)
+✔ Adaptador identidad: token inválido y servicio caído no son autorización válida (0.1837ms)
+✔ Arquitectura: dominio y aplicación no importan SDK, HTTP, navegador ni infraestructura (6.6246ms)
+✔ SupabaseRepository: recupera 1011 IDs con límite del servidor de 1000 o 200 (1.1695ms)
+✔ SupabaseRepository: rechaza página ausente, duplicada, total cambiante y error de red (0.8397ms)
+✔ SupabaseCommunity: recupera 1011 IDs con límite del servidor de 1000 o 200 (0.4256ms)
+✔ SupabaseCommunity: rechaza página ausente, duplicada, total cambiante y error de red (0.3336ms)
+✔ Evaluación PMV1: referencia independiente cuenta emergencias omitidas y denominadores (2.3097ms)
+✔ Evaluación PMV1: rechaza referencia ausente, duplicados y datos incompletos (0.2632ms)
+✔ HU07: los 3000 casos reservados reproducen matriz, errores y paridad web/backend (84.0912ms)
+✔ PMV1: cinco variables y rangos obligatorios, tres clases y paridad sklearn/navegador (4.1099ms)
+✔ PMV1: diez capturas sin red y reintento conserva cola hasta confirmación correcta (0.7213ms)
+✔ PMV1 PostgreSQL: RLS, transacción, unicidad y persistencia de lectura/predicción/alerta (893.0068ms)
+✔ Predicciones: autenticación y autorización antes de consultar resultados (0.8057ms)
+✔ Predicciones publicadas: coinciden con datos, CSV y métricas de evaluación (20.8124ms)
+✔ Informe: conserva IDs originales, PMV y procedencia de las dos evaluaciones (0.6038ms)
+✔ Importación: rechaza inferencia meteorológica, unidades incompatibles y duplicados (0.4065ms)
+✔ Caso de uso: filtros y descarte de historial anterior ante importación inválida (0.2549ms)
+ℹ tests 48
+ℹ suites 0
+ℹ pass 48
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1191.9724

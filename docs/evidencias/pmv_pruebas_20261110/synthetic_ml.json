@@ -1,0 +1,185 @@
+{
+  "version": "pmv1-synthetic-tree-v2",
+  "provenance": "SYNTHETIC_ONLY",
+  "train_rows": 24000,
+  "validation_rows": 6000,
+  "test_rows": 3000,
+  "train_seed": 20261109,
+  "validation_seed": 20261110,
+  "test_seed": 20261111,
+  "features": [
+    "temperature_c",
+    "humidity_pct",
+    "smoke_index",
+    "gas_index",
+    "dust_ugm3"
+  ],
+  "labels": [
+    "Normal",
+    "Advertencia",
+    "Emergencia"
+  ],
+  "selection": {
+    "rule": "Mayor F1 macro en validaci\u00f3n; desempate por exactitud, menos emergencias omitidas y menos falsas alarmas.",
+    "selected": {
+      "max_depth": 8,
+      "min_samples_leaf": 24
+    },
+    "candidates": [
+      {
+        "max_depth": 6,
+        "min_samples_leaf": 12,
+        "accuracy": 0.9181666666666667,
+        "f1_macro": 0.9177203225651646,
+        "confusion_matrix": [
+          [
+            1975,
+            98,
+            0
+          ],
+          [
+            134,
+            1726,
+            150
+          ],
+          [
+            0,
+            109,
+            1808
+          ]
+        ],
+        "false_alarms": 98,
+        "normal_rows": 2073,
+        "missed_emergencies": 109
+      },
+      {
+        "max_depth": 7,
+        "min_samples_leaf": 18,
+        "accuracy": 0.9258333333333333,
+        "f1_macro": 0.9254111315261623,
+        "confusion_matrix": [
+          [
+            1994,
+            79,
+            0
+          ],
+          [
+            145,
+            1740,
+            125
+          ],
+          [
+            0,
+            96,
+            1821
+          ]
+        ],
+        "false_alarms": 79,
+        "normal_rows": 2073,
+        "missed_emergencies": 96
+      },
+      {
+        "max_depth": 8,
+        "min_samples_leaf": 24,
+        "accuracy": 0.9296666666666666,
+        "f1_macro": 0.9293423177271203,
+        "confusion_matrix": [
+          [
+            1989,
+            84,
+            0
+          ],
+          [
+            111,
+            1770,
+            129
+          ],
+          [
+            0,
+            98,
+            1819
+          ]
+        ],
+        "false_alarms": 84,
+        "normal_rows": 2073,
+        "missed_emergencies": 98
+      },
+      {
+        "max_depth": 9,
+        "min_samples_leaf": 32,
+        "accuracy": 0.9291666666666667,
+        "f1_macro": 0.928896245171956,
+        "confusion_matrix": [
+          [
+            1983,
+            90,
+            0
+          ],
+          [
+            103,
+            1776,
+            131
+          ],
+          [
+            0,
+            101,
+            1816
+          ]
+        ],
+        "false_alarms": 90,
+        "normal_rows": 2073,
+        "missed_emergencies": 101
+      },
+      {
+        "max_depth": 10,
+        "min_samples_leaf": 40,
+        "accuracy": 0.9271666666666667,
+        "f1_macro": 0.9268846538450716,
+        "confusion_matrix": [
+          [
+            1973,
+            100,
+            0
+          ],
+          [
+            102,
+            1765,
+            143
+          ],
+          [
+            0,
+            92,
+            1825
+          ]
+        ],
+        "false_alarms": 100,
+        "normal_rows": 2073,
+        "missed_emergencies": 92
+      }
+    ]
+  },
+  "accuracy": 0.9276666666666666,
+  "f1_macro": 0.9282696237253837,
+  "confusion_matrix": [
+    [
+      945,
+      45,
+      0
+    ],
+    [
+      48,
+      933,
+      63
+    ],
+    [
+      0,
+      61,
+      905
+    ]
+  ],
+  "false_alarms": 45,
+  "normal_rows": 990,
+  "missed_emergencies": 61,
+  "normal_test_rows": 990,
+  "limitation": "Escenarios artificiales: no estima desempe\u00f1o forestal, sensores, Edge Impulse ni ESP32-S3. La prueba se mantuvo separada de la selecci\u00f3n."
+}

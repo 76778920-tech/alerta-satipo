@@ -1,0 +1,5 @@
+
+> alerta-satipo@0.2.0 build
+> node scripts/build.mjs
+
+SDK y casos de uso del navegador compilados localmente.

@@ -10,7 +10,7 @@ Ejecutar desde la raíz:
 python scripts/prepare_pmv1_edge.py
 ```
 
-Genera `var/pmv1-edge-impulse.zip` sin sobrescribir archivos existentes. Contiene 3000 muestras `training`, 900 `testing`, etiquetas Normal/Advertencia/Emergencia, `info.labels` y un manifiesto de hashes SHA-256. Los datos son exclusivamente sintéticos. El exportador rechaza valores inválidos y muestras repetidas, incluso entre conjuntos.
+Con los CSV vigentes al 10/11/2026, genera `var/pmv1-edge-impulse.zip` sin sobrescribir archivos existentes. Contiene 24000 muestras `training`, 3000 `testing`, etiquetas Normal/Advertencia/Emergencia, `info.labels` y un manifiesto de hashes SHA-256. Las 6000 muestras de `validation.csv` se conservan aparte y este exportador no las incluye. Los datos son exclusivamente sintéticos. El exportador rechaza valores inválidos y muestras repetidas, incluso entre conjuntos. Un ZIP generado antes de esta actualización debe conservarse como evidencia histórica; no asumir que contiene las cantidades actuales.
 
 Cada CSV tiene cabecera y una única fila de cinco valores, sin columna de etiqueta ni tiempo artificial. Este formato corresponde a la [especificación oficial de muestras estáticas multivariable](https://docs.edgeimpulse.com/tools/specifications/data-acquisition/csv). Las etiquetas y categorías también se declaran explícitamente en `info.labels`.
 
@@ -19,9 +19,9 @@ Cada CSV tiene cabecera y una única fila de cinco valores, sin columna de etiqu
 1. Crear o seleccionar un proyecto privado en Edge Impulse Studio, destinado solo a este experimento sintético.
 2. Extraer el ZIP en una carpeta nueva. Instalar el CLI oficial siguiendo la [documentación del uploader](https://docs.edgeimpulse.com/tools/clis/edge-impulse-cli/uploader).
 3. Desde la carpeta extraída, ejecutar `edge-impulse-uploader --info-file info.labels` y autenticarse en el proyecto correcto. La preparación local no realiza esta subida.
-4. Comprobar 3000 muestras de entrenamiento y 900 de prueba y las tres etiquetas. No activar una nueva partición automática que mezcle esos conjuntos.
+4. Comprobar 24000 muestras de entrenamiento y 3000 de prueba y las tres etiquetas. No activar una nueva partición automática que mezcle esos conjuntos.
 5. Configurar clasificación estática con las cinco entradas en este orden: `temperature_c`, `humidity_pct`, `smoke_index`, `gas_index`, `dust_ugm3`. No añadir la etiqueta como entrada. Cualquier normalización debe estar incluida en el procesamiento exportado o reproducirse exactamente.
-6. Separar validación dentro del entrenamiento para ajustar el modelo. Reservar las 900 muestras de prueba para evaluación final. No ajustar parámetros mirando repetidamente ese test.
+6. Separar validación dentro del entrenamiento para ajustar el modelo de Edge Impulse, o preparar una importación explícita del conjunto de validación independiente. Reservar las 3000 muestras de prueba para evaluación final. No ajustar parámetros mirando repetidamente ese test.
 7. Guardar ID del proyecto, versión, configuración, matriz de confusión y métricas obtenidas allí. No reutilizar como métricas de Edge Impulse las del árbol local.
 8. Exportar biblioteca Arduino. Antes de integrarla, verificar cinco entradas por inferencia, tres etiquetas exactas y paridad con muestras conocidas. La rama `PMV1_EDGE_HEADER` del firmware todavía requiere esa biblioteca real. El backend debe soportar la misma versión antes de sincronizar sus resultados.
 

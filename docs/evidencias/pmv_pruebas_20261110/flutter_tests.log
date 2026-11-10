@@ -1,0 +1,24 @@
+00:00 +0: loading C:/Alerta de Incendios/mobile/test/cloud_records_test.dart
+00:00 +0: C:/Alerta de Incendios/mobile/test/cloud_records_test.dart: Restaura sesión sin red, aísla la cuenta local
+00:00 +1: C:/Alerta de Incendios/mobile/test/cloud_records_test.dart: Respeta predicción remota y relaciones objeto o lista sin inventar latencia
+00:00 +2: C:/Alerta de Incendios/mobile/test/cloud_records_test.dart: Rechaza predicción ausente y medición remota incompleta
+00:00 +3: loading C:/Alerta de Incendios/mobile/test/core_test.dart
+00:00 +3: C:/Alerta de Incendios/mobile/test/core_test.dart: Inferencia Dart conserva las 40 predicciones sklearn
+00:00 +4: C:/Alerta de Incendios/mobile/test/core_test.dart: BLE reconstruye UTF8 fragmentado, separa lecturas y limita memoria
+00:00 +5: C:/Alerta de Incendios/mobile/test/core_test.dart: Sesiones, registro sin autoascenso, permisos y expiración
+00:00 +6: C:/Alerta de Incendios/mobile/test/core_test.dart: SQLite transaccional, reintento, rollback y reapertura
+00:00 +7: C:/Alerta de Incendios/mobile/test/core_test.dart: Contraseña PBKDF2 con sal distinta y verificación
+00:07 +8: loading C:/Alerta de Incendios/mobile/test/evaluation_test.dart
+00:07 +8: C:/Alerta de Incendios/mobile/test/evaluation_test.dart: Métricas agrupan niveles de riesgo sin inventar denominadores
+00:07 +9: C:/Alerta de Incendios/mobile/test/evaluation_test.dart: Métricas rechazan matriz mal formada
+00:07 +10: loading C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart
+00:08 +10: C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart: HU07 ML-DART: reproduce la matriz completa de 3000 lecturas
+00:08 +11: C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart: HU08/HU13: Normal calculado por ML se visualiza con su color
+00:08 +12: C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart: HU08/HU13: Advertencia calculado por ML se visualiza con su color
+00:08 +13: C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart: HU08/HU13: Emergencia calculado por ML se visualiza con su color
+00:08 +14: C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart: HU11/HU13: alertas ML excluyen Normal, filtran y reflejan una nueva lectura
+00:09 +15: C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart: HU05: lote inválido o duplicado no deja registros parciales
+00:09 +16: C:/Alerta de Incendios/mobile/test/pmv_acceptance_test.dart: HU11: tramas BLE fragmentadas llegan al modelo; rechaza versión ajena
+00:09 +17: loading C:/Alerta de Incendios/mobile/test/widget_test.dart
+00:09 +17: C:/Alerta de Incendios/mobile/test/widget_test.dart: Acceso y registro visibles en pantalla estrecha sin overflow
+00:09 +18: All tests passed!
