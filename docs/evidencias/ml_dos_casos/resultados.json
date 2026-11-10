@@ -1,0 +1,67 @@
+{
+  "application_url": "https://alerta-satipo-76778920.web.app/web/index.html",
+  "method": "Real browser UI: select scenario, click Leer una vez; trained model executes locally.",
+  "source": "simulation",
+  "remote_writes": false,
+  "persistence_after_reload": true,
+  "cases": [
+    {
+      "reading": {
+        "id": "29ee067b-50e4-48d9-bb20-030fa2a97aa3",
+        "node_id": "00000000-0000-4000-8000-000000000001",
+        "source": "simulation",
+        "observed_at": "2026-11-10T17:36:56.351Z",
+        "values": {
+          "temperature_c": 25.02,
+          "humidity_pct": 71.45,
+          "smoke_index": 10.9,
+          "gas_index": 12.49,
+          "dust_ugm3": 13.36
+        }
+      },
+      "prediction": {
+        "level": "Normal",
+        "scores": [
+          0.9974293059125964,
+          0.002570694087403599,
+          0
+        ],
+        "model_version": "pmv1-synthetic-tree-v2",
+        "experimental": true
+      },
+      "alert": null,
+      "synced": false
+    },
+    {
+      "reading": {
+        "id": "79951107-8086-41c2-b48f-4388d30879d8",
+        "node_id": "00000000-0000-4000-8000-000000000001",
+        "source": "simulation",
+        "observed_at": "2026-11-10T17:36:56.476Z",
+        "values": {
+          "temperature_c": 50.71,
+          "humidity_pct": 25.96,
+          "smoke_index": 83.24,
+          "gas_index": 83.34,
+          "dust_ugm3": 261.83
+        }
+      },
+      "prediction": {
+        "level": "Emergencia",
+        "scores": [
+          0,
+          0.00038880248833592535,
+          0.999611197511664
+        ],
+        "model_version": "pmv1-synthetic-tree-v2",
+        "experimental": true
+      },
+      "alert": {
+        "level": "Emergencia",
+        "channel": "software",
+        "experimental": true
+      },
+      "synced": false
+    }
+  ]
+}
