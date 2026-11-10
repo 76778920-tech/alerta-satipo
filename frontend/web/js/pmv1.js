@@ -13,7 +13,7 @@ window.SatipoPmv1=(()=>{
       <button id="pmv1-prev" class="secondary-button">Anterior</button> <button id="pmv1-next" class="secondary-button">Siguiente</button>
       <p><label>Importar lecturas capturadas por USB (JSON) <input id="pmv1-file" type="file" accept="application/json,.json"></label></p>
       <p>El historial se guarda en este navegador para esta cuenta. Sincronizar requiere conexión y la migración PMV1 en Supabase. Cerrar la página detiene la adquisición. Borrar datos del navegador elimina las lecturas locales no sincronizadas.</p>
-      <p>Evaluación sintética independiente: 900 ejemplos, 15 falsas alarmas entre 300 normales y 23 emergencias clasificadas como otro nivel. Exactitud 90,22 %. No describe sensores físicos ni incendios forestales.</p>`;
+      <p>Cada lectura nueva se procesa con el modelo entrenado y conserva sus cinco variables, clasificación y versión del modelo. Estos casos demuestran inferencia de software con entradas simuladas; no acreditan predicción de incendios reales.</p>`;
     const $=s=>root.querySelector(s),levelClass=l=>l==='Normal'?'good':l==='Advertencia'?'warn':'alert';
     function render(){
       page=Math.min(page,Math.max(0,Math.ceil(rows.length/15)-1));
