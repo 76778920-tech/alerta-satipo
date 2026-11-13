@@ -17,17 +17,21 @@ async function boundedBody(request) {
 }
 export function createHandler({ serviceFactory, allowedOrigins }) {
   return async request => {
+    const pathname=new URL(request.url).pathname;
     const origin=request.headers.get('origin');
     const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin','X-Content-Type-Options':'nosniff'};
-    if(origin && !allowedOrigins.includes(origin))return new Response(JSON.stringify({error:'Origen no autorizado.'}),{status:403,headers});
-    if(origin)headers['Access-Control-Allow-Origin']=origin;
     headers['Access-Control-Allow-Headers']='authorization, apikey, content-type';
     headers['Access-Control-Allow-Methods']='GET, PATCH, OPTIONS';
-    const respond=(value,code=200)=>new Response(JSON.stringify(value),{status:code,headers});
-    if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
-    const pathname=new URL(request.url).pathname;
+    const audit=(code,outcome)=>console.info(JSON.stringify({event:'api_request',method:request.method,path:pathname,status:code,outcome}));
+    const respond=(value,code=200,outcome='ok')=>{
+      audit(code,outcome);
+      return new Response(JSON.stringify(value),{status:code,headers});
+    };
+    if(origin && !allowedOrigins.includes(origin))return respond({error:'Origen no autorizado.'},403,'origin_denied');
+    if(origin)headers['Access-Control-Allow-Origin']=origin;
+    if(request.method==='OPTIONS'){audit(204,'preflight');return new Response(null,{status:204,headers});}
     const prefix=/^(?:\/functions\/v1\/admin-api|\/admin-api|\/api)(?=\/|$)/.exec(pathname);
-    if(!prefix)return respond({error:'Ruta no disponible.'},404);
+    if(!prefix)return respond({error:'Ruta no disponible.'},404,'route_not_found');
     const path=pathname.slice(prefix[0].length);
     if(path==='/health' && request.method==='GET')return respond({status:'ok',architecture:'ports-and-adapters',build:typeof SATIPO_BACKEND_BUILD==='string'?SATIPO_BACKEND_BUILD:'development'});
     const token=/^Bearer (\S+)$/i.exec(request.headers.get('authorization')||'')?.[1];

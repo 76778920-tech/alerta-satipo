@@ -1824,21 +1824,28 @@ async function boundedBody(request) {
   }
   return new TextDecoder().decode(bytes);
 }
-function createHandler({ serviceFactory, allowedOrigins }) {
+function createHandler({ serviceFactory, allowedOrigins: allowedOrigins2 }) {
   return async (request) => {
+    const pathname = new URL(request.url).pathname;
     const origin = request.headers.get("origin");
     const headers = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Vary": "Origin", "X-Content-Type-Options": "nosniff" };
-    if (origin && !allowedOrigins.includes(origin)) return new Response(JSON.stringify({ error: "Origen no autorizado." }), { status: 403, headers });
-    if (origin) headers["Access-Control-Allow-Origin"] = origin;
     headers["Access-Control-Allow-Headers"] = "authorization, apikey, content-type";
     headers["Access-Control-Allow-Methods"] = "GET, PATCH, OPTIONS";
-    const respond = (value, code = 200) => new Response(JSON.stringify(value), { status: code, headers });
-    if (request.method === "OPTIONS") return new Response(null, { status: 204, headers });
-    const pathname = new URL(request.url).pathname;
+    const audit = (code, outcome) => console.info(JSON.stringify({ event: "api_request", method: request.method, path: pathname, status: code, outcome }));
+    const respond = (value, code = 200, outcome = "ok") => {
+      audit(code, outcome);
+      return new Response(JSON.stringify(value), { status: code, headers });
+    };
+    if (origin && !allowedOrigins2.includes(origin)) return respond({ error: "Origen no autorizado." }, 403, "origin_denied");
+    if (origin) headers["Access-Control-Allow-Origin"] = origin;
+    if (request.method === "OPTIONS") {
+      audit(204, "preflight");
+      return new Response(null, { status: 204, headers });
+    }
     const prefix = /^(?:\/functions\/v1\/admin-api|\/admin-api|\/api)(?=\/|$)/.exec(pathname);
-    if (!prefix) return respond({ error: "Ruta no disponible." }, 404);
+    if (!prefix) return respond({ error: "Ruta no disponible." }, 404, "route_not_found");
     const path = pathname.slice(prefix[0].length);
-    if (path === "/health" && request.method === "GET") return respond({ status: "ok", architecture: "ports-and-adapters", build: true ? "b14ade651aa47486223bd3befa091eee5ba79deb0fbced5c1a413797463d633c" : "development" });
+    if (path === "/health" && request.method === "GET") return respond({ status: "ok", architecture: "ports-and-adapters", build: true ? "dacf586ba7b9314f32a6a538fb1c1cd217b13b5d1c9e41c33bbeba5eab7dd1c2" : "development" });
     const token = /^Bearer (\S+)$/i.exec(request.headers.get("authorization") || "")?.[1];
     if (!token) return respond({ error: "Inicia sesi\xF3n nuevamente.", code: "UNAUTHENTICATED" }, 401);
     try {
@@ -2112,7 +2119,7 @@ var PublicEnvironment = class extends EnvironmentPort {
 };
 
 // backend/bootstrap.mjs
-function compose({ url, publicKey, allowedOrigins, firmsKey = "" }) {
+function compose({ url, publicKey, allowedOrigins: allowedOrigins2, firmsKey = "" }) {
   if (!url || !publicKey) throw new Error("Falta configuraci\xF3n p\xFAblica de Supabase.");
   let role;
   try {
@@ -2122,12 +2129,15 @@ function compose({ url, publicKey, allowedOrigins, firmsKey = "" }) {
   }
   if (!publicKey.startsWith("sb_publishable_") && role !== "anon") throw new Error("La API requiere una clave p\xFAblica publishable o anon, nunca una clave administrativa.");
   const environment = new PublicEnvironment({ firmsKey });
-  return createHandler({ allowedOrigins, serviceFactory: (token) => {
+  return createHandler({ allowedOrigins: allowedOrigins2, serviceFactory: (token) => {
     const client = createClient(url, publicKey, { global: { headers: { Authorization: `Bearer ${token}` } }, auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
     return new AdminService({ identity: new SupabaseIdentity(client), repository: new SupabaseRepository(client), predictions: new PublishedPredictionResults(), environment });
   } });
 }
 
 // backend/edge.mjs
-var handler = compose({ url: Deno.env.get("SUPABASE_URL"), publicKey: Deno.env.get("SUPABASE_ANON_KEY"), firmsKey: Deno.env.get("FIRMS_MAP_KEY"), allowedOrigins: ["https://alerta-satipo-76778920.web.app", "https://alerta-satipo-76778920.firebaseapp.com", "http://127.0.0.1:8000", "http://localhost:8000"] });
+var productionOrigins = ["https://alerta-satipo-76778920.web.app", "https://alerta-satipo-76778920.firebaseapp.com"];
+var configuredOrigins = (Deno.env.get("API_ALLOWED_ORIGINS") || "").split(",").map((origin) => origin.trim()).filter(Boolean);
+var allowedOrigins = [.../* @__PURE__ */ new Set([...productionOrigins, ...configuredOrigins])];
+var handler = compose({ url: Deno.env.get("SUPABASE_URL"), publicKey: Deno.env.get("SUPABASE_ANON_KEY"), firmsKey: Deno.env.get("FIRMS_MAP_KEY"), allowedOrigins });
 Deno.serve(handler);
